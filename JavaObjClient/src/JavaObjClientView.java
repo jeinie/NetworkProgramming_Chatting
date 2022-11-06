@@ -33,6 +33,9 @@ import java.awt.Image;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.JToggleButton;
 import javax.swing.JList;
 
@@ -197,7 +200,12 @@ public class JavaObjClientView extends JFrame {
 						continue;
 					switch (cm.getCode()) {
 					case "200": // chat message
-						AppendText(msg);
+						if(UserName.equals(cm.getId())) //본인 메세지 오른쪽
+						AppendMyText(msg);
+						else if("SERVER".equals(cm.getId()))
+							AppendServerText(msg);
+						else
+							AppendText(msg);
 						break;
 					case "300": // Image 첨부
 						AppendText("[" + cm.getId() + "]");
@@ -277,9 +285,45 @@ public class JavaObjClientView extends JFrame {
 		int len = textArea.getDocument().getLength();
 		// 끝으로 이동
 		textArea.setCaretPosition(len);
+
+		//화면 왼쪽에 출력
+		StyledDocument doc = textArea.getStyledDocument();
+		SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+		StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_LEFT);
+		doc.setParagraphAttributes(len, 1, attributeSet, false);
+		
 		textArea.replaceSelection(msg + "\n");
 	}
 
+	//본인 메세지 오른쪽에 출력
+	public void AppendMyText(String msg) {
+		msg = msg.trim();
+		int len = textArea.getStyledDocument().getLength();
+		textArea.setCaretPosition(len);
+		
+		StyledDocument doc = textArea.getStyledDocument();
+		SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+		StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_RIGHT);
+		doc.setParagraphAttributes(len, 1, attributeSet, false);
+		
+		textArea.replaceSelection(msg + "\n");
+		
+	}
+
+	//서버 메세지 가운데에 출력 
+	public void AppendServerText(String msg) {
+		msg = msg.trim();
+		int len = textArea.getStyledDocument().getLength();
+		textArea.setCaretPosition(len);
+		
+		StyledDocument doc = textArea.getStyledDocument();
+		SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+		StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(len, 1, attributeSet, false);
+		 
+		textArea.replaceSelection(msg + "\n");
+	}
+	
 	public void AppendImage(ImageIcon ori_icon) {
 		int len = textArea.getDocument().getLength();
 		textArea.setCaretPosition(len); // place caret at the end (with no selection)

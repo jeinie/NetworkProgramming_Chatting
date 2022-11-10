@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "/Users/jangjeong-yun/2022_2_lecture/Network_proj/mysql-connector-j-8.0.31.jar",
+        "/Users/jangjeong-yun/Downloads/mysql-connector-j-8.0.31.jar"
+    ]
+}

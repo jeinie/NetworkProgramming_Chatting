@@ -51,7 +51,7 @@ public class JavaObjServer extends JFrame {
 	static final String DB_URL = "jdbc:mysql://localhost:3306/network_db";
     static final String USER = "root";
     static final String PASSWORD = "1234";
-    static final String QUERY = "SELECT * FROM new_table";
+    static final String QUERY = "SELECT * FROM users"; // 실행할 쿼리
 
 	/**
 	 * Launch the application.
@@ -78,12 +78,12 @@ public class JavaObjServer extends JFrame {
         try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-			Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(QUERY);
+			Statement stmt = connection.createStatement(); // Statement 생성 후 실행할 쿼리정보 등록
+            ResultSet rs = stmt.executeQuery(QUERY); // 결과를 담을 ResultSet 생성 후 결과 담기
             // Extract data from result set
             while (rs.next()) {
                 // Retrieve by column name
-                System.out.println("name: " + rs.getString(0));
+                System.out.println("name: " + rs.getString(1));
             }
             System.out.println("mysql db 연결 성공");
 		} catch(SQLException error) {

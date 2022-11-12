@@ -82,7 +82,7 @@ public class FriendList extends JFrame {
 		FriendList friendList = this;
 
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 			Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
 			Statement stmt = connection.createStatement(); // Statement 생성 후 실행할 쿼리정보 등록
             ResultSet rs = stmt.executeQuery(QUERY); // 결과를 담을 ResultSet 생성 후 결과 담기
@@ -113,7 +113,7 @@ public class FriendList extends JFrame {
 				contentPane1.setBounds(61, 0, 311, 485);
 				contentPane.add(contentPane1);
 
-				JLabel FriendLabel = new JLabel("\uCE5C\uAD6C");
+				JLabel FriendLabel = new JLabel("친구"); //친구목록 창
 				FriendLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 				FriendLabel.setBounds(23, 23, 76, 34);
 				contentPane1.add(FriendLabel);
@@ -121,7 +121,7 @@ public class FriendList extends JFrame {
 				while (index < dataVec.size()) {
 					JLabel userNameLabel = new JLabel(dataVec.get(index).toString());
 					System.out.println(dataVec.get(index).toString());
-					userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+					userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 					userNameLabel.setBounds(77, 76 + index*30, 68, 15);
 					contentPane1.add(userNameLabel);
 					index++;
@@ -129,25 +129,25 @@ public class FriendList extends JFrame {
 
 				userPrfPanel = new JPanel(); // 내 프로필 사진 패널
 				userPrfPanel.setBackground(Color.WHITE);
-				userPrfPanel.setBounds(23, 66, 42, 42);
+				userPrfPanel.setBounds(25, 65, 40, 40);
 				contentPane1.add(userPrfPanel);
 
-				ImageIcon icon = new ImageIcon("src/icon1.jpg");
+				ImageIcon icon = new ImageIcon("src/icon1.jpg"); //기본 프로필 이미지
 
 				Image img = icon.getImage();
 				Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
 				ImageIcon changeIcon = new ImageIcon(changeImg);
-				JLabel userImgLabel = new JLabel(changeIcon);
+				userPrfLabel = new JLabel(changeIcon);
 
-				userPrfPanel.add(userImgLabel);
-
-
+				userPrfPanel.add(userPrfLabel);
+				
+				
 				ImageIcon friendIcon = new ImageIcon("src/icon1.jpg");
 				JLabel friendIconlabel = new JLabel(friendIcon);
 
 
 				JLabel friendNameLabel = new JLabel("");
-				friendNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+				friendNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 				friendNameLabel.setBounds(77, 134, 68, 15);
 				contentPane1.add(friendNameLabel);
 

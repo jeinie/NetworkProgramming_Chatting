@@ -49,10 +49,10 @@ public class JavaObjServer extends JFrame {
 	private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
 
 	// MySQL
-	static final String DB_URL = "jdbc:mysql://localhost:3306/network_db";
+	/*static final String DB_URL = "jdbc:mysql://localhost:3306/network_db";
     static final String USER = "root";
     static final String PASSWORD = "1234";
-    static final String QUERY = "SELECT * FROM users"; // 실행할 쿼리
+    static final String QUERY = "SELECT * FROM users"; // 실행할 쿼리*/
 
 	/**
 	 * Launch the application.
@@ -76,7 +76,7 @@ public class JavaObjServer extends JFrame {
 	public JavaObjServer() throws Exception {
 		
         // Open a connection
-        try {
+        /*try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
 			Statement stmt = connection.createStatement(); // Statement 생성 후 실행할 쿼리정보 등록
@@ -98,7 +98,7 @@ public class JavaObjServer extends JFrame {
 		} catch(SQLException error) {
             System.out.println(error);
             System.out.println("DB 접속 오류");
-        }
+        }*/
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 338, 440);

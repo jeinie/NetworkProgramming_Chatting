@@ -15,6 +15,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -114,7 +116,7 @@ public class JavaObjClientView extends JFrame {
 		imgBtn.setBounds(12, 489, 50, 40);
 		contentPane.add(imgBtn);
 		
-		JButton btnNewButton = new JButton("종 료");
+		JButton btnNewButton = new JButton("종료");
 		btnNewButton.setFont(new Font("굴림", Font.PLAIN, 14));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -125,7 +127,8 @@ public class JavaObjClientView extends JFrame {
 		});
 		btnNewButton.setBounds(295, 539, 69, 40);
 		contentPane.add(btnNewButton);
-
+		
+	
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
 //			is = socket.getInputStream();
@@ -163,27 +166,17 @@ public class JavaObjClientView extends JFrame {
 		public void run() {
 			while (true) {
 				try {
-					// String msg = dis.readUTF();
-//					byte[] b = new byte[BUF_LEN];
-//					int ret;
-//					ret = dis.read(b);
-//					if (ret < 0) {
-//						AppendText("dis.read() < 0 error");
-//						try {
-//							dos.close();
-//							dis.close();
-//							socket.close();
-//							break;
-//						} catch (Exception ee) {
-//							break;
-//						}// catch문 끝
-//					}
-//					String	msg = new String(b, "euc-kr");
-//					msg = msg.trim(); // 앞뒤 blank NULL, \n 모두 제거
-
+					
 					Object obcm = null;
 					String msg = null;
 					ChatMsg cm;
+					
+					//시간출력
+					SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+					Date time = new Date();
+					String time1 = format.format(time);
+					
+					
 					try {
 						obcm = ois.readObject();
 					} catch (ClassNotFoundException e) {
@@ -198,10 +191,13 @@ public class JavaObjClientView extends JFrame {
 						msg = String.format("[%s] %s", cm.getId(), cm.getData());
 					} else
 						continue;
+					
+					//msg = msg + "\n" + time1 + "\n";
+					
 					switch (cm.getCode()) {
 					case "200": // chat message
 						if(UserName.equals(cm.getId())) //본인 메세지 오른쪽
-						AppendMyText(msg);
+							AppendMyText(time1 + msg);
 						else if("SERVER".equals(cm.getId()))
 							AppendServerText(msg);
 						else
@@ -285,7 +281,7 @@ public class JavaObjClientView extends JFrame {
 		int len = textArea.getDocument().getLength();
 		// 끝으로 이동
 		textArea.setCaretPosition(len);
-
+		
 		//화면 왼쪽에 출력
 		StyledDocument doc = textArea.getStyledDocument();
 		SimpleAttributeSet attributeSet = new SimpleAttributeSet();
@@ -294,7 +290,7 @@ public class JavaObjClientView extends JFrame {
 		
 		textArea.replaceSelection(msg + "\n");
 	}
-
+	
 	//본인 메세지 오른쪽에 출력
 	public void AppendMyText(String msg) {
 		msg = msg.trim();

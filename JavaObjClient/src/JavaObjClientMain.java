@@ -97,9 +97,11 @@ public class JavaObjClientMain extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String username = txtUserName.getText().trim();
-			String ip_addr = txtIpAddress.getText().trim();
-			String port_no = txtPortNumber.getText().trim();
-			JavaObjClientView view = new JavaObjClientView(username, ip_addr, port_no);
+			//String ip_addr = txtIpAddress.getText().trim();
+			//String port_no = txtPortNumber.getText().trim();
+			//JavaObjClientView view = new JavaObjClientView(username, ip_addr, port_no);
+			FriendList list = new FriendList(username, "127.0.0.1", "30000");
+			list.setVisible(true);
 			setVisible(false);
 		}
 	}

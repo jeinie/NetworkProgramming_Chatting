@@ -45,6 +45,7 @@ public class JavaObjServer extends JFrame {
 	private ServerSocket socket; // 서버소켓
 	private Socket client_socket; // accept() 에서 생성된 client 소켓
 	private Vector UserVec = new Vector(); // 연결된 사용자를 저장할 벡터
+	private Vector dataVec = new Vector(); // 데이터베이스에서 사용자 10명 가져와서 다음 벡터
 	private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
 
 	// MySQL
@@ -81,11 +82,19 @@ public class JavaObjServer extends JFrame {
 			Statement stmt = connection.createStatement(); // Statement 생성 후 실행할 쿼리정보 등록
             ResultSet rs = stmt.executeQuery(QUERY); // 결과를 담을 ResultSet 생성 후 결과 담기
             // Extract data from result set
+			int i = 0;
             while (rs.next()) {
                 // Retrieve by column name
                 System.out.println("name: " + rs.getString(1));
+				// 결과를 Vector 에 추가
+				dataVec.add(rs.getString(1));
+				System.out.println(dataVec.get(i));
+				i++;
             }
             System.out.println("mysql db 연결 성공");
+
+			// 클라이언트에 사용자 10명 데이터 보내기
+
 		} catch(SQLException error) {
             System.out.println(error);
             System.out.println("DB 접속 오류");

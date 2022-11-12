@@ -100,9 +100,15 @@ public class JavaObjClientMain extends JFrame {
 			//String ip_addr = txtIpAddress.getText().trim();
 			//String port_no = txtPortNumber.getText().trim();
 			//JavaObjClientView view = new JavaObjClientView(username, ip_addr, port_no);
-			FriendList list = new FriendList(username, "127.0.0.1", "30000");
-			list.setVisible(true);
-			setVisible(false);
+			FriendList list;
+			try {
+				list = new FriendList(username, "127.0.0.1", "30000");
+				list.setVisible(true);
+				setVisible(false);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 }

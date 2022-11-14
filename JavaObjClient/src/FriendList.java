@@ -36,14 +36,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class FriendList extends JFrame {
-	
-	ArrayList<String> userNameList = new ArrayList<String>();
-	Map<String, ProfilePanel> userProfilePanel = new HashMap<String, ProfilePanel>();
-	
-	
-	//private JTextField txtIpAddress;
-	//private JTextField txtPortNumber;
-	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel contentPane1;
@@ -56,41 +48,29 @@ public class FriendList extends JFrame {
 	private OutputStream os;
 	private DataInputStream dis;
 	private DataOutputStream dos;
-
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
-
 	private JLabel lblUserName;
-	// private JTextArea textArea;
-	private JTextPane textArea;
 
-	private Frame frame;
-	private FileDialog fd;
-	private JButton imgBtn;
-
-	private JPanel userListPanel;
-	private JLabel userListLabel;
-	
-	public JPanel userPrfPanel; // 내 프로필 이미지 패널
-	public JLabel userPrfLabel; // 내 프로필 이미지 라벨
-
-	private JScrollPane scrollPane; // Scroll Pane
-	
-	JPanel chatPanel; //채팅 패널
-
-	private Vector<String> userVec = new Vector<String>(); // 데이터베이스에서 사용자 10명 가져온다.
-	private Vector<String> imgVec = new Vector<>(); // 데이터베이스에서 사용자 10명의 프로필 사진을 가져온다. 
+	private JPanel tabPanel = new JPanel(); // 왼쪽 탭바
+	private JPanel contentPanel = new JPanel(); // 친구목록, 채팅목록 띄우는 창
+	private JPanel chatPanel; //채팅 패널
+	private JScrollPane scrollPane = new JScrollPane(); // 스크롤 패널
 
 	// MySQL
 	static final String DB_URL = "jdbc:mysql://localhost:3306/network_db";
     static final String USER = "root";
     static final String PASSWORD = "1234";
-    static final String QUERY = "SELECT * FROM users"; // 실행할 쿼리    
+    static final String QUERY = "SELECT * FROM users"; // 실행할 쿼리  
 
-	//create the frame
+	private Vector<String> userVec = new Vector<String>(); // 데이터베이스에서 사용자 10명 가져온다.
+	private Vector<String> imgVec = new Vector<>(); // 데이터베이스에서 사용자 10명의 프로필 사진을 가져온다.
+	
+	public JPanel userPrfPanel; // 내 프로필 이미지 패널
+	public JLabel userPrfLabel; // 내 프로필 이미지 라벨
+
+	// create the frame
 	public FriendList(String username, String ip_addr, String port_no) throws Exception {
-		FriendList friendList = this;
-
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -108,124 +88,111 @@ public class FriendList extends JFrame {
 				System.out.println(imgVec.get(i));
 				i++;
 			}
-            
-       
-				this.UserName = username;
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				setLocationRelativeTo(null);
-				setSize(400, 650);
-				setBounds(100, 100, 386, 512);
-				contentPane = new JPanel();
-				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-				setContentPane(contentPane);
-				contentPane.setLayout(null);
 
-				// 친구목록 창
-				contentPane1 = new JPanel();
-				contentPane1.setBackground(Color.WHITE);
-				contentPane1.setLayout(null);
-				contentPane1.setBorder(new EmptyBorder(5, 5, 5, 5));
-				contentPane1.setBounds(61, 0, 311, 485);
-				contentPane.add(contentPane1);
+			this.UserName = username;
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			setLocationRelativeTo(null);
+			setSize(400, 650);
+			setBounds(100, 100, 386, 512);
+			contentPane = new JPanel();
+			setContentPane(contentPane);
+			contentPane.setLayout(null);
+			tabPanel.setLayout(null);
+			contentPanel.setBackground(Color.lightGray);
 
-				ImageIcon menu1 = new ImageIcon("src/Menu1.png"); //메뉴 1 - 친구목록 창
-				JButton menu1Btn = new JButton(menu1);
-				menu1Btn.setBounds(0, 25, 60, 55);
-				menu1Btn.setBorderPainted(false);
-				menu1Btn.setToolTipText("친구");
-				menu1Btn.setHorizontalTextPosition(JButton.CENTER);
-				contentPane.add(menu1Btn);
-				
-				class FriendAction extends MouseAdapter { //사람 메뉴 누르면 친구목록 창으로 
-					public void mouseClicked(MouseEvent e) {
-						chatPanel.setVisible(false);
-						contentPane1.setVisible(true); // 친구목록
-					}
+			// 왼쪽 탭바
+			tabPanel.setBounds(0, 0, 60, 485);
+			contentPane.add(tabPanel);
+
+			// 친구목록 창
+			contentPanel.setBackground(Color.WHITE);
+			contentPanel.setLayout(null);
+			//contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+			contentPanel.setBounds(80, 0, 300, 485);
+			contentPane.add(contentPanel);
+
+			//채팅 창
+			chatPanel = new JPanel();
+			chatPanel.setBackground(Color.WHITE);
+			chatPanel.setLayout(null);
+			//chatPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+			chatPanel.setBounds(61, 0, 311, 485);
+			
+			//scrollPane = new JScrollPane(chatPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			/*scrollPane = new JScrollPane();
+			scrollPane.setBounds(12, 10, 300, 471);
+			contentPanel.add(scrollPane);*/
+
+			//메뉴 1 - 친구목록 창
+			ImageIcon menu1 = new ImageIcon("src/Menu1.png");
+			JButton menu1Btn = new JButton(menu1);
+			menu1Btn.setBounds(10, 25, 55, 55);
+			menu1Btn.setBorderPainted(false);
+			menu1Btn.setToolTipText("친구");
+			menu1Btn.setHorizontalTextPosition(JButton.CENTER);
+			tabPanel.add(menu1Btn);
+
+			//사람 메뉴 누르면 친구목록 창으로 
+			class FriendAction extends MouseAdapter {
+				public void mouseClicked(MouseEvent e) {
+					chatPanel.setVisible(false);
+					contentPanel.setVisible(true); // 친구목록
 				}
-				
-				FriendAction friendAction = new FriendAction();
-				menu1Btn.addMouseListener(friendAction);
-				
-				ImageIcon menu2 = new ImageIcon("src/Menu2.png"); //메뉴 2 - 채팅목록 창
-				JButton menu2Btn = new JButton(menu2);
-				menu2Btn.setBounds(0, 80, 60, 55);
-				menu2Btn.setBorderPainted(false);
-				menu2Btn.setToolTipText("채팅");
-				menu2Btn.setHorizontalTextPosition(JButton.CENTER);
-				contentPane.add(menu2Btn);
-				
-				class ChatAction extends MouseAdapter { //채팅 메뉴 누르면 채팅목록 창으로 
-					public void mouseClicked(MouseEvent e) {
-						contentPane1.setVisible(false);
-						chatPanel.setVisible(true); // 채팅목록
-					}
+			}
+			FriendAction friendAction = new FriendAction();
+			menu1Btn.addMouseListener(friendAction);
+
+			//메뉴 2 - 채팅목록 창
+			ImageIcon menu2 = new ImageIcon("src/Menu2.png");
+			JButton menu2Btn = new JButton(menu2);
+			menu2Btn.setBounds(10, 90, 55, 55);
+			menu2Btn.setBorderPainted(false);
+			menu2Btn.setToolTipText("채팅");
+			menu2Btn.setHorizontalTextPosition(JButton.CENTER);
+			tabPanel.add(menu2Btn);
+
+			//채팅 메뉴 누르면 채팅목록 창으로
+			class ChatAction extends MouseAdapter { 
+				public void mouseClicked(MouseEvent e) {
+					contentPanel.setVisible(false);
+					chatPanel.setVisible(true); // 채팅목록
 				}
-				
-				ChatAction chatAction = new ChatAction();
-				menu2Btn.addMouseListener(chatAction);
-				
-				JLabel FriendLabel = new JLabel("친구"); 
-				FriendLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-				FriendLabel.setBounds(23, 23, 76, 34);
-				contentPane1.add(FriendLabel);
-				int userIndex = 0;
-				while (userIndex < userVec.size()) {
-					JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
-					System.out.println(userVec.get(userIndex).toString());
-					userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-					userNameLabel.setBounds(77, 76 + userIndex*60, 68, 15);
-					contentPane1.add(userNameLabel);
+			}
+			ChatAction chatAction = new ChatAction();
+			menu2Btn.addMouseListener(chatAction);
 
-					userPrfPanel = new JPanel(); // 프로필 사진 패널
-					userPrfPanel.setBackground(Color.WHITE);
-					userPrfPanel.setBounds(25, userIndex*50+60, 35, 35);
-					contentPane1.add(userPrfPanel);
+			int userIndex = 0;
+			while (userIndex < userVec.size()) {
+				JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
+				System.out.println(userVec.get(userIndex).toString());
+				userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+				userNameLabel.setBounds(77, 76 + userIndex*60, 68, 15);
+				contentPanel.add(userNameLabel);
 
-					String imgUrl = imgVec.get(userIndex).toString();
-					System.out.println(imgUrl);
+				userPrfPanel = new JPanel(); // 프로필 사진 패널
+				userPrfPanel.setBackground(Color.WHITE);
+				userPrfPanel.setBounds(25, userIndex*50+60, 35, 35);
+				contentPanel.add(userPrfPanel);
 
-					// 친구목록 프로필 이미지
-					ImageIcon icon = new ImageIcon(imgUrl);
-					Image img = icon.getImage();
-					Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
-					ImageIcon changeIcon = new ImageIcon(changeImg);
-					userPrfLabel = new JLabel(changeIcon);
-					userPrfPanel.add(userPrfLabel);
-					userIndex++;
-				}
+				String imgUrl = imgVec.get(userIndex).toString();
+				System.out.println(imgUrl);
 
-				JScrollPane scrollPane = new JScrollPane();
-				scrollPane.setBounds(12, 10, 352, 471);
-				contentPane.add(scrollPane);
+				// 친구목록 프로필 이미지
+				ImageIcon icon = new ImageIcon(imgUrl);
+				Image img = icon.getImage();
+				Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
+				ImageIcon changeIcon = new ImageIcon(changeImg);
+				userPrfLabel = new JLabel(changeIcon);
+				userPrfPanel.add(userPrfLabel);
+				userIndex++;
+			}
 
-				/*JLabel friendNameLabel = new JLabel("");
-				friendNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-				friendNameLabel.setBounds(77, 134, 68, 15);
-				contentPane1.add(friendNameLabel);*/
-				
-				//chatPanel
-				chatPanel = new JPanel();
-				chatPanel.setBackground(Color.WHITE);
-				chatPanel.setLayout(null);
-				chatPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-				chatPanel.setBounds(61, 0, 311, 485);
-				contentPane.add(chatPanel);
-				
-				JLabel ChatLabel = new JLabel("채팅"); 
-				ChatLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-				ChatLabel.setBounds(23, 23, 76, 34);
-				chatPanel.add(ChatLabel);
-				
-            System.out.println("mysql db 연결 성공");
+
+			System.out.println("mysql db 연결 성공");
 
 		} catch(SQLException error) {
-            System.out.println(error);
+			System.out.println(error);
             System.out.println("DB 접속 오류");
-        }
-		
-	}
-	
-	public class ProfilePanel extends JPanel { //프로필 사진
-		//
+		}
 	}
 }

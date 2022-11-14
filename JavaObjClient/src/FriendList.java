@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
@@ -49,8 +50,8 @@ public class FriendList extends JFrame {
 	private JTextField txtInput;
 	private String UserName;
 	private JButton btnSend;
-	private static final int BUF_LEN = 128; // Windows Ã³·³ BUF_LEN À» Á¤ÀÇ
-	private Socket socket; // ¿¬°á¼ÒÄÏ
+	private static final int BUF_LEN = 128; // Windows ì²˜ëŸ¼ BUF_LEN ì„ ì •ì˜
+	private Socket socket; // ì—°ê²°ì†Œì¼“
 	private InputStream is;
 	private OutputStream os;
 	private DataInputStream dis;
@@ -70,36 +71,41 @@ public class FriendList extends JFrame {
 	private JPanel userListPanel;
 	private JLabel userListLabel;
 	
-	public JPanel userPrfPanel; // ³» ÇÁ·ÎÇÊ ÀÌ¹ÌÁö ÆĞ³Î
-	public JLabel userPrfLabel; // ³» ÇÁ·ÎÇÊ ÀÌ¹ÌÁö ¶óº§
-	
-	JPanel chatPanel; //Ã¤ÆÃ ÆĞ³Î
+	public JPanel userPrfPanel; // ë‚´ í”„ë¡œí•„ ì´ë¯¸ì§€ íŒ¨ë„
+	public JLabel userPrfLabel; // ë‚´ í”„ë¡œí•„ ì´ë¯¸ì§€ ë¼ë²¨
 
-	private Vector<String> dataVec = new Vector<String>(); // µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ »ç¿ëÀÚ 10¸í °¡Á®¿Í¼­ ´ÙÀ½ º¤ÅÍ
+	private JScrollPane scrollPane; // Scroll Pane
+	
+	JPanel chatPanel; //ì±„íŒ… íŒ¨ë„
+
+	private Vector<String> userVec = new Vector<String>(); // ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ì‚¬ìš©ì 10ëª… ê°€ì ¸ì˜¨ë‹¤.
+	private Vector<String> imgVec = new Vector<>(); // ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ì‚¬ìš©ì 10ëª…ì˜ í”„ë¡œí•„ ì‚¬ì§„ì„ ê°€ì ¸ì˜¨ë‹¤. 
 
 	// MySQL
 	static final String DB_URL = "jdbc:mysql://localhost:3306/network_db";
     static final String USER = "root";
     static final String PASSWORD = "1234";
-    static final String QUERY = "SELECT * FROM users"; // ½ÇÇàÇÒ Äõ¸®    
+    static final String QUERY = "SELECT * FROM users"; // ì‹¤í–‰í•  ì¿¼ë¦¬    
 
 	//create the frame
 	public FriendList(String username, String ip_addr, String port_no) throws Exception {
 		FriendList friendList = this;
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-			Statement stmt = connection.createStatement(); // Statement »ı¼º ÈÄ ½ÇÇàÇÒ Äõ¸®Á¤º¸ µî·Ï
-            ResultSet rs = stmt.executeQuery(QUERY); // °á°ú¸¦ ´ãÀ» ResultSet »ı¼º ÈÄ °á°ú ´ã±â
+			Statement stmt = connection.createStatement(); // Statement ìƒì„± í›„ ì‹¤í–‰í•  ì¿¼ë¦¬ì •ë³´ ë“±ë¡
+            ResultSet rs = stmt.executeQuery(QUERY); // ê²°ê³¼ë¥¼ ë‹´ì„ ResultSet ìƒì„± í›„ ê²°ê³¼ ë‹´ê¸°
             // Extract data from result set
 			int i = 0;
             while (rs.next()) {
                 // Retrieve by column name
                 System.out.println("name: " + rs.getString(1));
-				// °á°ú¸¦ Vector ¿¡ Ãß°¡
-				dataVec.add(rs.getString(1));
-				System.out.println(dataVec.get(i));
+				// ê²°ê³¼ë¥¼ Vector ì— ì¶”ê°€
+				userVec.add(rs.getString(1));
+				imgVec.add(rs.getString(2));
+				System.out.println(userVec.get(i));
+				System.out.println(imgVec.get(i));
 				i++;
 			}
             
@@ -114,6 +120,7 @@ public class FriendList extends JFrame {
 				setContentPane(contentPane);
 				contentPane.setLayout(null);
 
+				// ì¹œêµ¬ëª©ë¡ ì°½
 				contentPane1 = new JPanel();
 				contentPane1.setBackground(Color.WHITE);
 				contentPane1.setLayout(null);
@@ -121,78 +128,80 @@ public class FriendList extends JFrame {
 				contentPane1.setBounds(61, 0, 311, 485);
 				contentPane.add(contentPane1);
 
-				ImageIcon Menu1 = new ImageIcon("src/Menu1.png"); //¸Ş´º 1 - Ä£±¸¸ñ·Ï Ã¢
-				JButton Menu1Btn = new JButton(Menu1);
-				Menu1Btn.setBounds(0, 25, 60, 55);
-				Menu1Btn.setBorderPainted(false);
-				Menu1Btn.setToolTipText("Ä£±¸");
-				Menu1Btn.setHorizontalTextPosition(JButton.CENTER);
-				contentPane.add(Menu1Btn);
+				ImageIcon menu1 = new ImageIcon("src/Menu1.png"); //ë©”ë‰´ 1 - ì¹œêµ¬ëª©ë¡ ì°½
+				JButton menu1Btn = new JButton(menu1);
+				menu1Btn.setBounds(0, 25, 60, 55);
+				menu1Btn.setBorderPainted(false);
+				menu1Btn.setToolTipText("ì¹œêµ¬");
+				menu1Btn.setHorizontalTextPosition(JButton.CENTER);
+				contentPane.add(menu1Btn);
 				
-				class FriendAction extends MouseAdapter { //»ç¶÷ ¸Ş´º ´©¸£¸é Ä£±¸¸ñ·Ï Ã¢À¸·Î 
+				class FriendAction extends MouseAdapter { //ì‚¬ëŒ ë©”ë‰´ ëˆ„ë¥´ë©´ ì¹œêµ¬ëª©ë¡ ì°½ìœ¼ë¡œ 
 					public void mouseClicked(MouseEvent e) {
 						chatPanel.setVisible(false);
-						contentPane1.setVisible(true);
+						contentPane1.setVisible(true); // ì¹œêµ¬ëª©ë¡
 					}
 				}
 				
 				FriendAction friendAction = new FriendAction();
-				Menu1Btn.addMouseListener(friendAction);
+				menu1Btn.addMouseListener(friendAction);
 				
-				ImageIcon Menu2 = new ImageIcon("src/Menu2.png"); //¸Ş´º 2 - Ã¤ÆÃ¸ñ·Ï Ã¢
-				JButton Menu2Btn = new JButton(Menu2);
-				Menu2Btn.setBounds(0, 80, 60, 55);
-				Menu2Btn.setBorderPainted(false);
-				Menu2Btn.setToolTipText("Ã¤ÆÃ");
-				Menu2Btn.setHorizontalTextPosition(JButton.CENTER);
-				contentPane.add(Menu2Btn);
+				ImageIcon menu2 = new ImageIcon("src/Menu2.png"); //ë©”ë‰´ 2 - ì±„íŒ…ëª©ë¡ ì°½
+				JButton menu2Btn = new JButton(menu2);
+				menu2Btn.setBounds(0, 80, 60, 55);
+				menu2Btn.setBorderPainted(false);
+				menu2Btn.setToolTipText("ì±„íŒ…");
+				menu2Btn.setHorizontalTextPosition(JButton.CENTER);
+				contentPane.add(menu2Btn);
 				
-				class ChatAction extends MouseAdapter { //Ã¤ÆÃ ¸Ş´º ´©¸£¸é Ã¤ÆÃ¸ñ·Ï Ã¢À¸·Î 
+				class ChatAction extends MouseAdapter { //ì±„íŒ… ë©”ë‰´ ëˆ„ë¥´ë©´ ì±„íŒ…ëª©ë¡ ì°½ìœ¼ë¡œ 
 					public void mouseClicked(MouseEvent e) {
 						contentPane1.setVisible(false);
-						chatPanel.setVisible(true);
+						chatPanel.setVisible(true); // ì±„íŒ…ëª©ë¡
 					}
 				}
 				
 				ChatAction chatAction = new ChatAction();
-				Menu2Btn.addMouseListener(chatAction);
+				menu2Btn.addMouseListener(chatAction);
 				
-				JLabel FriendLabel = new JLabel("Ä£±¸"); 
-				FriendLabel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 18));
+				JLabel FriendLabel = new JLabel("ì¹œêµ¬"); 
+				FriendLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 18));
 				FriendLabel.setBounds(23, 23, 76, 34);
 				contentPane1.add(FriendLabel);
-				int index = 0;
-				while (index < dataVec.size()) {
-					JLabel userNameLabel = new JLabel(dataVec.get(index).toString());
-					System.out.println(dataVec.get(index).toString());
-					userNameLabel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 15));
-					userNameLabel.setBounds(77, 76 + index*50, 68, 15);
+				int userIndex = 0;
+				while (userIndex < userVec.size()) {
+					JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
+					System.out.println(userVec.get(userIndex).toString());
+					userNameLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 15));
+					userNameLabel.setBounds(77, 76 + userIndex*60, 68, 15);
 					contentPane1.add(userNameLabel);
-					index++;
+
+					userPrfPanel = new JPanel(); // í”„ë¡œí•„ ì‚¬ì§„ íŒ¨ë„
+					userPrfPanel.setBackground(Color.WHITE);
+					userPrfPanel.setBounds(25, userIndex*50+60, 35, 35);
+					contentPane1.add(userPrfPanel);
+
+					String imgUrl = imgVec.get(userIndex).toString();
+					System.out.println(imgUrl);
+
+					// ì¹œêµ¬ëª©ë¡ í”„ë¡œí•„ ì´ë¯¸ì§€
+					ImageIcon icon = new ImageIcon(imgUrl);
+					Image img = icon.getImage();
+					Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
+					ImageIcon changeIcon = new ImageIcon(changeImg);
+					userPrfLabel = new JLabel(changeIcon);
+					userPrfPanel.add(userPrfLabel);
+					userIndex++;
 				}
 
-				userPrfPanel = new JPanel(); // ³» ÇÁ·ÎÇÊ »çÁø ÆĞ³Î
-				userPrfPanel.setBackground(Color.WHITE);
-				userPrfPanel.setBounds(25, 65, 40, 40);
-				contentPane1.add(userPrfPanel);
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(12, 10, 352, 471);
+				contentPane.add(scrollPane);
 
-				ImageIcon icon = new ImageIcon("src/icon1.jpg"); //±âº» ÇÁ·ÎÇÊ ÀÌ¹ÌÁö
-
-				Image img = icon.getImage();
-				Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
-				ImageIcon changeIcon = new ImageIcon(changeImg);
-				userPrfLabel = new JLabel(changeIcon);
-
-				userPrfPanel.add(userPrfLabel);
-				
-				ImageIcon friendIcon = new ImageIcon("src/icon1.jpg");
-				JLabel friendIconlabel = new JLabel(friendIcon);
-
-
-				JLabel friendNameLabel = new JLabel("");
-				friendNameLabel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 15));
+				/*JLabel friendNameLabel = new JLabel("");
+				friendNameLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 15));
 				friendNameLabel.setBounds(77, 134, 68, 15);
-				contentPane1.add(friendNameLabel);
+				contentPane1.add(friendNameLabel);*/
 				
 				//chatPanel
 				chatPanel = new JPanel();
@@ -202,24 +211,21 @@ public class FriendList extends JFrame {
 				chatPanel.setBounds(61, 0, 311, 485);
 				contentPane.add(chatPanel);
 				
-				JLabel ChatLabel = new JLabel("Ã¤ÆÃ"); 
-				ChatLabel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 18));
+				JLabel ChatLabel = new JLabel("ì±„íŒ…"); 
+				ChatLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 18));
 				ChatLabel.setBounds(23, 23, 76, 34);
 				chatPanel.add(ChatLabel);
 				
-            System.out.println("mysql db ¿¬°á ¼º°ø");
-            
-
-			// Å¬¶óÀÌ¾ğÆ®¿¡ »ç¿ëÀÚ 10¸í µ¥ÀÌÅÍ º¸³»±â
+            System.out.println("mysql db ì—°ê²° ì„±ê³µ");
 
 		} catch(SQLException error) {
             System.out.println(error);
-            System.out.println("DB Á¢¼Ó ¿À·ù");
+            System.out.println("DB ì ‘ì† ì˜¤ë¥˜");
         }
 		
 	}
 	
-	public class ProfilePanel extends JPanel { //ÇÁ·ÎÇÊ »çÁø
+	public class ProfilePanel extends JPanel { //í”„ë¡œí•„ ì‚¬ì§„
 		//
 	}
 }

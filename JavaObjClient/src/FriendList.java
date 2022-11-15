@@ -3,6 +3,7 @@ import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Scrollbar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.DataInputStream;
@@ -23,8 +24,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.mysql.cj.protocol.Resultset;
@@ -38,7 +42,6 @@ import java.sql.SQLException;
 public class FriendList extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JPanel contentPane1;
 	private JTextField txtInput;
 	private String UserName;
 	private JButton btnSend;
@@ -55,7 +58,8 @@ public class FriendList extends JFrame {
 	private JPanel tabPanel = new JPanel(); // 왼쪽 탭바
 	private JPanel contentPanel = new JPanel(); // 친구목록, 채팅목록 띄우는 창
 	private JPanel chatPanel; //채팅 패널
-	private JScrollPane scrollPane = new JScrollPane(); // 스크롤 패널
+	private Scrollbar scroll; // 스크롤바
+	private JScrollPane scrollPane;
 
 	// MySQL
 	static final String DB_URL = "jdbc:mysql://localhost:3306/network_db";
@@ -98,7 +102,17 @@ public class FriendList extends JFrame {
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
 			tabPanel.setLayout(null);
-			contentPanel.setBackground(Color.lightGray);
+			//contentPanel.setBackground(Color.lightGray);
+
+			//JScrollPane scrollPane = new JScrollPane(contentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			//scrollPane.setBounds(80, 0, 300, 485);
+			//scrollPane.setBackground(Color.BLACK);
+			//add(scrollPane);
+
+			// 스크롤바
+			/*scroll = new Scrollbar(Scrollbar.HORIZONTAL, 0, 10, 0, 25);
+			scroll.setBounds(500, 400, 30, 200);
+			contentPanel.add(scroll);*/
 
 			// 왼쪽 탭바
 			tabPanel.setBounds(0, 0, 60, 485);
@@ -118,11 +132,6 @@ public class FriendList extends JFrame {
 			//chatPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 			chatPanel.setBounds(61, 0, 311, 485);
 			
-			//scrollPane = new JScrollPane(chatPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			/*scrollPane = new JScrollPane();
-			scrollPane.setBounds(12, 10, 300, 471);
-			contentPanel.add(scrollPane);*/
-
 			//메뉴 1 - 친구목록 창
 			ImageIcon menu1 = new ImageIcon("src/Menu1.png");
 			JButton menu1Btn = new JButton(menu1);
@@ -162,11 +171,18 @@ public class FriendList extends JFrame {
 			menu2Btn.addMouseListener(chatAction);
 
 			int userIndex = 0;
+			JTextArea textArea = new JTextArea();
+			JScrollPane scroll = new JScrollPane(textArea);
+			scroll.setBounds(80, 0, 300, 485);
+			//this.add(scroll);
 			while (userIndex < userVec.size()) {
 				JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
 				System.out.println(userVec.get(userIndex).toString());
 				userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-				userNameLabel.setBounds(77, 76 + userIndex*60, 68, 15);
+				userNameLabel.setBounds(77, 76 + userIndex*50, 68, 15);
+				userNameLabel.setOpaque(true);
+				userNameLabel.setBackground(Color.WHITE);
+				//textArea.add(userNameLabel);
 				contentPanel.add(userNameLabel);
 
 				userPrfPanel = new JPanel(); // 프로필 사진 패널

@@ -139,7 +139,7 @@ public class FriendList extends JFrame {
 			chatPanel.setBackground(Color.WHITE);
 			chatPanel.setLayout(null);
 			//chatPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-			chatPanel.setBounds(61, 0, 311, 485);
+			chatPanel.setBounds(80, 0, 300, 485);
 			contentPane.add(chatPanel);
 			
 			//메뉴 1 - 친구목록 창

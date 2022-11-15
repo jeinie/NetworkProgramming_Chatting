@@ -131,6 +131,7 @@ public class FriendList extends JFrame {
 			chatPanel.setLayout(null);
 			//chatPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 			chatPanel.setBounds(61, 0, 311, 485);
+			contentPane.add(chatPanel);
 			
 			//메뉴 1 - 친구목록 창
 			ImageIcon menu1 = new ImageIcon("src/Menu1.png");

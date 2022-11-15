@@ -69,9 +69,14 @@ public class FriendList extends JFrame {
 
 	private Vector<String> userVec = new Vector<String>(); // 데이터베이스에서 사용자 10명 가져온다.
 	private Vector<String> imgVec = new Vector<>(); // 데이터베이스에서 사용자 10명의 프로필 사진을 가져온다.
+	private Vector<String> msgVec = new Vector<String>();
 	
 	public JPanel userPrfPanel; // 내 프로필 이미지 패널
 	public JLabel userPrfLabel; // 내 프로필 이미지 라벨
+	
+	public JPanel userMsgPanel; // 상태메세지 패널
+	public JLabel userMsgLabel; // 상태메세지 라벨
+	
 
 	// create the frame
 	public FriendList(String username, String ip_addr, String port_no) throws Exception {
@@ -84,12 +89,14 @@ public class FriendList extends JFrame {
 			int i = 0;
             while (rs.next()) {
                 // Retrieve by column name
-                System.out.println("name: " + rs.getString(1));
+               //System.out.println("name: " + rs.getString(1));
 				// 결과를 Vector 에 추가
 				userVec.add(rs.getString(1));
 				imgVec.add(rs.getString(2));
+				msgVec.add(rs.getString(3));
 				System.out.println(userVec.get(i));
 				System.out.println(imgVec.get(i));
+				System.out.println(msgVec.get(i));
 				i++;
 			}
 
@@ -102,6 +109,7 @@ public class FriendList extends JFrame {
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
 			tabPanel.setLayout(null);
+			setTitle("상상톡");
 			//contentPanel.setBackground(Color.lightGray);
 
 			//JScrollPane scrollPane = new JScrollPane(contentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -124,7 +132,8 @@ public class FriendList extends JFrame {
 			//contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 			contentPanel.setBounds(80, 0, 300, 485);
 			contentPane.add(contentPanel);
-
+			
+			
 			//채팅 창
 			chatPanel = new JPanel();
 			chatPanel.setBackground(Color.WHITE);
@@ -142,6 +151,11 @@ public class FriendList extends JFrame {
 			menu1Btn.setHorizontalTextPosition(JButton.CENTER);
 			tabPanel.add(menu1Btn);
 
+			JLabel FriendLabel = new JLabel("친구"); 
+			FriendLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+			FriendLabel.setBounds(5, 23, 76, 34);
+			contentPanel.add(FriendLabel);
+			
 			//사람 메뉴 누르면 친구목록 창으로 
 			class FriendAction extends MouseAdapter {
 				public void mouseClicked(MouseEvent e) {
@@ -160,7 +174,7 @@ public class FriendList extends JFrame {
 			menu2Btn.setToolTipText("채팅");
 			menu2Btn.setHorizontalTextPosition(JButton.CENTER);
 			tabPanel.add(menu2Btn);
-
+		
 			//채팅 메뉴 누르면 채팅목록 창으로
 			class ChatAction extends MouseAdapter { 
 				public void mouseClicked(MouseEvent e) {
@@ -180,7 +194,7 @@ public class FriendList extends JFrame {
 				JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
 				System.out.println(userVec.get(userIndex).toString());
 				userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-				userNameLabel.setBounds(77, 76 + userIndex*50, 68, 15);
+				userNameLabel.setBounds(55, userIndex*50 + 75, 68, 15);
 				userNameLabel.setOpaque(true);
 				userNameLabel.setBackground(Color.WHITE);
 				//textArea.add(userNameLabel);
@@ -188,7 +202,7 @@ public class FriendList extends JFrame {
 
 				userPrfPanel = new JPanel(); // 프로필 사진 패널
 				userPrfPanel.setBackground(Color.WHITE);
-				userPrfPanel.setBounds(25, userIndex*50+60, 35, 35);
+				userPrfPanel.setBounds(5, userIndex*50+60, 35, 35);
 				contentPanel.add(userPrfPanel);
 
 				String imgUrl = imgVec.get(userIndex).toString();
@@ -201,10 +215,23 @@ public class FriendList extends JFrame {
 				ImageIcon changeIcon = new ImageIcon(changeImg);
 				userPrfLabel = new JLabel(changeIcon);
 				userPrfPanel.add(userPrfLabel);
+				
+				//상태메세지
+				userMsgLabel = new JLabel(msgVec.get(userIndex).toString());
+				System.out.println(msgVec.get(userIndex).toString());
+				userMsgLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 11));
+								
+				userMsgPanel = new JPanel();
+				userMsgPanel.setBackground(Color.WHITE);
+				userMsgPanel.setBounds(120, userIndex*50+71, 30, 30);
+				contentPanel.add(userMsgPanel);
+				userMsgPanel.add(userMsgLabel);
+				
 				userIndex++;
+				
 			}
-
-
+			
+	
 			System.out.println("mysql db 연결 성공");
 
 		} catch(SQLException error) {

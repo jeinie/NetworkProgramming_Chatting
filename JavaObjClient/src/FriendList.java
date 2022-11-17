@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.Frame;
@@ -133,27 +134,29 @@ public class FriendList extends JFrame {
 			ChatMsg obcm = new ChatMsg(UserName, "100", "Hello");
 			SendObject(obcm);
 
-			//JScrollPane scrollPane = new JScrollPane(contentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			//scrollPane.setBounds(80, 0, 300, 485);
-			//scrollPane.setBackground(Color.BLACK);
-			//add(scrollPane);
+			JPanel contentPane_1 = new JPanel();
+			contentPane_1.setBackground(Color.WHITE);
+			contentPane_1.setLayout(null);
+			contentPane_1.setBorder(new EmptyBorder(5, 5, 5, 5));
+			contentPane_1.setBounds(80, 0, 300, 485);
+			contentPane.add(contentPane_1);
 
-			// 스크롤바
-			/*scroll = new Scrollbar(Scrollbar.HORIZONTAL, 0, 10, 0, 25);
-			scroll.setBounds(500, 400, 30, 200);
-			contentPanel.add(scroll);*/
+			// 친구목록 창
+			JPanel userListPanel = new JPanel();
+			userListPanel.setBackground(Color.WHITE);
+			userListPanel.setPreferredSize(new Dimension(287, 1000));
+			userListPanel.setLayout(null);
 
 			// 왼쪽 탭바
 			tabPanel.setBounds(0, 0, 60, 485);
 			contentPane.add(tabPanel);
 
-			// 친구목록 창
-			contentPanel.setBackground(Color.WHITE);
-			contentPanel.setLayout(null);
-			//contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-			contentPanel.setBounds(80, 0, 300, 485);
-			contentPane.add(contentPanel);
-			
+			JScrollPane scrollPane = new JScrollPane(userListPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+   	        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(10, 10));
+			scrollPane.setBounds(12, 150, 287, 300);		  
+			scrollPane.setViewportView(userListPanel);
+			contentPane_1.add(scrollPane);
 			
 			//채팅 창
 			chatPanel = new JPanel();
@@ -172,10 +175,10 @@ public class FriendList extends JFrame {
 			menu1Btn.setHorizontalTextPosition(JButton.CENTER);
 			tabPanel.add(menu1Btn);
 
-			JLabel FriendLabel = new JLabel("친구"); 
+			JLabel FriendLabel = new JLabel("\uCE5C\uAD6C");
 			FriendLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-			FriendLabel.setBounds(5, 23, 76, 34);
-			contentPanel.add(FriendLabel);
+			FriendLabel.setBounds(23, 23, 76, 34);
+			contentPane_1.add(FriendLabel);
 			
 			//사람 메뉴 누르면 친구목록 창으로 
 			class FriendAction extends MouseAdapter {
@@ -210,7 +213,57 @@ public class FriendList extends JFrame {
 			JTextArea textArea = new JTextArea();
 			JScrollPane scroll = new JScrollPane(textArea);
 			scroll.setBounds(80, 0, 300, 485);
-			//this.add(scroll);
+			
+			while(userIndex < userVec.size()) {
+				if (userVec.get(userIndex).toString().equals(UserName)) { // 나 자신이면
+					JLabel mySelf = new JLabel(userVec.get(userIndex).toString());
+					System.out.println(userVec.get(userIndex).toString());
+					mySelf.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+					mySelf.setBounds(65, userIndex*50 + 75, 68, 15);
+					mySelf.setOpaque(true);
+					mySelf.setBackground(Color.WHITE);
+					contentPane_1.add(mySelf);
+
+					// 자신의 프로필 이미지
+					userPrfPanel = new JPanel(); // 프로필 사진 패널
+					userPrfPanel.setBackground(Color.WHITE);
+					userPrfPanel.setBounds(15, 63, 42, 42);
+					contentPane_1.add(userPrfPanel);
+
+					String imgUrl = imgVec.get(userIndex).toString();
+					ImageIcon icon = new ImageIcon(imgUrl);
+					Image img = icon.getImage();
+					Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
+					ImageIcon changeIcon = new ImageIcon(changeImg);
+					userPrfLabel = new JLabel(changeIcon);
+					userPrfPanel.add(userPrfLabel);
+	
+				} else { // 친구인 경우
+					JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
+					System.out.println(userVec.get(userIndex).toString());
+					userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+					userNameLabel.setBounds(55, userIndex*50 - 10, 68, 15);
+					userNameLabel.setOpaque(true);
+					userNameLabel.setBackground(Color.WHITE);
+					userListPanel.add(userNameLabel);
+
+					// 친구 프로필 이미지
+					userPrfPanel = new JPanel(); // 프로필 사진 패널
+					userPrfPanel.setBackground(Color.WHITE);
+					userPrfPanel.setBounds(10, userIndex*50 - 30, 41, 41);
+					userListPanel.add(userPrfPanel);
+
+					String imgUrl = imgVec.get(userIndex).toString();
+					ImageIcon icon = new ImageIcon(imgUrl);
+					Image img = icon.getImage();
+					Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
+					ImageIcon changeIcon = new ImageIcon(changeImg);
+					userPrfLabel = new JLabel(changeIcon);
+					userPrfPanel.add(userPrfLabel);
+				}
+				userIndex++;
+			}
+
 			while (userIndex < userVec.size()) {
 				JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
 				System.out.println(userVec.get(userIndex).toString());
@@ -221,21 +274,21 @@ public class FriendList extends JFrame {
 				//textArea.add(userNameLabel);
 				contentPanel.add(userNameLabel);
 
-				userPrfPanel = new JPanel(); // 프로필 사진 패널
+				/*userPrfPanel = new JPanel(); // 프로필 사진 패널
 				userPrfPanel.setBackground(Color.WHITE);
 				userPrfPanel.setBounds(5, userIndex*50+60, 35, 35);
-				contentPanel.add(userPrfPanel);
+				contentPanel.add(userPrfPanel);*/
 
-				String imgUrl = imgVec.get(userIndex).toString();
-				System.out.println(imgUrl);
+				//String imgUrl = imgVec.get(userIndex).toString();
+				//System.out.println(imgUrl);
 
 				// 친구목록 프로필 이미지
-				ImageIcon icon = new ImageIcon(imgUrl);
+				/*ImageIcon icon = new ImageIcon(imgUrl);
 				Image img = icon.getImage();
 				Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
 				ImageIcon changeIcon = new ImageIcon(changeImg);
 				userPrfLabel = new JLabel(changeIcon);
-				userPrfPanel.add(userPrfLabel);
+				userPrfPanel.add(userPrfLabel);*/
 				
 				//상태메세지
 				userMsgLabel = new JLabel(msgVec.get(userIndex).toString());

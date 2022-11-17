@@ -17,6 +17,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -36,6 +38,9 @@ import java.awt.Image;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.JToggleButton;
 import javax.swing.JList;
 
@@ -71,12 +76,18 @@ public class OneToOneChat extends JFrame {
 	 */
 	public OneToOneChat(String username, String ip_addr, String port_no) {
 		
+		Color yellow = new Color(254,240,27);
+		Color blue = new Color(150, 183, 209);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 394, 630);
 		contentPane = new JPanel();
+		setTitle("1:1 채팅방");
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setBackground(blue);
+		setVisible(true);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 10, 352, 471);
@@ -84,7 +95,7 @@ public class OneToOneChat extends JFrame {
 
 		textArea = new JTextPane();
 		textArea.setEditable(true);
-		textArea.setFont(new Font("굴림체", Font.PLAIN, 14));
+		textArea.setFont(new Font("맑은고딕", Font.PLAIN, 14));
 		scrollPane.setViewportView(textArea);
 
 		txtInput = new JTextField();
@@ -92,9 +103,10 @@ public class OneToOneChat extends JFrame {
 		contentPane.add(txtInput);
 		txtInput.setColumns(10);
 
-		btnSend = new JButton("Send");
-		btnSend.setFont(new Font("굴림", Font.PLAIN, 14));
+		btnSend = new JButton("전송");
+		btnSend.setFont(new Font("맑은고딕", Font.PLAIN, 14));
 		btnSend.setBounds(295, 489, 69, 40);
+		btnSend.setBackground(yellow);
 		contentPane.add(btnSend);
 
 		lblUserName = new JLabel("Name");
@@ -197,6 +209,12 @@ public class OneToOneChat extends JFrame {
 					Object obcm = null;
 					String msg = null;
 					ChatMsg cm;
+					
+					//시간출력
+					SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+					Date time = new Date();
+					String time1 = format.format(time);
+					
 					try {
 						obcm = ois.readObject();
 					} catch (ClassNotFoundException e) {
@@ -213,11 +231,12 @@ public class OneToOneChat extends JFrame {
 						continue;
 					switch (cm.getCode()) {
 					case "200": // chat message
-						AppendText(msg);
-						break;
-					case "300": // Image 첨부
-						AppendText("[" + cm.getId() + "]");
-						AppendImage(cm.img);
+						if(UserName.equals(cm.getId())) //본인 메세지 오른쪽
+							AppendMyText(time1 + msg);
+						else if("SERVER".equals(cm.getId()))
+							AppendServerText(msg);
+						else
+							AppendText(msg);
 						break;
 					}
 				} catch (IOException e) {
@@ -308,8 +327,44 @@ public class OneToOneChat extends JFrame {
 		int len = textArea.getDocument().getLength();
 		// 끝으로 이동
 		textArea.setCaretPosition(len);
+		
+		//화면 왼쪽에 출력
+		StyledDocument doc = textArea.getStyledDocument();
+		SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+		StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_LEFT);
+		doc.setParagraphAttributes(len, 1, attributeSet, false);
+				
 		textArea.replaceSelection(msg + "\n");
 	}
+	
+	//본인 메세지 오른쪽에 출력
+		public void AppendMyText(String msg) {
+			msg = msg.trim();
+			int len = textArea.getStyledDocument().getLength();
+			textArea.setCaretPosition(len);
+			
+			StyledDocument doc = textArea.getStyledDocument();
+			SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+			StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_RIGHT);
+			doc.setParagraphAttributes(len, 1, attributeSet, false);
+			
+			textArea.replaceSelection(msg + "\n");
+			
+		}
+
+		//서버 메세지 가운데에 출력 
+		public void AppendServerText(String msg) {
+			msg = msg.trim();
+			int len = textArea.getStyledDocument().getLength();
+			textArea.setCaretPosition(len);
+			
+			StyledDocument doc = textArea.getStyledDocument();
+			SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+			StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_CENTER);
+			doc.setParagraphAttributes(len, 1, attributeSet, false);
+			 
+			textArea.replaceSelection(msg + "\n");
+		}
 
 	//
 	public void AppendEmoji(String msg) {

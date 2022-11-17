@@ -226,12 +226,13 @@ public class FriendList extends JFrame {
 			JScrollPane scroll = new JScrollPane(textArea);
 			scroll.setBounds(80, 0, 300, 485);
 			
+			int j = 0;
 			while(userIndex < userVec.size()) {
 				if (userVec.get(userIndex).toString().equals(UserName)) { // 나 자신이면
 					JLabel mySelf = new JLabel(userVec.get(userIndex).toString());
 					System.out.println(userVec.get(userIndex).toString());
 					mySelf.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-					mySelf.setBounds(65, userIndex*50 + 75, 68, 15);
+					mySelf.setBounds(65, 80, 68, 15);
 					mySelf.setOpaque(true);
 					mySelf.setBackground(Color.WHITE);
 					contentPane_1.add(mySelf);
@@ -257,7 +258,7 @@ public class FriendList extends JFrame {
 									
 					userMsgPanel = new JPanel();
 					userMsgPanel.setBackground(Color.WHITE);
-					userMsgPanel.setBounds(160, userIndex*50+71, 30, 30);
+					userMsgPanel.setBounds(160, 80, 30, 30);
 					contentPane_1.add(userMsgPanel);
 					userMsgPanel.add(userMsgLabel);
 	
@@ -265,7 +266,7 @@ public class FriendList extends JFrame {
 					JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
 					System.out.println(userVec.get(userIndex).toString());
 					userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-					userNameLabel.setBounds(55, userIndex*50 - 10, 68, 15);
+					userNameLabel.setBounds(55, j*50 + 30, 68, 15);
 					userNameLabel.setOpaque(true);
 					userNameLabel.setBackground(Color.WHITE);
 					userListPanel.add(userNameLabel);
@@ -273,7 +274,7 @@ public class FriendList extends JFrame {
 					// 친구 프로필 이미지
 					userPrfPanel = new JPanel(); // 프로필 사진 패널
 					userPrfPanel.setBackground(Color.WHITE);
-					userPrfPanel.setBounds(10, userIndex*50 - 30, 41, 41);
+					userPrfPanel.setBounds(10, j*50 + 10, 41, 41);
 					userListPanel.add(userPrfPanel);
 
 					String imgUrl = imgVec.get(userIndex).toString();
@@ -291,14 +292,15 @@ public class FriendList extends JFrame {
 									
 					userMsgPanel = new JPanel();
 					userMsgPanel.setBackground(Color.WHITE);
-					userMsgPanel.setBounds(160, userIndex*50 - 12, 30, 30);
+					userMsgPanel.setBounds(160, j*50 + 30, 30, 30);
 					userListPanel.add(userMsgPanel);
 					userMsgPanel.add(userMsgLabel);
 				}
 				userIndex++;
+				j++;
 			}
 
-			while (userIndex < userVec.size()) {
+			/*while (userIndex < userVec.size()) {
 				JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
 				System.out.println(userVec.get(userIndex).toString());
 				userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
@@ -320,7 +322,7 @@ public class FriendList extends JFrame {
 				
 				userIndex++;
 				
-			}
+			}*/
 			
 	
 			System.out.println("mysql db 연결 성공");

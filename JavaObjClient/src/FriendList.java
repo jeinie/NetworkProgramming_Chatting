@@ -31,6 +31,20 @@ import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.mysql.cj.protocol.Resultset;
 
 import java.sql.Statement;
@@ -110,7 +124,14 @@ public class FriendList extends JFrame {
 			contentPane.setLayout(null);
 			tabPanel.setLayout(null);
 			setTitle("상상톡");
-			//contentPanel.setBackground(Color.lightGray);
+
+			socket = new Socket(ip_addr, Integer.parseInt(port_no));
+			oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.flush();
+			ois = new ObjectInputStream(socket.getInputStream());
+
+			ChatMsg obcm = new ChatMsg(UserName, "100", "Hello");
+			SendObject(obcm);
 
 			//JScrollPane scrollPane = new JScrollPane(contentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			//scrollPane.setBounds(80, 0, 300, 485);
@@ -233,10 +254,151 @@ public class FriendList extends JFrame {
 			
 	
 			System.out.println("mysql db 연결 성공");
+			SendMessage(port_no);
 
 		} catch(SQLException error) {
 			System.out.println(error);
             System.out.println("DB 접속 오류");
 		}
+
+		
 	}
+
+	// Server Message를 수신해서 화면에 표시
+	/*class ListenNetwork extends Thread {
+		public void run() {
+			while (true) {
+				try {
+					
+					Object obcm = null;
+					String msg = null;
+					ChatMsg cm;
+					
+					//시간출력
+					SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+					Date time = new Date();
+					String time1 = format.format(time);
+					
+					
+					try {
+						obcm = ois.readObject();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						break;
+					}
+					if (obcm == null)
+						break;
+					if (obcm instanceof ChatMsg) {
+						cm = (ChatMsg) obcm;
+						msg = String.format("[%s] %s", cm.getId(), cm.getData());
+					} else
+						continue;
+					
+					//msg = msg + "\n" + time1 + "\n";
+					
+					switch (cm.getCode()) {
+					case "200": // chat message
+						if(UserName.equals(cm.getId())) //본인 메세지 오른쪽
+							AppendMyText(time1 + msg);
+						else if("SERVER".equals(cm.getId()))
+							AppendServerText(msg);
+						else
+							AppendText(msg);
+						break;
+					case "300": // Image 첨부
+						AppendText("[" + cm.getId() + "]");
+						AppendImage(cm.img);
+						break;
+					}
+				} catch (IOException e) {
+					AppendText("ois.readObject() error");
+					try {
+//						dos.close();
+//						dis.close();
+						ois.close();
+						oos.close();
+						socket.close();
+
+						break;
+					} catch (Exception ee) {
+						break;
+					} // catch문 끝
+				} // 바깥 catch문끝
+
+			}
+		}
+	}*/
+
+	// keyboard enter key 치면 서버로 전송
+	class TextSendAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// Send button을 누르거나 메시지 입력하고 Enter key 치면
+			if (e.getSource() == btnSend || e.getSource() == txtInput) {
+				String msg = null;
+				// msg = String.format("[%s] %s\n", UserName, txtInput.getText());
+				msg = txtInput.getText();
+				SendMessage(msg);
+				txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
+				txtInput.requestFocus(); // 메세지를 보내고 커서를 다시 텍스트 필드로 위치시킨다
+				if (msg.contains("/exit")) // 종료 처리
+					System.exit(0);
+			}
+		}
+	}
+
+	// Server에게 network으로 전송
+	public void SendMessage(String msg) {
+		try {
+			// dos.writeUTF(msg);
+//			byte[] bb;
+//			bb = MakePacket(msg);
+//			dos.write(bb, 0, bb.length);
+			ChatMsg obcm = new ChatMsg(UserName, "200", msg);
+			oos.writeObject(obcm);
+			System.out.println("서버로 메시지 보냄");
+		} catch (IOException e) {
+			// AppendText("dos.write() error");
+			//AppendText("oos.writeObject() error");
+			try {
+//				dos.close();
+//				dis.close();
+				ois.close();
+				oos.close();
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.exit(0);
+			}
+		}
+	}
+
+	public void SendObject(Object ob) { // 서버로 메세지를 보내는 메소드
+		try {
+			oos.writeObject(ob);
+		} catch (IOException e) {
+			// textArea.append("메세지 송신 에러!!\n");
+			//AppendText("SendObject Error");
+		}
+	}
+
+	// 화면에 출력
+	/*public void AppendText(String msg) {
+		// textArea.append(msg + "\n");
+		//AppendIcon(icon1);
+		msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.
+		int len = textArea.getDocument().getLength();
+		// 끝으로 이동
+		textArea.setCaretPosition(len);
+		
+		//화면 왼쪽에 출력
+		StyledDocument doc = textArea.getStyledDocument();
+		SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+		StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_LEFT);
+		doc.setParagraphAttributes(len, 1, attributeSet, false);
+		
+		textArea.replaceSelection(msg + "\n");
+	}*/
 }

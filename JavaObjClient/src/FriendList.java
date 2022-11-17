@@ -87,14 +87,17 @@ public class FriendList extends JFrame {
 	private Vector<String> imgVec = new Vector<>(); // 데이터베이스에서 사용자 10명의 프로필 사진을 가져온다.
 	private Vector<String> msgVec = new Vector<String>();
 	
-	public JPanel userPrfPanel; // 내 프로필 이미지 패널
-	public JLabel userPrfLabel; // 내 프로필 이미지 라벨
+	private JPanel userPrfPanel; // 내 프로필 이미지 패널
+	private JLabel userPrfLabel; // 내 프로필 이미지 라벨
 	
-	public JPanel userMsgPanel; // 상태메세지 패널
-	public JLabel userMsgLabel; // 상태메세지 라벨
-	public Object changeProfileBtn; //프로필 변경 버튼
-	public Frame frame;
-	public FileDialog fd;
+	private JPanel userMsgPanel; // 상태메세지 패널
+	private JLabel userMsgLabel; // 상태메세지 라벨
+	private Object changeProfileBtn; //프로필 변경 버튼
+	private JLabel userNameLabel; // 친구 이름 라벨
+	private JPanel contentPane_2; // 1:1 채팅방 창
+
+	private Frame frame;
+	private FileDialog fd;
 	
 
 	// create the frame
@@ -136,7 +139,7 @@ public class FriendList extends JFrame {
 			ois = new ObjectInputStream(socket.getInputStream());
 
 			ChatMsg obcm = new ChatMsg(UserName, "100", "Hello");
-			//SendObject(obcm);
+			SendObject(obcm);
 
 			JPanel contentPane_1 = new JPanel();
 			contentPane_1.setBackground(Color.WHITE);
@@ -221,6 +224,14 @@ public class FriendList extends JFrame {
 			ChatAction chatAction = new ChatAction();
 			menu2Btn.addMouseListener(chatAction);
 
+			// 친구 이름 클릭 이벤트
+			class ClickUserLabel extends MouseAdapter {
+				public void mouseClicked(MouseEvent e) {
+					System.out.println("친구 이름 클릭");
+					new OneToOneChat();
+				}
+			}
+
 			int userIndex = 0;
 			JTextArea textArea = new JTextArea();
 			JScrollPane scroll = new JScrollPane(textArea);
@@ -232,7 +243,7 @@ public class FriendList extends JFrame {
 					JLabel mySelf = new JLabel(userVec.get(userIndex).toString());
 					System.out.println(userVec.get(userIndex).toString());
 					mySelf.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-					mySelf.setBounds(65, 80, 68, 15);
+					mySelf.setBounds(65, userIndex*50 + 75, 68, 15);
 					mySelf.setOpaque(true);
 					mySelf.setBackground(Color.WHITE);
 					contentPane_1.add(mySelf);
@@ -292,41 +303,20 @@ public class FriendList extends JFrame {
 									
 					userMsgPanel = new JPanel();
 					userMsgPanel.setBackground(Color.WHITE);
-					userMsgPanel.setBounds(160, j*50 + 30, 30, 30);
+					userMsgPanel.setBounds(160, userIndex*50 + 30, 30, 30);
 					userListPanel.add(userMsgPanel);
 					userMsgPanel.add(userMsgLabel);
+
+					// 친구 이름 누르면 해당 친구와의 1:1 채팅창 열림
+					ClickUserLabel clickUserLabel = new ClickUserLabel();
+					userNameLabel.addMouseListener(clickUserLabel);
 				}
 				userIndex++;
 				j++;
-			}
-
-			/*while (userIndex < userVec.size()) {
-				JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
-				System.out.println(userVec.get(userIndex).toString());
-				userNameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-				userNameLabel.setBounds(55, userIndex*50 + 75, 68, 15);
-				userNameLabel.setOpaque(true);
-				userNameLabel.setBackground(Color.WHITE);
-				contentPanel.add(userNameLabel);
-				
-				//상태메세지
-				userMsgLabel = new JLabel(msgVec.get(userIndex).toString());
-				System.out.println(msgVec.get(userIndex).toString());
-				userMsgLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 11));
-								
-				userMsgPanel = new JPanel();
-				userMsgPanel.setBackground(Color.WHITE);
-				userMsgPanel.setBounds(120, userIndex*50+71, 30, 30);
-				contentPanel.add(userMsgPanel);
-				userMsgPanel.add(userMsgLabel);
-				
-				userIndex++;
-				
-			}*/
-			
+			}			
 	
 			System.out.println("mysql db 연결 성공");
-			//SendMessage(port_no);
+			SendMessage(port_no);
 
 		} catch(SQLException error) {
 			System.out.println(error);
@@ -344,81 +334,71 @@ public class FriendList extends JFrame {
 		RefreshProfile refreshProfile = new RefreshProfile();
 		
 		class SelectProfile extends MouseAdapter {
-			 public void mouseClicked(MouseEvent e) { // 단톡방 초대하기
+			public void mouseClicked(MouseEvent e) { // 단톡방 초대하기
 		            
+		        repaint();
 
-		            repaint();
-
-		            if (e.getSource() == changeProfileBtn) {
-		               frame = new Frame("이미지첨부");
-		               fd = new FileDialog(frame, "이미지 선택", FileDialog.LOAD);
-		               fd.setVisible(true);
+		        if (e.getSource() == changeProfileBtn) {
+		            frame = new Frame("이미지첨부");
+		            fd = new FileDialog(frame, "이미지 선택", FileDialog.LOAD);
+		            fd.setVisible(true);
 		          
-		               if (fd.getDirectory().length() > 0 && fd.getFile().length() > 0) {
-		                  ChatMsg obcm = new ChatMsg(username, "700", "IMG"); // 코드 700과 함께 선택한 프로필 이미지 보냄
-		                  ImageIcon img = new ImageIcon(fd.getDirectory() + fd.getFile());
+		            if (fd.getDirectory().length() > 0 && fd.getFile().length() > 0) {
+		                ChatMsg obcm = new ChatMsg(username, "700", "IMG"); // 코드 700과 함께 선택한 프로필 이미지 보냄
+		                ImageIcon img = new ImageIcon(fd.getDirectory() + fd.getFile());
 		                
-		                  obcm.img = img;
+		                obcm.img = img;
 		                  
-		                  refreshMyProfile(fd.getDirectory() + fd.getFile());
-		                  //SendObject(obcm);
+		                refreshMyProfile(fd.getDirectory() + fd.getFile());
+		                //SendObject(obcm);
 
-		               }
 		            }
-		         }
-
-			
-		}
-	
+		        }
+		    }
+		}	
 		
 		SelectProfile selectProfile = new SelectProfile();
 		((Component) changeProfileBtn).addMouseListener(selectProfile);
-		
 	}
+
 	
-		public void refreshMyProfile(String img) {
-			setMyImg(img);
-		}
-		
-
-		public void setMyImg(String img) {
-			 userPrfPanel.revalidate();
-		     userPrfPanel.repaint();
-		     userPrfLabel.revalidate();
-		     userPrfLabel.repaint();
-		     
-		     userPrfPanel.remove(userPrfLabel);
-		     revalidate();
-		     repaint();
-
-		      ImageIcon icon1 = new ImageIcon(img);
-		      Image img2 = icon1.getImage();
-		      Image changeImg1 = img2.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
-		      ImageIcon changeIcon1 = new ImageIcon(changeImg1);
-
-		      userPrfLabel.setIcon(changeIcon1);
-		      userPrfPanel.add(userPrfLabel);
-		}
-		
-		public void refreshPanel() {
-			int userIndex = 0;
-			for (int i = 0; i < userVec.size(); i++) {
-
-		         String eachUserName = userVec.get(userIndex).toString();
-		        
-		         if (userVec.get(userIndex).toString().equals(eachUserName))
-		            continue;
-		         //userPrfPanel.get(userVec.get()).setImg(eachUserName);
-		         // value:picturepanel
-
-		      } // 나자신의 프로필 사진을 갱신
-		      this.revalidate();
-		      this.repaint();
-		}
-
+	public void refreshMyProfile(String img) {
+		setMyImg(img);
 	}
+		
 
+	public void setMyImg(String img) {
+		userPrfPanel.revalidate();
+		userPrfPanel.repaint();
+		userPrfLabel.revalidate();
+		userPrfLabel.repaint();
+		     
+		userPrfPanel.remove(userPrfLabel);
+		revalidate();
+		repaint();
 
+		ImageIcon icon1 = new ImageIcon(img);
+		Image img2 = icon1.getImage();
+		Image changeImg1 = img2.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
+		ImageIcon changeIcon1 = new ImageIcon(changeImg1);
+
+		userPrfLabel.setIcon(changeIcon1);
+		userPrfPanel.add(userPrfLabel);
+	}
+		
+	public void refreshPanel() {
+		int userIndex = 0;
+		for (int i = 0; i < userVec.size(); i++) {
+
+		    String eachUserName = userVec.get(userIndex).toString();
+		        
+		    if (userVec.get(userIndex).toString().equals(eachUserName))
+		        continue;
+
+		} // 나자신의 프로필 사진을 갱신
+		this.revalidate();
+		this.repaint();
+	}
 
 	// Server Message를 수신해서 화면에 표시
 	/*class ListenNetwork extends Thread {

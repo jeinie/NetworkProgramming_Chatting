@@ -237,6 +237,17 @@ public class FriendList extends JFrame {
 					ImageIcon changeIcon = new ImageIcon(changeImg);
 					userPrfLabel = new JLabel(changeIcon);
 					userPrfPanel.add(userPrfLabel);
+
+					//상태메세지
+					userMsgLabel = new JLabel(msgVec.get(userIndex).toString());
+					System.out.println(msgVec.get(userIndex).toString());
+					userMsgLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 11));
+									
+					userMsgPanel = new JPanel();
+					userMsgPanel.setBackground(Color.WHITE);
+					userMsgPanel.setBounds(160, userIndex*50+71, 30, 30);
+					contentPane_1.add(userMsgPanel);
+					userMsgPanel.add(userMsgLabel);
 	
 				} else { // 친구인 경우
 					JLabel userNameLabel = new JLabel(userVec.get(userIndex).toString());
@@ -260,6 +271,17 @@ public class FriendList extends JFrame {
 					ImageIcon changeIcon = new ImageIcon(changeImg);
 					userPrfLabel = new JLabel(changeIcon);
 					userPrfPanel.add(userPrfLabel);
+
+					//상태메세지
+					userMsgLabel = new JLabel(msgVec.get(userIndex).toString());
+					System.out.println(msgVec.get(userIndex).toString());
+					userMsgLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 11));
+									
+					userMsgPanel = new JPanel();
+					userMsgPanel.setBackground(Color.WHITE);
+					userMsgPanel.setBounds(160, userIndex*50 - 15, 30, 30);
+					userListPanel.add(userMsgPanel);
+					userMsgPanel.add(userMsgLabel);
 				}
 				userIndex++;
 			}
@@ -271,24 +293,7 @@ public class FriendList extends JFrame {
 				userNameLabel.setBounds(55, userIndex*50 + 75, 68, 15);
 				userNameLabel.setOpaque(true);
 				userNameLabel.setBackground(Color.WHITE);
-				//textArea.add(userNameLabel);
 				contentPanel.add(userNameLabel);
-
-				/*userPrfPanel = new JPanel(); // 프로필 사진 패널
-				userPrfPanel.setBackground(Color.WHITE);
-				userPrfPanel.setBounds(5, userIndex*50+60, 35, 35);
-				contentPanel.add(userPrfPanel);*/
-
-				//String imgUrl = imgVec.get(userIndex).toString();
-				//System.out.println(imgUrl);
-
-				// 친구목록 프로필 이미지
-				/*ImageIcon icon = new ImageIcon(imgUrl);
-				Image img = icon.getImage();
-				Image changeImg = img.getScaledInstance(41, 41, Image.SCALE_SMOOTH);
-				ImageIcon changeIcon = new ImageIcon(changeImg);
-				userPrfLabel = new JLabel(changeIcon);
-				userPrfPanel.add(userPrfLabel);*/
 				
 				//상태메세지
 				userMsgLabel = new JLabel(msgVec.get(userIndex).toString());

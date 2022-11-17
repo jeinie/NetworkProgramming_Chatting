@@ -279,7 +279,7 @@ public class FriendList extends JFrame {
 									
 					userMsgPanel = new JPanel();
 					userMsgPanel.setBackground(Color.WHITE);
-					userMsgPanel.setBounds(160, userIndex*50 - 15, 30, 30);
+					userMsgPanel.setBounds(160, userIndex*50 - 12, 30, 30);
 					userListPanel.add(userMsgPanel);
 					userMsgPanel.add(userMsgLabel);
 				}

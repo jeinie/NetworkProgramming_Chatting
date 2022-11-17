@@ -228,7 +228,7 @@ public class FriendList extends JFrame {
 			class ClickUserLabel extends MouseAdapter {
 				public void mouseClicked(MouseEvent e) {
 					System.out.println("친구 이름 클릭");
-					new OneToOneChat();
+					new OneToOneChat(username, ip_addr, port_no);
 				}
 			}
 
@@ -358,7 +358,7 @@ public class FriendList extends JFrame {
 		}	
 		
 		SelectProfile selectProfile = new SelectProfile();
-		((Component) changeProfileBtn).addMouseListener(selectProfile);
+		//((Component) changeProfileBtn).addMouseListener(selectProfile);
 	}
 
 	

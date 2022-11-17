@@ -184,7 +184,7 @@ public class FriendList extends JFrame {
 			class FriendAction extends MouseAdapter {
 				public void mouseClicked(MouseEvent e) {
 					chatPanel.setVisible(false);
-					contentPanel.setVisible(true); // 친구목록
+					contentPane_1.setVisible(true); // 친구목록
 				}
 			}
 			FriendAction friendAction = new FriendAction();
@@ -202,7 +202,7 @@ public class FriendList extends JFrame {
 			//채팅 메뉴 누르면 채팅목록 창으로
 			class ChatAction extends MouseAdapter { 
 				public void mouseClicked(MouseEvent e) {
-					contentPanel.setVisible(false);
+					contentPane_1.setVisible(false);
 					chatPanel.setVisible(true); // 채팅목록
 				}
 			}

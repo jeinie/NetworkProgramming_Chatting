@@ -26,11 +26,7 @@ import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import MySQL.*;
 
 public class JavaObjServer extends JFrame {
 
@@ -47,12 +43,6 @@ public class JavaObjServer extends JFrame {
 	private Vector UserVec = new Vector(); // 연결된 사용자를 저장할 벡터
 	private Vector dataVec = new Vector(); // 데이터베이스에서 사용자 10명 가져와서 다음 벡터
 	private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
-
-	// MySQL
-	/*static final String DB_URL = "jdbc:mysql://localhost:3306/network_db";
-    static final String USER = "root";
-    static final String PASSWORD = "1234";
-    static final String QUERY = "SELECT * FROM users"; // 실행할 쿼리*/
 
 	/**
 	 * Launch the application.
@@ -74,32 +64,6 @@ public class JavaObjServer extends JFrame {
 	 * Create the frame.
 	 */
 	public JavaObjServer() throws Exception {
-		
-        // Open a connection
-        /*try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-			Statement stmt = connection.createStatement(); // Statement 생성 후 실행할 쿼리정보 등록
-            ResultSet rs = stmt.executeQuery(QUERY); // 결과를 담을 ResultSet 생성 후 결과 담기
-            // Extract data from result set
-			int i = 0;
-            while (rs.next()) {
-                // Retrieve by column name
-                System.out.println("name: " + rs.getString(1));
-				// 결과를 Vector 에 추가
-				dataVec.add(rs.getString(1));
-				System.out.println(dataVec.get(i));
-				i++;
-            }
-            System.out.println("mysql db 연결 성공");
-
-			// 클라이언트에 사용자 10명 데이터 보내기
-
-		} catch(SQLException error) {
-            System.out.println(error);
-            System.out.println("DB 접속 오류");
-        }*/
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 338, 440);
 		contentPane = new JPanel();
@@ -198,6 +162,8 @@ public class JavaObjServer extends JFrame {
 		private Vector user_vc;
 		public String UserName = "";
 		public String UserStatus;
+		public String id = "";
+		public String roomID = "";
 
 		public UserService(Socket client_socket) {
 			// TODO Auto-generated constructor stub
@@ -205,25 +171,9 @@ public class JavaObjServer extends JFrame {
 			this.client_socket = client_socket;
 			this.user_vc = UserVec;
 			try {
-//				is = client_socket.getInputStream();
-//				dis = new DataInputStream(is);
-//				os = client_socket.getOutputStream();
-//				dos = new DataOutputStream(os);
-
 				oos = new ObjectOutputStream(client_socket.getOutputStream());
 				oos.flush();
 				ois = new ObjectInputStream(client_socket.getInputStream());
-
-				// line1 = dis.readUTF();
-				// /login user1 ==> msg[0] msg[1]
-//				byte[] b = new byte[BUF_LEN];
-//				dis.read(b);		
-//				String line1 = new String(b);
-//
-//				//String[] msg = line1.split(" ");
-//				//UserName = msg[1].trim();
-//				UserStatus = "O"; // Online 상태
-//				Login();
 			} catch (Exception e) {
 				AppendText("userService error");
 			}
@@ -244,6 +194,8 @@ public class JavaObjServer extends JFrame {
 			AppendText("사용자 " + "[" + UserName + "] 퇴장. 현재 참가자 수 " + UserVec.size());
 		}
 
+		
+
 		// 모든 User들에게 방송. 각각의 UserService Thread의 WriteONe() 을 호출한다.
 		public void WriteAll(String str) {
 			for (int i = 0; i < user_vc.size(); i++) {
@@ -252,6 +204,7 @@ public class JavaObjServer extends JFrame {
 					user.WriteOne(str);
 			}
 		}
+
 		// 모든 User들에게 Object를 방송. 채팅 message와 image object를 보낼 수 있다
 		public void WriteAllObject(Object ob) {
 			for (int i = 0; i < user_vc.size(); i++) {
@@ -300,8 +253,6 @@ public class JavaObjServer extends JFrame {
 			} catch (IOException e) {
 				AppendText("dos.writeObject() error");
 				try {
-//					dos.close();
-//					dis.close();
 					ois.close();
 					oos.close();
 					client_socket.close();
@@ -360,24 +311,6 @@ public class JavaObjServer extends JFrame {
 		public void run() {
 			while (true) { // 사용자 접속을 계속해서 받기 위해 while문
 				try {
-					// String msg = dis.readUTF();
-//					byte[] b = new byte[BUF_LEN];
-//					int ret;
-//					ret = dis.read(b);
-//					if (ret < 0) {
-//						AppendText("dis.read() < 0 error");
-//						try {
-//							dos.close();
-//							dis.close();
-//							client_socket.close();
-//							Logout();
-//							break;
-//						} catch (Exception ee) {
-//							break;
-//						} // catch문 끝
-//					}
-//					String msg = new String(b, "euc-kr");
-//					msg = msg.trim(); // 앞뒤 blank NULL, \n 모두 제거
 					Object obcm = null;
 					String msg = null;
 					ChatMsg cm = null;
@@ -453,8 +386,6 @@ public class JavaObjServer extends JFrame {
 				} catch (IOException e) {
 					AppendText("ois.readObject() error");
 					try {
-//						dos.close();
-//						dis.close();
 						ois.close();
 						oos.close();
 						client_socket.close();

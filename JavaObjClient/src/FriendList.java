@@ -179,7 +179,7 @@ public class FriendList extends JFrame {
 			contentPane.add(chatPanel);
 			
 			//메뉴 1 - 친구목록 창
-			ImageIcon menu1 = new ImageIcon("src/Menu1.png");
+			ImageIcon menu1 = new ImageIcon("src/img/Menu1.png");
 			JButton menu1Btn = new JButton(menu1);
 			menu1Btn.setBounds(10, 25, 55, 55);
 			menu1Btn.setBorderPainted(false);
@@ -211,7 +211,7 @@ public class FriendList extends JFrame {
 			menu1Btn.addMouseListener(friendAction);
 
 			//메뉴 2 - 채팅목록 창
-			ImageIcon menu2 = new ImageIcon("src/Menu2.png");
+			ImageIcon menu2 = new ImageIcon("src/img/Menu2.png");
 			JButton menu2Btn = new JButton(menu2);
 			menu2Btn.setBounds(10, 90, 55, 55);
 			menu2Btn.setBorderPainted(false);
@@ -256,6 +256,26 @@ public class FriendList extends JFrame {
 					}
 				}
 			}
+			
+			//채팅방 생성 버튼
+			ImageIcon addRoom = new ImageIcon ("src/img/addRoom.png");
+			//ImageIcon addRoom_Mouse = new ImageIcon ("src/img/icon1.jpg");
+			JButton addRoomBtn = new JButton(addRoom);
+			addRoomBtn.setBounds(250, 113, 35, 35);
+			addRoomBtn.setBorderPainted(false);
+			addRoomBtn.setToolTipText("새로운 채팅");
+			//addRoom_button.setRolloverIcon(addRoom_Mouse);
+			contentPane_1.add(addRoomBtn);
+			
+			addRoomBtn.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					System.out.println("채팅방 생성 버튼 클릭");
+					setVisible(true);
+					AddRoom ar = new AddRoom(username, ip_addr, port_no);
+					ar.setVisible(true);
+				}
+			});
 
 			int userIndex = 0;
 			JTextArea textArea = new JTextArea();

@@ -264,7 +264,7 @@ public class JavaObjClientView extends JFrame {
 		}
 	}
 
-	ImageIcon icon1 = new ImageIcon("src/icon1.jpg");
+	ImageIcon icon1 = new ImageIcon("src/img/icon1.jpg");
 
 	public void AppendIcon(ImageIcon icon) {
 		int len = textArea.getDocument().getLength();

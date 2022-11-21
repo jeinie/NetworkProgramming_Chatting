@@ -188,24 +188,6 @@ public class OneToOneChat extends JFrame {
 		public void run() {
 			while (true) {
 				try {
-					// String msg = dis.readUTF();
-//					byte[] b = new byte[BUF_LEN];
-//					int ret;
-//					ret = dis.read(b);
-//					if (ret < 0) {
-//						AppendText("dis.read() < 0 error");
-//						try {
-//							dos.close();
-//							dis.close();
-//							socket.close();
-//							break;
-//						} catch (Exception ee) {
-//							break;
-//						}// catch문 끝
-//					}
-//					String	msg = new String(b, "euc-kr");
-//					msg = msg.trim(); // 앞뒤 blank NULL, \n 모두 제거
-
 					Object obcm = null;
 					String msg = null;
 					ChatMsg cm;
@@ -233,8 +215,8 @@ public class OneToOneChat extends JFrame {
 					case "200": // chat message
 						if(UserName.equals(cm.getId())) //본인 메세지 오른쪽
 							AppendMyText(time1 + msg);
-						else if("SERVER".equals(cm.getId()))
-							AppendServerText(msg);
+						/*else if("SERVER".equals(cm.getId()))
+							AppendServerText(msg);*/
 						else
 							AppendText(msg);
 						break;

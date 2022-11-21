@@ -55,6 +55,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import MySQL.DAO;
+
 public class FriendList extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -86,6 +88,7 @@ public class FriendList extends JFrame {
 	private Vector<String> userVec = new Vector<String>(); // 데이터베이스에서 사용자 10명 가져온다.
 	private Vector<String> imgVec = new Vector<>(); // 데이터베이스에서 사용자 10명의 프로필 사진을 가져온다.
 	private Vector<String> msgVec = new Vector<String>();
+	private Vector<String> roomVec = new Vector<>(); // 채팅방 목록 가져오기
 	
 	private JPanel userPrfPanel; // 내 프로필 이미지 패널
 	private JLabel userPrfLabel; // 내 프로필 이미지 라벨
@@ -98,6 +101,8 @@ public class FriendList extends JFrame {
 
 	private Frame frame;
 	private FileDialog fd;
+
+	private DAO dao;
 	
 
 	// create the frame
@@ -111,7 +116,7 @@ public class FriendList extends JFrame {
 			int i = 0;
             while (rs.next()) {
                 // Retrieve by column name
-               //System.out.println("name: " + rs.getString(1));
+               	//System.out.println("name: " + rs.getString(1));
 				// 결과를 Vector 에 추가
 				userVec.add(rs.getString(1));
 				imgVec.add(rs.getString(2));
@@ -188,12 +193,12 @@ public class FriendList extends JFrame {
 			contentPane_1.add(FriendLabel);
 			
 			//프로필 변경 버튼
-			JButton changeProfileBtn = new JButton("프로필 변경");
+			/*JButton changeProfileBtn = new JButton("프로필 변경");
 		    changeProfileBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 11));
 		    changeProfileBtn.setContentAreaFilled(false);
 		    changeProfileBtn.setFocusPainted(false);
 		    changeProfileBtn.setBounds(20, 120, 100, 20);
-		    contentPane_1.add(changeProfileBtn);
+		    contentPane_1.add(changeProfileBtn);*/
 		    
 			//사람 메뉴 누르면 친구목록 창으로 
 			class FriendAction extends MouseAdapter {
@@ -228,7 +233,27 @@ public class FriendList extends JFrame {
 			class ClickUserLabel extends MouseAdapter {
 				public void mouseClicked(MouseEvent e) {
 					System.out.println("친구 이름 클릭");
+					// 채팅방 db에 추가하고 db에서 불러와서 채팅방 목록에 띄우면 될 듯?
+					// 방번호는 '유저이름 + 시간'
+					//시간출력
+					SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+					Date time = new Date();
+					String time1 = format.format(time);
+					// 먼저 방 관리 테이블을 만들고 데이터를 추가
+					dao.createRoomTable();
+					String roomTitle = UserName + " " + time1;
+					System.out.println("room title = " + roomTitle);
+					dao.addRoom(roomTitle); // 내 이름 + 시간
 					new OneToOneChat(username, ip_addr, port_no);
+
+					// 채팅목록 창에 현재 db에 있는 채팅방 목록을 띄워야함
+					String rooms[][] = dao.getRooms();
+					for (int i=0; i<rooms.length; i++) {
+						System.out.println(rooms[0].toString());
+						JLabel chatRoom = new JLabel(rooms[i].toString()); // 채팅방 레이블
+						chatRoom.setBounds(80, 0, 300, 100);
+						chatPanel.add(chatRoom);
+					}
 				}
 			}
 
@@ -243,7 +268,7 @@ public class FriendList extends JFrame {
 					JLabel mySelf = new JLabel(userVec.get(userIndex).toString());
 					System.out.println(userVec.get(userIndex).toString());
 					mySelf.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-					mySelf.setBounds(65, userIndex*50 + 75, 68, 15);
+					mySelf.setBounds(65, 80, 68, 15);
 					mySelf.setOpaque(true);
 					mySelf.setBackground(Color.WHITE);
 					contentPane_1.add(mySelf);
@@ -336,9 +361,10 @@ public class FriendList extends JFrame {
 		class SelectProfile extends MouseAdapter {
 			public void mouseClicked(MouseEvent e) { // 단톡방 초대하기
 		            
-		        repaint();
+		        //repaint();
+				System.out.println("e.getSource() : " + e.getSource());
 
-		        if (e.getSource() == changeProfileBtn) {
+		        if (e.getSource() == userPrfLabel) {
 		            frame = new Frame("이미지첨부");
 		            fd = new FileDialog(frame, "이미지 선택", FileDialog.LOAD);
 		            fd.setVisible(true);
@@ -358,6 +384,7 @@ public class FriendList extends JFrame {
 		}	
 		
 		SelectProfile selectProfile = new SelectProfile();
+		userPrfLabel.addMouseListener(selectProfile);
 		//((Component) changeProfileBtn).addMouseListener(selectProfile);
 	}
 

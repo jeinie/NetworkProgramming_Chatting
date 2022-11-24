@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 import java.util.HashMap;
 import java.util.Map;
@@ -219,6 +220,10 @@ public class FriendList extends JFrame {
 			menu2Btn.setHorizontalTextPosition(JButton.CENTER);
 			tabPanel.add(menu2Btn);
 		
+			JLabel ChatLabel = new JLabel("채팅");
+			ChatLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+			ChatLabel.setBounds(23, 23, 76, 34);
+			chatPanel.add(ChatLabel);
 			//채팅 메뉴 누르면 채팅목록 창으로
 			class ChatAction extends MouseAdapter { 
 				public void mouseClicked(MouseEvent e) {
@@ -246,26 +251,29 @@ public class FriendList extends JFrame {
 					dao.addRoom(roomTitle); // 내 이름 + 시간
 					new OneToOneChat(username, ip_addr, port_no);
 
-					// 채팅목록 창에 현재 db에 있는 채팅방 목록을 띄워야함
-					String rooms[][] = dao.getRooms();
-					for (int i=0; i<rooms.length; i++) {
-						System.out.println(rooms[0].toString());
-						JLabel chatRoom = new JLabel(rooms[i].toString()); // 채팅방 레이블
-						chatRoom.setBounds(80, 0, 300, 100);
-						chatPanel.add(chatRoom);
-					}
 				}
+			}
+
+			// 채팅목록 창에 현재 db에 있는 채팅방 목록을 띄워야함
+			String rooms[][] = dao.getRooms();
+			for (int j=0; j<rooms.length; j++) {
+				System.out.println(rooms[0].toString());
+				System.out.println(Arrays.toString(rooms[j]));
+				//JLabel chatRoom = new JLabel(rooms[i].toString()); // 채팅방 레이블
+				JLabel chatRoom = new JLabel(Arrays.toString(rooms[j]));
+				chatRoom.setBounds(30, 50+30*j, 300, 100);
+				chatPanel.add(chatRoom);
 			}
 			
 			//채팅방 생성 버튼
 			ImageIcon addRoom = new ImageIcon ("src/img/addRoom.png");
 			//ImageIcon addRoom_Mouse = new ImageIcon ("src/img/icon1.jpg");
 			JButton addRoomBtn = new JButton(addRoom);
-			addRoomBtn.setBounds(250, 113, 35, 35);
+			addRoomBtn.setBounds(240, 23, 35, 35);
 			addRoomBtn.setBorderPainted(false);
 			addRoomBtn.setToolTipText("새로운 채팅");
 			//addRoom_button.setRolloverIcon(addRoom_Mouse);
-			contentPane_1.add(addRoomBtn);
+			chatPanel.add(addRoomBtn);
 			
 			addRoomBtn.addMouseListener(new MouseAdapter() {
 				@Override

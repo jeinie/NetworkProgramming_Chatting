@@ -68,5 +68,29 @@ public class DAO {
 			return null;
 		}
 	}
+    
+    public static String[][] getFriends(String Name) {
+    	try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+			PreparedStatement statement = con.prepareStatement(
+					"SELECT * FROM users WHERE Name NOT IN " + "('" + Name + "')");
+			ResultSet results = statement.executeQuery();
+			ArrayList<String[]> list = new ArrayList<String[]>();
+			while(results.next()) {
+				list.add(new String[] {
+						//results.getString("image"),
+						results.getString("Name")
+						});
+			}
+			System.out.println("친구 목록 출력");
+			String[][] arr = new String[list.size()][1];
+			return list.toArray(arr);
+			
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+    }
 	
 }

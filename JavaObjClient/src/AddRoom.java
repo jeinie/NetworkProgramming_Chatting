@@ -47,7 +47,7 @@ public class AddRoom extends JFrame implements ActionListener, MouseListener{
 	private DAO dao;
 	private String[][] data;
 	private String[] count; //친구 수
-	private JCheckBox checkBox; //선택박스
+	private JCheckBox[] checkBox; //선택박스
 	
 	ImageIcon ok_before = new ImageIcon("src/img/ok_before.png"); //친구 선택 전 확인 버튼
 	ImageIcon ok = new ImageIcon("src/img/ok.png"); //친구 선택 후 확인 버튼
@@ -80,23 +80,31 @@ public class AddRoom extends JFrame implements ActionListener, MouseListener{
 		selectUsers.setBounds(27, 23, 114, 30);
 		contentPane.add(selectUsers);
 	
-		checkBox = new JCheckBox();
-		
-
 		data = DAO.getFriends(username);
-		count = new String[] {"친구" + data.length };
+		//count = new String[] {"친구" + data.length };
 		
 		System.out.println(Arrays.toString(count));
+	
+		checkBox = new JCheckBox[data.length];
 		
 		// 본인 제외한 친구 목록 띄우기
 		for (int i=0; i<data.length; i++) {
 			//System.out.println(data[i].toString());
 			System.out.println(Arrays.deepToString(data[i]));
-			JLabel friend = new JLabel(Arrays.deepToString(data[i])); 
-			friend.setBounds(70, 50+i*50, 300, 100);
-			//checkBox.setBounds(90, 50+i*50, 20, 20);
-			contentPane.add(checkBox);
-			contentPane.add(friend);
+			String friends = Arrays.deepToString(data[i]);
+			JLabel friend = new JLabel(friends); 
+			friend.setBounds(70, 50+i*60, 300, 100);
+			friend.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+			friend.setOpaque(true);
+			friend.setBackground(Color.WHITE);
+			//contentPane.add(friend);
+			checkBox[i] = new JCheckBox(friends);
+			checkBox[i].setBorderPainted(false);
+			checkBox[i].setBounds(50, 60+i*60, 300, 50);
+			checkBox[i].setBackground(Color.WHITE);
+			checkBox[i].setFont(new Font("맑은 고딕", Font.BOLD, 15));
+			contentPane.add(checkBox[i]);
+			
 		}
 	
 		setContentPane(contentPane);
@@ -115,6 +123,13 @@ public class AddRoom extends JFrame implements ActionListener, MouseListener{
 		okBtn.setEnabled(false);
 		contentPane.add(cancelBtn);
 		
+		//친구를 선택하면 
+		for (int i=0; i<data.length; i++) {
+			if(checkBox[i].isSelected()) {
+				
+			}
+		
+		}
 		
 	}
 	@Override

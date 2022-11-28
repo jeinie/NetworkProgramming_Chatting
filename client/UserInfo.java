@@ -1,4 +1,4 @@
-package info;
+package client;
 
 import java.util.ArrayList;
 

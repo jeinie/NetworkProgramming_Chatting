@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,50 +20,50 @@ import server.User;
 public class AddFriendPanel extends JPanel {
 
 	private AddRoomFrame f;
-	private JButton addBtn = new JButton("확인");
+	private JButton okBtn;
+	ImageIcon ok = new ImageIcon("src/img/ok.png"); //친구 선택 후 확인 버튼
 	private CommandController controller = CommandController.getController();
 	private List<JLabel> friendList = new ArrayList<JLabel>();
 
 	private List<String> AddFriendName = new ArrayList<String>();
 	
-	//private JPanel listPanel;
-	
-	private JScrollPane listPanel;
-
 	private String myId;
-	public AddFriendPanel(AddRoomFrame f,String userId) {
+	public AddFriendPanel(AddRoomFrame f, String userId) {
 		this.f = f;
 		this.myId = userId;
 		
 		setLayout(null);
 		setSize(400, 600);
-		setBackground(new Color(168, 218, 255));
+		setBackground(Color.white);
 		
-		JLabel list = new JLabel("접속중인 친구 목록");
-		list.setHorizontalAlignment(JLabel.CENTER);
-		list.setBounds(27, 15, 340, 50);
-		list.setBackground(new Color(255,225,231));
-		list.setFont(new Font("Tmon몬소리 Black", Font.PLAIN, 17));
-		//list.setBackground(Color.WHITE);
+		JLabel list = new JLabel("대화 상대 선택");
+		list.setHorizontalAlignment(JLabel.LEFT); 
+		list.setBounds(25, 15, 340, 50);
+		list.setBackground(new Color(247, 230, 0));
+		list.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 		list.setOpaque(true);
 		f.add(list);
 
 		addList();
 
-		addBtn.setBounds(150, 502, 100, 50);
-		addBtn.setBackground(new Color(255,225,231));
-		addBtn.setFont(new Font("Tmon몬소리 Black", Font.PLAIN, 17));
-		f.add(addBtn);
+		okBtn = new JButton("확인");
+		okBtn.setBounds(150, 500, 80, 45);
+		okBtn.setBorderPainted(false); 
+		okBtn.setEnabled(true);
+		okBtn.setDisabledIcon(ok);
+		okBtn.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+		okBtn.setBackground(new Color(247, 230, 0));
+		f.add(okBtn);
 
-		addBtn.addActionListener(new ActionListener() {
+		okBtn.addActionListener(new ActionListener() {
 			int j=1;
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//선택된 친구 리스트
 				String signal = User.SIGNAL_CREATE_MULTICHAT+"//"+myId;
 				
-				System.out.println("~친구목록~");
+				System.out.println("친구");
 				for(String name:AddFriendName) {
 					signal += "//"+name;
 					System.out.println(j + name);
@@ -78,10 +79,7 @@ public class AddFriendPanel extends JPanel {
 
 	public void addList() {
 		friendList.clear();
-		/*listPanel = new JScrollPane();
-		listPanel.setBounds(27, 75, 345, 400);
-		listPanel.setOpaque(false);
-		*/
+		
 		controller.send_Message(User.SIGNAL_ONLINE_USER_LIST);
 		try {
 			Thread.sleep(300);
@@ -94,8 +92,8 @@ public class AddFriendPanel extends JPanel {
 		for (int i = 0,j=0; i < friendList.size(); i++,j++) {
 			if(!friendList.get(i).getText().equals(myId)) { //본인은 제외하고 친구출력
 				
-				friendList.get(i).setBounds(27, 75 + (j * 51), 340, 50);
-				friendList.get(i).setFont(new Font("Tmon몬소리 Black", Font.PLAIN, 17));
+				friendList.get(i).setBounds(25, 75 + (j * 51), 340, 50);
+				friendList.get(i).setFont(new Font("맑은 고딕", Font.PLAIN, 17));
 				friendList.get(i).setBackground(Color.WHITE);
 				friendList.get(i).setOpaque(true);
 				f.add(friendList.get(i));
@@ -118,7 +116,7 @@ public class AddFriendPanel extends JPanel {
 							addFriend = true;
 							AddFriendName.add(a.getText());
 							System.out.println("친구 선택 ? : " + addFriend);
-							a.setBackground(Color.LIGHT_GRAY);
+							a.setBackground(new Color(247, 230, 0));
 						}
 
 						else if (addFriend == true) {

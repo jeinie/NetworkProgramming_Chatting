@@ -17,12 +17,13 @@ public class MainFrame extends JFrame {
 
 	//메뉴 1 - 친구목록 창
 	private JButton friendsBtn;
+	
 
 	//메뉴 2 - 채팅목록 창
 	private JButton chatBtn;
 	
 	public MainFrame(String userID/*, String myStateMessage*/) {
-		setTitle("SKY TALK");
+		setTitle("상상톡");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 600);
 		setResizable(false);

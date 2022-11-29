@@ -11,11 +11,11 @@ import javax.swing.JPanel;
 public class ButtonPanel extends JPanel{
 	
 	//메뉴 1 - 친구목록 창
-	ImageIcon menu1 = new ImageIcon("./img/menu1.png");
+	ImageIcon menu1 = new ImageIcon("src/img/menu1.png");
 	JButton friendsBtn;
 
 	//메뉴 2 - 채팅목록 창
-	ImageIcon menu2 = new ImageIcon("./img/menu2.png");
+	ImageIcon menu2 = new ImageIcon("src/img/menu2.png");
 	JButton chatBtn;
 
 	private MainFrame f;

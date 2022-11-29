@@ -64,26 +64,17 @@ public class LoginPanel extends JPanel {
 		 */
 
 		JLabel idLabel = new JLabel("사용자 이름 ");
-		idLabel.setBounds(150, 300, 100, 30);
-		idLabel.setFont(new Font("Adobe Garamond Pro", Font.PLAIN, 20));
+		idLabel.setBounds(130, 300, 120, 30);
+		idLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		lf.add(idLabel);
 
-		// JLabel pwLabel = new JLabel("PW : ");
-		// pwLabel.setBounds(125, 390, 40, 30);
-		// pwLabel.setFont(new Font("Adobe Garamond Pro", Font.PLAIN, 17));
-		// lf.add(pwLabel);
-
 		userName = new JTextField();
-		userName.setBounds(90, 350, 200, 50);
+		userName.setBounds(70, 350, 200, 50);
 		lf.add(userName);
-
-		// tf_PW = new JTextField();
-		// tf_PW.setBounds(170, 390, 200, 30);
-		// lf.add(tf_PW);
-		// tf_PW.setColumns(10);
 		
 		btnNewButton = new JButton("확인");
-		btnNewButton.setBounds(300, 350, 50, 50);
+		btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		btnNewButton.setBounds(280, 350, 70, 50);
 		lf.add(btnNewButton);
 
 		start();

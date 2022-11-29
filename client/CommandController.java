@@ -26,7 +26,7 @@ import server.User;
 
 public class CommandController {
 	
-	Socket socket = LoginPanel.socket;//»ç¿ëÀÚÀÇ ¼ÒÄÏÀ» ¹Ş¾Æ¿È
+	Socket socket = LoginPanel.socket;//ì‚¬ìš©ìì˜ ì†Œì¼“ì„ ë°›ì•„ì˜´
 	private InputStream is;
 	private OutputStream os;
 	private DataInputStream dis;
@@ -42,8 +42,8 @@ public class CommandController {
 	
 	public static CommandController controller;
 	private CommandController(){
-		//Å¬¶óÀÌ¾ğÆ®°¡ ¼­¹ö·ÎºÎÅÍ ¸Ş½ÃÁö¸¦ ¼ö½ÅÇÏ´Â ½º·¹µå »ı¼ºÈÄ ½ÇÇà
-		//SingletonÆĞÅÏÀÌ¶ó ÀÌºÎºĞÀÌ ÇÑ¹ø¸¸ ½ÇÇàµÊ=>ÇÑ À¯Àú´ç ½º·¹µå ÇÏ³ª
+		//í´ë¼ì´ì–¸íŠ¸ê°€ ì„œë²„ë¡œë¶€í„° ë©”ì‹œì§€ë¥¼ ìˆ˜ì‹ í•˜ëŠ” ìŠ¤ë ˆë“œ ìƒì„±í›„ ì‹¤í–‰
+		//SingletoníŒ¨í„´ì´ë¼ ì´ë¶€ë¶„ì´ í•œë²ˆë§Œ ì‹¤í–‰ë¨=>í•œ ìœ ì €ë‹¹ ìŠ¤ë ˆë“œ í•˜ë‚˜
 		RecieveMassage();
 	}
 	public static CommandController getController() {
@@ -51,12 +51,12 @@ public class CommandController {
 			controller = new CommandController();
 		return controller;
 	}
-	public void append_Message(String roomName, String str) {//chatPanelÀÇ TextArea¿¡ ±ÛÀÚ ºÙÀÓ
+	public void append_Message(String roomName, String str) {//chatPanelì˜ TextAreaì— ê¸€ì ë¶™ì„
 		
-		setTextPane(chattingRoomList.get(roomName)); //·ëÀÌ¸§À» key·Î ÅØ½ºÆ®¸¦ ºÙÀÏ ÅØ½ºÆ®ÆÒÀ» ÇØ½¬¸Ê¿¡¼­ Ã£¾Æ¼­ ÁöÁ¤
+		setTextPane(chattingRoomList.get(roomName)); //ë£¸ì´ë¦„ì„ keyë¡œ í…ìŠ¤íŠ¸ë¥¼ ë¶™ì¼ í…ìŠ¤íŠ¸íŒ¬ì„ í•´ì‰¬ë§µì—ì„œ ì°¾ì•„ì„œ ì§€ì •
 		
 		if(textPane==null) {
-			//ÃÊ´ëµÈ »ç¶÷ÀÌ¶ó Ã¤ÆÃ¹æ¿¡ ÀÔÀåÀº ÇßÁö¸¸ È­¸éÀÌ ¾È¶¹À»¶§
+			//ì´ˆëŒ€ëœ ì‚¬ëŒì´ë¼ ì±„íŒ…ë°©ì— ì…ì¥ì€ í–ˆì§€ë§Œ í™”ë©´ì´ ì•ˆë–´ì„ë•Œ
 			System.out.println("Commandcontroller -> textPane==null");
 			//ChatFrame a = new ChatFrame(friendName);
 			
@@ -87,17 +87,17 @@ public class CommandController {
 		textPane.insertIcon(icon);
 	}
 	
-	public void RecieveMassage() { // ½º·¹µå¸¦ µ¹·Á¼­ ¼­¹ö·ÎºÎÅÍ ¸Ş¼¼Áö¸¦ ¼ö½Å
-		try { // ½ºÆ®¸² ¼³Á¤
+	public void RecieveMassage() { // ìŠ¤ë ˆë“œë¥¼ ëŒë ¤ì„œ ì„œë²„ë¡œë¶€í„° ë©”ì„¸ì§€ë¥¼ ìˆ˜ì‹ 
+		try { // ìŠ¤íŠ¸ë¦¼ ì„¤ì •
 			is = socket.getInputStream();
 			dis = new DataInputStream(is);
 			os = socket.getOutputStream();
 			dos = new DataOutputStream(os);
 		} catch (IOException e) {
-			//textArea.append("½ºÆ®¸² ¼³Á¤ ¿¡·¯!!\n");
-			System.out.println("½ºÆ®¸² ¼³Á¤ ¿¡·¯!!\n");
+			//textArea.append("ìŠ¤íŠ¸ë¦¼ ì„¤ì • ì—ëŸ¬!!\n");
+			System.out.println("ìŠ¤íŠ¸ë¦¼ ì„¤ì • ì—ëŸ¬!!\n");
 		}
-		Thread th = new Thread(new Runnable() { //¼­¹ö¿¡¼­ ¸Ş½ÃÁö ¹Ş´Â ½º·¹µå
+		Thread th = new Thread(new Runnable() { //ì„œë²„ì—ì„œ ë©”ì‹œì§€ ë°›ëŠ” ìŠ¤ë ˆë“œ
 			@SuppressWarnings("null")
 			@Override
 			public void run() {
@@ -108,28 +108,28 @@ public class CommandController {
 						dis.read(b);
 						String msg = new String(b);
 						msg = msg.trim();
-						System.out.println("CommandControll -> ¼­¹ö·ÎºÎÅÍÀÇ ¸Ş½ÃÁö : "+msg);
+						System.out.println("CommandControll -> ì„œë²„ë¡œë¶€í„°ì˜ ë©”ì‹œì§€ : "+msg);
 						String[] array = msg.split("//");
 						
-						//Ã¤ÆÃ¹æ »ı¼º ¿Ï·á½Ã->Ã¤ÆÃ¹æ ÀÌ¸§À» Àü´Ş¹Ş¾Æ Ã¤ÆÃ¹æÀÇ ¸ğµç ÀÎ¿ø Ã¤ÆÃ¹æ ¶ç¿ì±â(°­Á¦)
+						//ì±„íŒ…ë°© ìƒì„± ì™„ë£Œì‹œ->ì±„íŒ…ë°© ì´ë¦„ì„ ì „ë‹¬ë°›ì•„ ì±„íŒ…ë°©ì˜ ëª¨ë“  ì¸ì› ì±„íŒ…ë°© ë„ìš°ê¸°(ê°•ì œ)
 						if(array[0].equals(User.SIGNAL_CREATE_ROOM_COMPLETE)) {
-							/*String chattingRoomName = array[1];//Ã¤ÆÃ¹æÀÌ¸§
+							/*String chattingRoomName = array[1];//ì±„íŒ…ë°©ì´ë¦„
 							setRoomName(chattingRoomName);*/
 							roomName = array[1];
-							if(chattingRoomList.get(roomName)==null) { //Ã³À½ »ı¼ºµÇ´Â ¹æ
+							if(chattingRoomList.get(roomName)==null) { //ì²˜ìŒ ìƒì„±ë˜ëŠ” ë°©
 								System.out.println("CommandControll -> roomName "+roomName);
-								ChatFrame a = new ChatFrame(roomName); //Ã³À½ ¹æÀÌ »ı¼ºµÈ °æ¿ì Ã¤ÆÃ¹æÃ¢À» ¶ç¿ò
-								chattingRoomList.put(roomName, a.getChatPanel().getTextPaneChat());	//Ã¤ÆÃ¹æµéÀÇ TextPaneÀ» ÇØ½¬¸ÊÀ¸·Î ÀúÀå
+								ChatFrame a = new ChatFrame(roomName); //ì²˜ìŒ ë°©ì´ ìƒì„±ëœ ê²½ìš° ì±„íŒ…ë°©ì°½ì„ ë„ì›€
+								chattingRoomList.put(roomName, a.getChatPanel().getTextPaneChat());	//ì±„íŒ…ë°©ë“¤ì˜ TextPaneì„ í•´ì‰¬ë§µìœ¼ë¡œ ì €ì¥
 								
 								///////////////////////////////////////////////////////////////////////////////////
 								JLabel room = new JLabel(roomName);
-								ChatRoom.add(room); //Ã³À½ ¹æÀÌ »ı¼ºµÇ¸é chatting¸ñ·Ï¿¡ Ãß°¡ÇÔ
+								ChatRoom.add(room); //ì²˜ìŒ ë°©ì´ ìƒì„±ë˜ë©´ chattingëª©ë¡ì— ì¶”ê°€í•¨
 								for(JLabel j:ChatRoom) {
-									System.out.println("Ã¤ÆÃ¹æ ¸®½ºÆ® Ãß°¡ -> " + j.getText().toString());
+									System.out.println("ì±„íŒ…ë°© ë¦¬ìŠ¤íŠ¸ ì¶”ê°€ -> " + j.getText().toString());
 								}
 							}
 							else {
-								//ÀÌ¹Ì ÀÖ´Â ¹æÀÌ¶ó°í ¾Ë¸²Ã¢ ¶ç¿ì±â
+								//ì´ë¯¸ ìˆëŠ” ë°©ì´ë¼ê³  ì•Œë¦¼ì°½ ë„ìš°ê¸°
 								
 							}
 							
@@ -141,9 +141,9 @@ public class CommandController {
 							append_Message(roomName,str + "\n");
 						}
 						else if(array[0].equals(User.SIGNAL_ONLINE_USER_LIST)) {
-							//msg =  Signal//À¯ÀúÀÌ¸§!!»óÅÂÀÌ¹ÌÁö!!»óÅÂ¸Ş½ÃÁö//À¯ÀúÀÌ¸§!!»óÅÂÀÌ¹ÌÁö!!»óÅÂ¸Ş½ÃÁö....
+							//msg =  Signal//ìœ ì €ì´ë¦„!!ìƒíƒœì´ë¯¸ì§€!!ìƒíƒœë©”ì‹œì§€//ìœ ì €ì´ë¦„!!ìƒíƒœì´ë¯¸ì§€!!ìƒíƒœë©”ì‹œì§€....
 							userLabel.clear();
-							onlineUserList.clear(); //Á¢¼ÓÁßÀÎ À¯Àú ¸®½ºÆ® ÃÊ±âÈ­
+							onlineUserList.clear(); //ì ‘ì†ì¤‘ì¸ ìœ ì € ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
 							for(int i=1; i<array.length;i++) {
 								String[] userInformation = array[i].split("!!");
 								
@@ -158,10 +158,10 @@ public class CommandController {
 							}
 						}
 						else if(array[0].equals(User.SIGNAL_NEW_USER_CONNECT)) {
-							//»õ·Î¿î À¯Àú°¡ Ãß°¡ array[1]:°»½Å ´ë»ó À¯Àú ÀÌ¸§ array[2]:»õ À¯ÀúÀÌ¸§ 
-							//±âÁ¸ À¯ÀúµéÀÇ frendList¿¡ »õ·Î¿î À¯Àú¸¦ Ãß°¡(°»½ÅX)
+							//ìƒˆë¡œìš´ ìœ ì €ê°€ ì¶”ê°€ array[1]:ê°±ì‹  ëŒ€ìƒ ìœ ì € ì´ë¦„ array[2]:ìƒˆ ìœ ì €ì´ë¦„ 
+							//ê¸°ì¡´ ìœ ì €ë“¤ì˜ frendListì— ìƒˆë¡œìš´ ìœ ì €ë¥¼ ì¶”ê°€(ê°±ì‹ X)
 							System.out.println("CommandController->SIGNAL_NEW_USER_CONNECT userName="+array[2]);
-							//friendPanelÀÇ dataSettingÀ» È£ÃâÇØ¾ßÇÔ
+							//friendPanelì˜ dataSettingì„ í˜¸ì¶œí•´ì•¼í•¨
 							mainFrameList.get(array[1]).getStartPanel().friendPanel.update(array[2]);
 						}
 						else if(array[0].equals(User.SIGNAL_EXIST_USER_CONNECT)) {
@@ -171,13 +171,13 @@ public class CommandController {
 							
 							JTextPane temp = new JTextPane();
 							temp.setText(array[2]);
-							chattingRoomList.put(array[1], temp);	//Ã¤ÆÃ¹æµéÀÇ TextPaneÀ» ÇØ½¬¸ÊÀ¸·Î ÀúÀå
+							chattingRoomList.put(array[1], temp);	//ì±„íŒ…ë°©ë“¤ì˜ TextPaneì„ í•´ì‰¬ë§µìœ¼ë¡œ ì €ì¥
 							
 							
 							//=========================================================================
 						}
 						else if(array[0].equals(User.SIGNAL_CHANGE_STATE)) {
-							//À¯ÀúÀÇ »óÅÂÀÌ¹ÌÁö³ª »óÅÂ¸Ş½ÃÁö º¯°æÀÌ ÀÖ´Ù¸é ¸ğµç À¯ÀúµéÀÇ È­¸éÀ» °»½Å
+							//ìœ ì €ì˜ ìƒíƒœì´ë¯¸ì§€ë‚˜ ìƒíƒœë©”ì‹œì§€ ë³€ê²½ì´ ìˆë‹¤ë©´ ëª¨ë“  ìœ ì €ë“¤ì˜ í™”ë©´ì„ ê°±ì‹ 
 							/*User.SIGNAL_CHANGE_STATE+"//"+user.getNickname()+"//"+userName+"//"+stateImg+"//"+stateMsg*/
 							UserInfo user = searchByUserName(array[2]);
 							onlineUserList.remove(user);
@@ -190,38 +190,38 @@ public class CommandController {
 							
 						}
 						else {
-							System.out.println("CommandController-> Áö¿øÇÏÁö ¾Ê´Â ¸Ş½ÃÁö Çü½ÄÀÔ´Ï´Ù.");
+							System.out.println("CommandController-> ì§€ì›í•˜ì§€ ì•ŠëŠ” ë©”ì‹œì§€ í˜•ì‹ì…ë‹ˆë‹¤.");
 						}
 		
 						
 					} catch (IOException e) {
-						//textArea.append("¸Ş¼¼Áö ¼ö½Å ¿¡·¯!!\n");
-						append_Message(roomName,"¸Ş¼¼Áö ¼ö½Å ¿¡·¯!!\n");
-						// ¼­¹ö¿Í ¼ÒÄÏ Åë½Å¿¡ ¹®Á¦°¡ »ı°åÀ» °æ¿ì ¼ÒÄÏÀ» ´İ´Â´Ù
+						//textArea.append("ë©”ì„¸ì§€ ìˆ˜ì‹  ì—ëŸ¬!!\n");
+						append_Message(roomName,"ë©”ì„¸ì§€ ìˆ˜ì‹  ì—ëŸ¬!!\n");
+						// ì„œë²„ì™€ ì†Œì¼“ í†µì‹ ì— ë¬¸ì œê°€ ìƒê²¼ì„ ê²½ìš° ì†Œì¼“ì„ ë‹«ëŠ”ë‹¤
 						try {
 							os.close();
 							is.close();
 							dos.close();
 							dis.close();
 							socket.close();
-							break; // ¿¡·¯ ¹ß»ıÇÏ¸é while¹® Á¾·á
+							break; // ì—ëŸ¬ ë°œìƒí•˜ë©´ whileë¬¸ ì¢…ë£Œ
 						} catch (IOException e1) {
 						}
 					}
-				} // while¹® ³¡
-			}// run¸Ş¼Òµå ³¡
+				} // whileë¬¸ ë
+			}// runë©”ì†Œë“œ ë
 		});
 		th.start();
 	}
 
-	public void send_Message(String str) { // ¼­¹ö·Î ¸Ş¼¼Áö¸¦ º¸³»´Â ¸Ş¼Òµå
+	public void send_Message(String str) { // ì„œë²„ë¡œ ë©”ì„¸ì§€ë¥¼ ë³´ë‚´ëŠ” ë©”ì†Œë“œ
 		try {
 			byte[] bb;
 			bb = str.getBytes();
 			dos.write(bb); //.writeUTF(str);
 		} catch (IOException e) {
-			//textArea.append("¸Ş¼¼Áö ¼Û½Å ¿¡·¯!!\n");
-			append_Message(roomName,"¸Ş¼¼Áö ¼Û½Å ¿¡·¯!!\n");//¿©±âÀÇ roomNameÀº ÀÇ¹Ì°¡ ¾øÀ½(ÃßÈÄ¿¡ ´õ º¸¿Ï!!)
+			//textArea.append("ë©”ì„¸ì§€ ì†¡ì‹  ì—ëŸ¬!!\n");
+			append_Message(roomName,"ë©”ì„¸ì§€ ì†¡ì‹  ì—ëŸ¬!!\n");//ì—¬ê¸°ì˜ roomNameì€ ì˜ë¯¸ê°€ ì—†ìŒ(ì¶”í›„ì— ë” ë³´ì™„!!)
 		}
 	}
 

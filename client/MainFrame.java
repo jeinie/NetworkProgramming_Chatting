@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 
@@ -12,11 +14,17 @@ public class MainFrame extends JFrame {
 
 	public StartPanel startPanel;
 	public CommandController controller = CommandController.getController();
+
+	//ë©”ë‰´ 1 - ì¹œêµ¬ëª©ë¡ ì°½
+	private JButton friendsBtn;
+
+	//ë©”ë‰´ 2 - ì±„íŒ…ëª©ë¡ ì°½
+	private JButton chatBtn;
 	
 	public MainFrame(String userID/*, String myStateMessage*/) {
 		setTitle("SKY TALK");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(600, 900);
+		setSize(400, 600);
 		setResizable(false);
 		
 		/*setUndecorated(true);
@@ -25,10 +33,10 @@ public class MainFrame extends JFrame {
 		
 		startPanel = new StartPanel(this,userID/*,myStateMessage*/);
 		
-		Dimension frameSize = this.getSize(); // ÇÁ·¹ÀÓ »çÀÌÁî
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // ¸ğ´ÏÅÍ »çÀÌÁî
+		Dimension frameSize = this.getSize(); // í”„ë ˆì„ ì‚¬ì´ì¦ˆ
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // ëª¨ë‹ˆí„° ì‚¬ì´ì¦ˆ
 
-		this.setLocation((screenSize.width - frameSize.width), (screenSize.height - screenSize.height)); // È­¸é ¿ìÃø »ó´Ü
+		this.setLocation((screenSize.width - frameSize.width), (screenSize.height - screenSize.height)); // í™”ë©´ ìš°ì¸¡ ìƒë‹¨
 
 		Container c = getContentPane();
 		c.add(startPanel);
@@ -36,7 +44,6 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 		
 		controller.saveMainFrame(userID,this);
-
 	}
 
 	public StartPanel getStartPanel() {

@@ -10,8 +10,8 @@ public class LoginFrame extends JFrame {
 
 	public LoginFrame() {
 
-		setTitle("»ó»óÅå");
-		setSize(600, 600);
+		setTitle("ìƒìƒí†¡");
+		setSize(400, 600);
 		setResizable(false);
 		
 		/*setUndecorated(true);
@@ -19,10 +19,10 @@ public class LoginFrame extends JFrame {
 
 		setLayout(null);
 		
-		Dimension frameSize = this.getSize(); // ÇÁ·¹ÀÓ »çÀÌÁî
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // ¸ğ´ÏÅÍ »çÀÌÁî
+		Dimension frameSize = this.getSize(); // í”„ë ˆì„ ì‚¬ì´ì¦ˆ
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // ëª¨ë‹ˆí„° ì‚¬ì´ì¦ˆ
 
-		this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // È­¸é °¡¿îµ¥
+		this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // í™”ë©´ ê°€ìš´ë°
 
 		Container c = getContentPane();
 		

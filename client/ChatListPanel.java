@@ -53,7 +53,7 @@ public class ChatListPanel extends JPanel {
 			chatImg.get(i).setBackground(Color.white);
 			add(chatImg.get(i));
 			
-			room.setFont(new Font("Tmon¸ó¼Ò¸® Black", Font.PLAIN, 20));
+			room.setFont(new Font("Tmonëª¬ì†Œë¦¬ Black", Font.PLAIN, 20));
 			room.setOpaque(true);
 			room.setBackground(Color.WHITE);
 			room.setBounds(90, 15 + (i * 81), 495, 80);
@@ -68,7 +68,7 @@ public class ChatListPanel extends JPanel {
 				}
 
 				@Override
-				public void mouseReleased(MouseEvent e) { // Ä£±¸¸ñ·ÏÀ» ´©¸£¸é ÇØ´ç Ä£±¸¿ÍÀÇ
+				public void mouseReleased(MouseEvent e) { // ì¹œêµ¬ëª©ë¡ì„ ëˆ„ë¥´ë©´ í•´ë‹¹ ì¹œêµ¬ì™€ì˜
 					if(e.getClickCount()==2) {
 						String roomName = room.getText();
 						System.out.println("ChatListPanel-> roomName = "+roomName);

@@ -27,10 +27,10 @@ import client.ChatPanel.Myaction;
 import server.User;
 
 public class LoginPanel extends JPanel {
-	/* ³×Æ®¿öÅ©¿ë º¯¼ö */
+	/* ë„¤íŠ¸ì›Œí¬ìš© ë³€ìˆ˜ */
 	private final String ip = "127.0.0.1";
 	private final int port = 30000;
-	public static Socket socket; // ¿¬°á¼ÒÄÏ
+	public static Socket socket; // ì—°ê²°ì†Œì¼“
 	private InputStream is;
 	private OutputStream os;
 	private DataInputStream dis;
@@ -38,7 +38,7 @@ public class LoginPanel extends JPanel {
 	public static String userID;
 	private CommandController controller;
 
-	private JTextField userName; // user ÀÌ¸§ ÀÔ·Â
+	private JTextField userName; // user ì´ë¦„ ì…ë ¥
 	private LoginFrame lf;
 	private String id;
 	private StartPanel startPanel;
@@ -63,7 +63,7 @@ public class LoginPanel extends JPanel {
 		 * JPanel login = new JPanel(); login.setBounds(150, 450, 300, 300);
 		 */
 
-		JLabel idLabel = new JLabel("»ç¿ëÀÚ ÀÌ¸§ ");
+		JLabel idLabel = new JLabel("ì‚¬ìš©ì ì´ë¦„ ");
 		idLabel.setBounds(150, 300, 100, 30);
 		idLabel.setFont(new Font("Adobe Garamond Pro", Font.PLAIN, 20));
 		lf.add(idLabel);
@@ -82,21 +82,21 @@ public class LoginPanel extends JPanel {
 		// lf.add(tf_PW);
 		// tf_PW.setColumns(10);
 		
-		btnNewButton = new JButton("È®ÀÎ");
+		btnNewButton = new JButton("í™•ì¸");
 		btnNewButton.setBounds(300, 350, 50, 50);
 		lf.add(btnNewButton);
 
 		start();
 	}
 	
-	public void start() { // ¾×¼ÇÀÌº¥Æ® ÁöÁ¤ ¸Ş¼Òµå
+	public void start() { // ì•¡ì…˜ì´ë²¤íŠ¸ ì§€ì • ë©”ì†Œë“œ
 		Myaction action = new Myaction();
-		btnNewButton.addActionListener(action); // ³»ºÎÅ¬·¡½º·Î ¾×¼Ç ¸®½º³Ê¸¦ »ó¼Ó¹ŞÀº Å¬·¡½º·Î
+		btnNewButton.addActionListener(action); // ë‚´ë¶€í´ë˜ìŠ¤ë¡œ ì•¡ì…˜ ë¦¬ìŠ¤ë„ˆë¥¼ ìƒì†ë°›ì€ í´ë˜ìŠ¤ë¡œ
 		// tf_PW.addActionListener(action);
 		userName.addActionListener(action);
 	}
 
-	class Myaction implements ActionListener // ³»ºÎÅ¬·¡½º·Î ¾×¼Ç ÀÌº¥Æ® Ã³¸® Å¬·¡½º
+	class Myaction implements ActionListener // ë‚´ë¶€í´ë˜ìŠ¤ë¡œ ì•¡ì…˜ ì´ë²¤íŠ¸ ì²˜ë¦¬ í´ë˜ìŠ¤
 	{
 		public Myaction() {
 
@@ -104,13 +104,13 @@ public class LoginPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// ¾×¼Ç ÀÌº¥Æ®°¡ sendBtnÀÏ¶§ ¶Ç´Â textField ¿¡¼¼ Enter key Ä¡¸é
+			// ì•¡ì…˜ ì´ë²¤íŠ¸ê°€ sendBtnì¼ë•Œ ë˜ëŠ” textField ì—ì„¸ Enter key ì¹˜ë©´
 			if (e.getSource() == btnNewButton || e.getSource() == userName) {
 				String user_id = userName.getText().trim();
 				userID = user_id;
 
-				if (user_id != null) { // À¯Àú¾ÆÀÌµğ ºóÄ­ÀÌ¸é ¾ÈµÊ
-					network();// ¼­¹ö¿Í ¿¬°á
+				if (user_id != null) { // ìœ ì €ì•„ì´ë”” ë¹ˆì¹¸ì´ë©´ ì•ˆë¨
+					network();// ì„œë²„ì™€ ì—°ê²°
 					MainFrame f = new MainFrame(userID);
 					lf.dispose();
 				}
@@ -120,41 +120,41 @@ public class LoginPanel extends JPanel {
 
 	}
 
-	/* ³×Æ®¿öÅ© ¼ÒÄÏ ¿¬°á */
+	/* ë„¤íŠ¸ì›Œí¬ ì†Œì¼“ ì—°ê²° */
 
 	public void network() {
 		try {
 			socket = new Socket(ip, port);
-			if (socket != null) // socketÀÌ null°ªÀÌ ¾Æ´Ò¶§ Áï! ¿¬°áµÇ¾úÀ»¶§
+			if (socket != null) // socketì´ nullê°’ì´ ì•„ë‹ë•Œ ì¦‰! ì—°ê²°ë˜ì—ˆì„ë•Œ
 			{
-				controller = CommandController.getController();// ¸ÇÃ³À½
-																// getControllerÇÏ´Â
-																// ºÎºĞ->¿©±â¼­ »ı¼ºµÊ
-				Connection(); // ¿¬°á ¸Ş¼Òµå¸¦ È£Ãâ
+				controller = CommandController.getController();// ë§¨ì²˜ìŒ
+																// getControllerí•˜ëŠ”
+																// ë¶€ë¶„->ì—¬ê¸°ì„œ ìƒì„±ë¨
+				Connection(); // ì—°ê²° ë©”ì†Œë“œë¥¼ í˜¸ì¶œ
 			}
 		} catch (UnknownHostException e) {
 
 		} catch (IOException e) {
-			// textArea.append("¼ÒÄÏ Á¢¼Ó ¿¡·¯!!\n");
-			System.out.println("Client ¼ÒÄÏ Á¢¼Ó ¿¡·¯!!\n");
+			// textArea.append("ì†Œì¼“ ì ‘ì† ì—ëŸ¬!!\n");
+			System.out.println("Client ì†Œì¼“ ì ‘ì† ì—ëŸ¬!!\n");
 		}
 	}
 
-	public void Connection() { // ½ÇÁ÷ ÀûÀÎ ¸Ş¼Òµå ¿¬°áºÎºĞ
-		try { // ½ºÆ®¸² ¼³Á¤
+	public void Connection() { // ì‹¤ì§ ì ì¸ ë©”ì†Œë“œ ì—°ê²°ë¶€ë¶„
+		try { // ìŠ¤íŠ¸ë¦¼ ì„¤ì •
 			is = socket.getInputStream();
 			dis = new DataInputStream(is);
 			os = socket.getOutputStream();
 			dos = new DataOutputStream(os);
 		} catch (IOException e) {
-			// textArea.append("½ºÆ®¸² ¼³Á¤ ¿¡·¯!!\n");
-			System.out.println("½ºÆ®¸² ¼³Á¤ ¿¡·¯!!\n");
+			// textArea.append("ìŠ¤íŠ¸ë¦¼ ì„¤ì • ì—ëŸ¬!!\n");
+			System.out.println("ìŠ¤íŠ¸ë¦¼ ì„¤ì • ì—ëŸ¬!!\n");
 		}
 		if (controller == null) {
 			System.out.println("controller == null");
 		} else {
-			controller.send_Message(User.SIGNAL_USER_ID + "//" + userID); // Á¤»óÀûÀ¸·Î ¿¬°áµÇ¸é ³ªÀÇ ¾ÆÀÌµğ¸¦ Àü¼Û
-			//ÀÌÈÄ¿¡ ¹Ù·Î SIGNAL_ONLINE_USER_LIST¸¦ º¸³»±â¶§¹®¿¡ ¼­¹ö°¡ Ã³¸®ÇÒ ½Ã°£À» ÁÖ¾î¾ß ÇÔ.
+			controller.send_Message(User.SIGNAL_USER_ID + "//" + userID); // ì •ìƒì ìœ¼ë¡œ ì—°ê²°ë˜ë©´ ë‚˜ì˜ ì•„ì´ë””ë¥¼ ì „ì†¡
+			//ì´í›„ì— ë°”ë¡œ SIGNAL_ONLINE_USER_LISTë¥¼ ë³´ë‚´ê¸°ë•Œë¬¸ì— ì„œë²„ê°€ ì²˜ë¦¬í•  ì‹œê°„ì„ ì£¼ì–´ì•¼ í•¨.
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {

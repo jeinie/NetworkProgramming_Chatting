@@ -43,7 +43,7 @@ public class SettingPanel extends JPanel {
 		Myprofile = new JLabel(user_id);
 		Myprofile.setBounds(0, 240, 600, 50);
 		Myprofile.setHorizontalAlignment(JLabel.CENTER);
-		Myprofile.setFont(new Font("Tmon¸ó¼Ò¸® Black", Font.PLAIN, 20));
+		Myprofile.setFont(new Font("Tmonëª¬ì†Œë¦¬ Black", Font.PLAIN, 20));
 		Myprofile.setOpaque(false);
 		add(Myprofile);
 
@@ -53,10 +53,10 @@ public class SettingPanel extends JPanel {
 		line.setBackground(Color.WHITE);
 		add(line);
 
-		profileMessage = new JLabel("¾È³ç");/* == myStateMessage */
+		profileMessage = new JLabel("ì•ˆë…•");/* == myStateMessage */
 		profileMessage.setBounds(200, 320, 200, 40);
 		profileMessage.setHorizontalAlignment(JLabel.CENTER);
-		profileMessage.setFont(new Font("Tmon¸ó¼Ò¸® Black", Font.PLAIN, 20));
+		profileMessage.setFont(new Font("Tmonëª¬ì†Œë¦¬ Black", Font.PLAIN, 20));
 		profileMessage.setOpaque(true);
 		profileMessage.setBackground(Color.WHITE);
 		add(profileMessage);
@@ -65,13 +65,13 @@ public class SettingPanel extends JPanel {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-					myStateMessage = JOptionPane.showInputDialog("»óÅÂ¸Ş¼¼Áö¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+					myStateMessage = JOptionPane.showInputDialog("ìƒíƒœë©”ì„¸ì§€ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
 					profileMessage.setText(myStateMessage);
 					repaint();
 					
 					controller.send_Message(User.SIGNAL_CHANGE_STATE+"//"+user_id+"//"+stateImage+"//"+myStateMessage);
 					////////////////////////////////////////
-					//       »óÅÂ¸Ş¼¼Áö ¹Ù²Ù°í ¼­¹ö·Î Àü¼Û                       //
+					//       ìƒíƒœë©”ì„¸ì§€ ë°”ê¾¸ê³  ì„œë²„ë¡œ ì „ì†¡                       //
 					////////////////////////////////////////
 			}
 
@@ -139,7 +139,7 @@ public class SettingPanel extends JPanel {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					System.out.println(state.getToolTipText());
-					//stateImage == ÀÌ¹ÌÁö ÆÄÀÏ ÀÌ¸§!!!!!!!
+					//stateImage == ì´ë¯¸ì§€ íŒŒì¼ ì´ë¦„!!!!!!!
 					stateImage = state.getToolTipText();
 					MyImg.setIcon(new ImageIcon(stateImage));
 					repaint();

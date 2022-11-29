@@ -59,16 +59,16 @@ public class FriendPanel extends JPanel {
 		// setSize(600, 850);
 		setBackground(new Color(168, 218, 255));
 		
-		//ìœ ì € ì •ë³´ ë°›ì•„ì™€ì„œ ë¼ë²¨ìƒì„±,ë¶™ì´ê¸°
+		//À¯Àú Á¤º¸ ¹Ş¾Æ¿Í¼­ ¶óº§»ı¼º,ºÙÀÌ±â
 		dataSetting();
 		
-		// 'ì¹œêµ¬' í…ìŠ¤íŠ¸ ë¶™ì´ê¸°
-		JLabel friendLabel = new JLabel("ì¹œêµ¬");
-		friendLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 18));
+		// 'Ä£±¸' ÅØ½ºÆ® ºÙÀÌ±â
+		JLabel friendLabel = new JLabel("Ä£±¸");
+		friendLabel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 18));
 		friendLabel.setBounds(23, 23, 76, 34);
 		add(friendLabel);
 
-		createRoomBtn = new JButton("ì±„íŒ…ë°©");
+		createRoomBtn = new JButton("Ã¤ÆÃ¹æ");
 		createRoomBtn.setBounds(260, 10, 48, 48);
 		createRoomBtn.setBackground(new Color(255,225,231));
 		add(createRoomBtn);
@@ -84,18 +84,18 @@ public class FriendPanel extends JPanel {
 
 	}
 	
-	//ìƒˆ ìœ ì €ê°€ ì ‘ì†í•´ì„œ í™”ë©´ê°±ì‹ 
+	//»õ À¯Àú°¡ Á¢¼ÓÇØ¼­ È­¸é°»½Å
 	public void update(String userName) {
 		UserInfo newUser = new UserInfo(userName);
 		friendList.add(newUser);
 		setFriendList(friendList);
 		repaint();
-		System.out.println("friendPanel-> update ìƒˆ ìœ ì €"+newUser.getNickname());
-		System.out.println("friendPanel-> update ì¹œêµ¬ ìˆ˜"+friendList.size());
+		System.out.println("friendPanel-> update »õ À¯Àú"+newUser.getNickname());
+		System.out.println("friendPanel-> update Ä£±¸ ¼ö"+friendList.size());
 		
 	}
 	
-	//ìœ ì €ê°€ ìƒíƒœë¥¼ ë³€ê²½í•´ì„œ í™”ë©´ê°±ì‹ 
+	//À¯Àú°¡ »óÅÂ¸¦ º¯°æÇØ¼­ È­¸é°»½Å
 	public void updateState(String userName,String stateImag,String stateMsg) {
 		for(int i=0;i<userList.size();i++) {
 			UserInfo user = userList.get(i);
@@ -110,9 +110,9 @@ public class FriendPanel extends JPanel {
 			}
 		}
 		
-		removeAll();//í˜¹ì‹œ..?ì´ê±° ì•ˆí•˜ë©´ ë¼ë²¨ì´ìŒ“ì—¬ì„œ ì•ˆë³´ì´ëŠ”ë“¯!
-		//ëª¨ë‘ ì§€ì› ìœ¼ë‹ˆ ë‹¨ì²´ë°© ë§Œë“¤ê¸° ë²„íŠ¼ ë‹¤ì‹œ ë¶™ì´ê¸°
-		createRoomBtn = new JButton("ì±„íŒ…ë°© ë§Œë“¤ê¸°");
+		removeAll();//È¤½Ã..?ÀÌ°Å ¾ÈÇÏ¸é ¶óº§ÀÌ½×¿©¼­ ¾Èº¸ÀÌ´Âµí!
+		//¸ğµÎ Áö¿üÀ¸´Ï ´ÜÃ¼¹æ ¸¸µé±â ¹öÆ° ´Ù½Ã ºÙÀÌ±â
+		createRoomBtn = new JButton("Ã¤ÆÃ¹æ ¸¸µé±â");
 		createRoomBtn.setBounds(0, 1, 600, 40);
 		createRoomBtn.setBackground(new Color(255,225,231));
 		add(createRoomBtn);
@@ -146,16 +146,16 @@ public class FriendPanel extends JPanel {
 		repaint();
 	}
 
-	public void seperate() { //ìœ ì €ëª©ë¡ì¤‘ ë³¸ì¸ê³¼ ì¹œêµ¬ë¥¼ êµ¬ë¶„
-		friendList = new ArrayList<UserInfo>();// ì¹œêµ¬ëª©ë¡ ì´ˆê¸°í™”
+	public void seperate() { //À¯Àú¸ñ·ÏÁß º»ÀÎ°ú Ä£±¸¸¦ ±¸ºĞ
+		friendList = new ArrayList<UserInfo>();// Ä£±¸¸ñ·Ï ÃÊ±âÈ­
 
 		userList = controller.getOnlineUserList();
 		for (int i = 0; i < userList.size(); i++) {
 			UserInfo user = userList.get(i);
-			if (user.getNickname().equals(user_id)) { // ë³¸ì¸
+			if (user.getNickname().equals(user_id)) { // º»ÀÎ
 				myStateImage = "src/friendListImg/" + user.getStateImg();
 				myStateMessage = user.getStateMsg();
-			} else { //ë³¸ì¸ì´ ì•„ë‹˜=>ì¹œêµ¬
+			} else { //º»ÀÎÀÌ ¾Æ´Ô=>Ä£±¸
 				friendList.add(user);
 			}
 		}
@@ -163,7 +163,7 @@ public class FriendPanel extends JPanel {
 	public void setMyField() {
 		Myprofile = new JLabel(user_id);
 		Myprofile.setBounds(90, 55, 295, 80);
-		Myprofile.setFont(new Font("Tmonëª¬ì†Œë¦¬ Black", Font.PLAIN, 20));
+		Myprofile.setFont(new Font("Tmon¸ó¼Ò¸® Black", Font.PLAIN, 20));
 		Myprofile.setOpaque(true);
 		Myprofile.setBackground(Color.WHITE);
 		add(Myprofile);
@@ -176,7 +176,7 @@ public class FriendPanel extends JPanel {
 		
 		myStateLabel = new JLabel(myStateMessage);
 		myStateLabel.setBounds(385, 55, 200, 80);
-		myStateLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
+		myStateLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 		myStateLabel.setBackground(Color.white);
 		myStateLabel.setOpaque(true);
 		add(myStateLabel);
@@ -200,12 +200,12 @@ public class FriendPanel extends JPanel {
 			friendImg.get(i).setOpaque(true);
 			
 			stateLabel.get(i).setBounds(385, 145 + (i * 81), 200, 80);
-			stateLabel.get(i).setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
+			stateLabel.get(i).setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 			stateLabel.get(i).setBackground(Color.white);
 			stateLabel.get(i).setOpaque(true);
 
 			friendLabel.get(i).setBounds(90, 145 + (i * 81), 295, 80);
-			friendLabel.get(i).setFont(new Font("Tmonëª¬ì†Œë¦¬ Black", Font.PLAIN, 20));
+			friendLabel.get(i).setFont(new Font("Tmon¸ó¼Ò¸® Black", Font.PLAIN, 20));
 			friendLabel.get(i).setOpaque(true);
 			friendLabel.get(i).setBackground(Color.WHITE);
 			
@@ -221,12 +221,12 @@ public class FriendPanel extends JPanel {
 				}
 
 				@Override
-				public void mouseReleased(MouseEvent e) { // ì¹œêµ¬ëª©ë¡ì„ ëˆ„ë¥´ë©´ í•´ë‹¹ ì¹œêµ¬ì™€ì˜ ê° í†¡ë°©ì„ ê°œì„¤
+				public void mouseReleased(MouseEvent e) { // Ä£±¸¸ñ·ÏÀ» ´©¸£¸é ÇØ´ç Ä£±¸¿ÍÀÇ °µÅå¹æÀ» °³¼³
 					// TODO Auto-generated method stub
 					if(e.getClickCount()==2) {
 						String friendName = ((JLabel) e.getSource()).getText();
 
-						// ì„œë²„ì—ê²Œ ì±„íŒ…ë°© ìƒì„± ìš”ì²­
+						// ¼­¹ö¿¡°Ô Ã¤ÆÃ¹æ »ı¼º ¿äÃ»
 						controller.send_Message(User.SIGNAL_CREATE_SINGLECHAT + "//" + user_id + "//" + friendName);
 
 					}

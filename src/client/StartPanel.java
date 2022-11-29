@@ -19,11 +19,11 @@ import javax.swing.JScrollPane;
 
 public class StartPanel extends JPanel {
 	
-	public FriendPanel friendPanel; // ì¹œêµ¬ëª©ë¡
+	public FriendPanel friendPanel; // Ä£±¸¸ñ·Ï
 	public ChatPanel chatPanel;
 	public ButtonPanel buttonPanel;
 	public ChatListPanel chatlistPanel;
-	public JLabel friendLabel; // 'ì¹œêµ¬' í…ìŠ¤íŠ¸
+	public JLabel friendLabel; // 'Ä£±¸' ÅØ½ºÆ®
 	// public SettingPanel settingPanel;
 	
 	public MainFrame f;
@@ -33,9 +33,9 @@ public class StartPanel extends JPanel {
 
 		this.f = f;
 		
-		// 'ì¹œêµ¬' í…ìŠ¤íŠ¸
-		// friendLabel = new JLabel("ì¹œêµ¬");
-		// friendLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 18));
+		// 'Ä£±¸' ÅØ½ºÆ®
+		// friendLabel = new JLabel("Ä£±¸");
+		// friendLabel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 18));
 		// friendLabel.setBounds(0, 20, 315, 48);
 		// friendLabel.setBackground(Color.white);
 		
@@ -44,7 +44,7 @@ public class StartPanel extends JPanel {
 		// friendsPanel.setBackground(Color.white);
 		// friendsPanel.add(friendLabel);
 
-		friendPanel = new FriendPanel(f, user_id); // ì¹œêµ¬ ëª©ë¡
+		friendPanel = new FriendPanel(f, user_id); // Ä£±¸ ¸ñ·Ï
 		friendPanel.setBounds(80, 0, 315, 600);
 		friendPanel.setBackground(Color.white);
 

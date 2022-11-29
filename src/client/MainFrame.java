@@ -15,15 +15,15 @@ public class MainFrame extends JFrame {
 	public StartPanel startPanel;
 	public CommandController controller = CommandController.getController();
 
-	//ë©”ë‰´ 1 - ì¹œêµ¬ëª©ë¡ ì°½
+	//¸Ş´º 1 - Ä£±¸¸ñ·Ï Ã¢
 	private JButton friendsBtn;
 	
 
-	//ë©”ë‰´ 2 - ì±„íŒ…ëª©ë¡ ì°½
+	//¸Ş´º 2 - Ã¤ÆÃ¸ñ·Ï Ã¢
 	private JButton chatBtn;
 	
 	public MainFrame(String userID/*, String myStateMessage*/) {
-		setTitle("ìƒìƒí†¡");
+		setTitle("»ó»óÅå");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 600);
 		setResizable(false);
@@ -34,10 +34,10 @@ public class MainFrame extends JFrame {
 		
 		startPanel = new StartPanel(this,userID/*,myStateMessage*/);
 		
-		Dimension frameSize = this.getSize(); // í”„ë ˆì„ ì‚¬ì´ì¦ˆ
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // ëª¨ë‹ˆí„° ì‚¬ì´ì¦ˆ
+		Dimension frameSize = this.getSize(); // ÇÁ·¹ÀÓ »çÀÌÁî
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // ¸ğ´ÏÅÍ »çÀÌÁî
 
-		this.setLocation((screenSize.width - frameSize.width), (screenSize.height - screenSize.height)); // í™”ë©´ ìš°ì¸¡ ìƒë‹¨
+		this.setLocation((screenSize.width - frameSize.width), (screenSize.height - screenSize.height)); // È­¸é ¿ìÃø »ó´Ü
 
 		Container c = getContentPane();
 		c.add(startPanel);

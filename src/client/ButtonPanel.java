@@ -28,30 +28,18 @@ public class ButtonPanel extends JPanel{
 		setLayout(null);
 		setBounds(0, 0, 80, 200);
 		// setBackground(Color.blue);
-
+		
 		
 		friendsBtn = new JButton(menu1);
 		chatBtn = new JButton(menu2);
 		
-		friendsBtn.setBounds(0, 0, 80, 80);
+		friendsBtn.setBounds(12, 35, 60, 50);
 		friendsBtn.setToolTipText("친구");
 		friendsBtn.setBorderPainted(false);
-		// friendsBtn.setForeground(Color.BLACK);
-		// friendsBtn.setBackground(Color.WHITE);
-		// friendsBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		
-		chatBtn.setBounds(0, 100, 80, 80);
+		chatBtn.setBounds(12, 100, 60, 50);
 		chatBtn.setToolTipText("채팅");
 		chatBtn.setBorderPainted(false);
-		// chatBtn.setForeground(Color.BLACK);
-		// chatBtn.setBackground(Color.WHITE);
-		// chatBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		
-		// setBtn.setBounds(400, 0, 200, 50);
-		// setBtn.setForeground(Color.BLACK);
-		// setBtn.setBackground(Color.WHITE);
-		// setBtn.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
-
 
 		f.add(friendsBtn);
 		f.add(chatBtn);

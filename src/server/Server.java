@@ -35,6 +35,7 @@ public class Server extends JFrame{
 	private JPanel contentPane;
 	static JTextArea textArea; //서버 메세지, 클라이언트 메세지 출력 protected??
 	private JTextField txtPortNumber;
+	private final int portNum=30000; //포트번호
 	private JButton btnServerStart;
 	private Server server;
 	private ServerSocket socket; // 서버소켓
@@ -109,7 +110,7 @@ public class Server extends JFrame{
 	}
 	private void start() {
 		try {
-			socket = new ServerSocket(Integer.parseInt(txtPortNumber.getText()));
+			socket = new ServerSocket(portNum);
 			btnServerStart.setText("Chat Server Running..");
 			btnServerStart.setEnabled(false); // 서버를 더이상 실행시키지 못 하게 막는다
 			
@@ -118,6 +119,7 @@ public class Server extends JFrame{
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+			textArea.append("소켓이 이미 사용중입니다...\n");
 		}
 	}
 	

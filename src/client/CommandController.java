@@ -20,7 +20,7 @@ import client.LoginPanel;
 import client.MainFrame;
 import client.StartPanel;
 import client.ChatPanel;
-import client.FriendPanel;
+import client.FriendPanel; 
 
 import server.User;
 

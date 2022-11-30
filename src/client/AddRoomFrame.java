@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 public class AddRoomFrame extends JFrame{
 	
-	private AddFriendPanel friendPanel;
+	private ChatListPanel chatPanel;
 	
 	public AddRoomFrame(String userId) {
 		

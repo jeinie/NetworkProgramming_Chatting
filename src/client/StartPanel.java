@@ -20,11 +20,11 @@ import javax.swing.JScrollPane;
 public class StartPanel extends JPanel {
 	
 	public FriendPanel friendPanel; // 친구목록
-	public ChatPanel chatPanel;
+	public ChatPanel chatPanel; //채팅목록
 	public ButtonPanel buttonPanel;
 	public ChatListPanel chatlistPanel;
 	public JLabel friendLabel; // '친구' 텍스트
-	// public SettingPanel settingPanel;
+	public ProfilePanel profilePanel;
 	
 	public MainFrame f;
 	CommandController controller = CommandController.getController();
@@ -32,29 +32,17 @@ public class StartPanel extends JPanel {
 	public StartPanel(MainFrame f, String user_id /*,String myStateMessage*/) {
 
 		this.f = f;
-		
-		// '친구' 텍스트
-		// friendLabel = new JLabel("친구");
-		// friendLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-		// friendLabel.setBounds(0, 20, 315, 48);
-		// friendLabel.setBackground(Color.white);
-		
-		// JPanel friendsPanel = new JPanel();
-		// friendsPanel.setBounds(80, 0, 315, 48);
-		// friendsPanel.setBackground(Color.white);
-		// friendsPanel.add(friendLabel);
 
 		friendPanel = new FriendPanel(f, user_id); // 친구 목록
 		friendPanel.setBounds(80, 0, 315, 600);
 		friendPanel.setBackground(Color.white);
 
-		chatlistPanel = new ChatListPanel(f);
-		chatlistPanel.setBounds(80, 0, 315, 520);
+		chatlistPanel = new ChatListPanel(f); //채팅 목록
+		chatlistPanel.setBounds(80, 0, 315, 600);
 		buttonPanel = new ButtonPanel(f);
 		
-		// friendPanel.add(friendLabel);
-		// settingPanel = new SettingPanel(user_id/*,String myStateMessage*/);
-		// settingPanel.setBounds(0, 50, 600, 850);
+		profilePanel = new ProfilePanel(user_id/*,String myStateMessage*/);
+		profilePanel.setBounds(80, 0, 315, 600);
 		
 		/*chatlistPanel = new ChatListPanel(f);
 		chatlistPanel.setBounds(0, 50, 600, 850);*/
@@ -62,25 +50,13 @@ public class StartPanel extends JPanel {
 
 		f.add(friendPanel);
 		f.add(buttonPanel);
-		// buttonPanel.setBackground(Color.blue);
 
-		buttonPanel.getChatBtn().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				f.remove(friendPanel);
-				// f.remove(settingPanel);
-				chatlistPanel.setchatList();
-				f.add(chatlistPanel);
-				f.revalidate();
-				f.repaint();
-			}
-		});
-
+		//메뉴1 클릭
 		buttonPanel.getFriendBtn().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				f.remove(chatlistPanel);
-				// f.remove(settingPanel);
+				f.remove(profilePanel);
 				friendPanel.dataSetting();
 				f.add(friendPanel);
 				f.revalidate();
@@ -88,17 +64,31 @@ public class StartPanel extends JPanel {
 
 			}
 		});
-
-		// buttonPanel.getSetBtn().addActionListener(new ActionListener() {
-		// 	@Override
-		// 	public void actionPerformed(ActionEvent e) {
-		// 		f.remove(friendPanel);
-		// 		f.remove(chatlistPanel);
-		// 		f.add(settingPanel);
-		// 		f.revalidate();
-		// 		f.repaint();
-		// 	}
-		// });
+		
+		//메뉴2 클릭
+		buttonPanel.getChatBtn().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				f.remove(friendPanel);
+				f.remove(profilePanel);
+				chatlistPanel.setchatList();
+				f.add(chatlistPanel);
+				f.revalidate();
+				f.repaint();
+			}
+		});
+		
+		//메뉴3 클릭
+		 buttonPanel.getSetBtn().addActionListener(new ActionListener() {
+		 	@Override
+		 	public void actionPerformed(ActionEvent e) {
+		 		f.remove(friendPanel);
+		 		f.remove(chatlistPanel);
+		 		f.add(profilePanel);
+		 		f.revalidate();
+		 		f.repaint();
+		 	}
+		 });
 
 	}
 	

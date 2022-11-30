@@ -4,41 +4,31 @@ import java.util.ArrayList;
 
 public class UserInfo {
 
-	private String nickname;
-	private String password;
+	private String name;
 	private String stateImg;
 	private String stateMsg;
 	private boolean isConnect;//접속중
 	
 	
 	public UserInfo() {
-		nickname="sample";
-		password="1111";
+		name="sample";
 		isConnect = true;
-		stateImg = "happy.png";
-		stateMsg ="userInfo stateMsg";
+		stateImg = "src/img/basic.png";
+		stateMsg ="상태 메세지";
 	}
 	
-	public UserInfo(String nickname) {
-		this.nickname = nickname;
-		stateImg = "happy.png";
-		stateMsg = "userInfo stateMsg";
+	public UserInfo(String name) {
+		this.name = name;
+		stateImg = "src/img/basic.png";
+		stateMsg = "상태 메세지";
 	}
 	
-	public String getPassword() {
-		return password;
+	public String getName() {
+		return name;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public boolean isConnect() {
@@ -48,6 +38,7 @@ public class UserInfo {
 	public void setConnect(boolean isConnect) {
 		this.isConnect = isConnect;
 	}
+
 
 	public String getStateMsg() {
 		return stateMsg;

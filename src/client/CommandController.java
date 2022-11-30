@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 
 import client.ChatFrame;
@@ -129,7 +130,8 @@ public class CommandController {
 								}
 							}
 							else {
-								//이미 있는 방이라고 알림창 띄우기
+								//채팅방이 존재할 경우
+								JOptionPane.showMessageDialog(null, "이미 존재하는 채팅방입니다.");
 								
 							}
 							
@@ -150,7 +152,7 @@ public class CommandController {
 								userLabel.add(new JLabel(userInformation[0]));
 								//-------------------------------------------
 								UserInfo user = new UserInfo();
-								user.setNickname(userInformation[0]);
+								user.setName(userInformation[0]);
 								user.setStateImg(userInformation[1]);
 								user.setStateMsg(userInformation[2]);
 								System.out.println("CommandController->"+userInformation[0]+userInformation[1]+userInformation[2]);
@@ -178,14 +180,14 @@ public class CommandController {
 						}
 						else if(array[0].equals(User.SIGNAL_CHANGE_STATE)) {
 							//유저의 상태이미지나 상태메시지 변경이 있다면 모든 유저들의 화면을 갱신
-							/*User.SIGNAL_CHANGE_STATE+"//"+user.getNickname()+"//"+userName+"//"+stateImg+"//"+stateMsg*/
+							/*User.SIGNAL_CHANGE_STATE+"//"+user.getName()+"//"+userName+"//"+stateImg+"//"+stateMsg*/
 							UserInfo user = searchByUserName(array[2]);
 							onlineUserList.remove(user);
 							UserInfo reUser = new UserInfo(array[2]);
 							reUser.setStateImg(array[3]);
 							reUser.setStateMsg(array[4]);
 							onlineUserList.add(reUser);
-							System.out.println("CommandController->SIGNAL_CHANGE_STATE "+searchByUserName(array[2]).getNickname()+searchByUserName(array[2]).getStateImg()+searchByUserName(array[2]).getStateMsg());
+							System.out.println("CommandController->SIGNAL_CHANGE_STATE "+searchByUserName(array[2]).getName()+searchByUserName(array[2]).getStateImg()+searchByUserName(array[2]).getStateMsg());
 							mainFrameList.get(array[1]).getStartPanel().friendPanel.updateState(array[2],array[3],array[4]);
 							
 						}
@@ -231,7 +233,7 @@ public class CommandController {
 	
 	public UserInfo searchByUserName(String userName) {
 		for(int i=0;i<onlineUserList.size();i++) {
-			if(onlineUserList.get(i).getNickname().equals(userName))
+			if(onlineUserList.get(i).getName().equals(userName))
 				return onlineUserList.get(i);
 		}
 		return null;

@@ -180,7 +180,7 @@ public class Server extends JFrame{
 		User friend = clientManager.searchByUserNameInOnline(friendName);
 	
 		//roomTitle
-		String roomTitle = me.getName()+friend.getName(); //룸타이틀에 시간 추가?
+		String roomTitle = me.getName()+ ","+friend.getName(); //룸타이틀에 시간 추가?
 		if(friend==null) {
 			//이건 해당 친구의 접속이 끊긴 상태라고 하면 될듯
 		}

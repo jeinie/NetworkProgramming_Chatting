@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -36,6 +38,7 @@ public class ChatPanel extends JPanel {
 	private TextField txtWrite;
 	private JButton sendBtn;
 	private JScrollPane chatScroll;
+	public JButton createRoomBtn;
 
 	private String roomTitle;
 	private CommandController controller = CommandController.getController();
@@ -105,7 +108,10 @@ public class ChatPanel extends JPanel {
 			if (e.getSource() == sendBtn || e.getSource() == txtWrite) 
 			{
 				String msg = null;
-				msg = String.format("%s//%s//[%s] %s\n", User.SIGNAL_NOMAL_MSG, roomTitle, name, txtWrite.getText());
+				//msg = String.format("%s//%s//[%s] %s\n", User.SIGNAL_NOMAL_MSG, roomTitle, name, txtWrite.getText());
+				msg = String.format("%s//%s//[%s] %s//%s\n", User.SIGNAL_NOMAL_MSG, roomTitle, name, txtWrite.getText(), name);
+
+				String[] array = msg.split("//");
 				/*
 				 * if(name.equals(LoginPanel.userID)) {//본인이 보내는 메세지면 오른쪽에 출력
 				 * controller.AppendMyText(roomTitle, msg); } else controller.send_Message(msg);
@@ -113,6 +119,23 @@ public class ChatPanel extends JPanel {
 					
 				//채팅을 친 채팅방 이름, 유저네임, 메시지를 서버로 전달
 				controller.send_Message(msg);
+				
+				if(array[2].substring(1,5).equals(LoginPanel.userID)) {
+					 msg.trim(); 
+					 System.out.println("내가보낸메세지");
+					 int len = textPaneChat.getDocument().getLength();
+					 textPaneChat.setCaretPosition(len);
+
+					 Document doc = textPaneChat.getDocument(); SimpleAttributeSet
+					 attributeSet = new SimpleAttributeSet();
+					 StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_RIGHT);
+					 StyleConstants.setForeground(attributeSet, Color.black);
+					 StyleConstants.setBackground(attributeSet, Color.yellow);
+					 ((StyledDocument) doc).setParagraphAttributes(len, 1, attributeSet, false);
+					 
+					 textPaneChat.replaceSelection((msg) + "\n");
+				}
+				
 				//send_Message(msg);
 				txtWrite.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
 				txtWrite.requestFocus(); // 메세지를 보내고 커서를 다시 텍스트 필드로 위치시킨다	

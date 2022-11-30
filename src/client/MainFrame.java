@@ -26,7 +26,7 @@ public class MainFrame extends JFrame {
 		setTitle("상상톡");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 600);
-		setResizable(false);
+		setResizable(true);
 		
 		/*setUndecorated(true);
 		setBackground(new Color(0,0,0,122));*/
@@ -37,7 +37,7 @@ public class MainFrame extends JFrame {
 		Dimension frameSize = this.getSize(); // 프레임 사이즈
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
 
-		this.setLocation((screenSize.width - frameSize.width), (screenSize.height - screenSize.height)); // 화면 우측 상단
+		//this.setLocation((screenSize.width - frameSize.width), (screenSize.height - screenSize.height)); // 화면 우측 상단
 
 		Container c = getContentPane();
 		c.add(startPanel);

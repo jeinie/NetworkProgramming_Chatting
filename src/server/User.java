@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JTextArea;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class User extends Thread {
 	private InputStream is;
@@ -36,7 +41,7 @@ public class User extends Thread {
 	
 	public User(Socket socket, Server server) {
 		name = "newUser";
-		stateImg = "happy.png";
+		stateImg = "src/img/basic.png";
 		stateMsg = "상태 메세지";
 		client_socket = socket;
 		this.server = server;
@@ -165,7 +170,7 @@ public class User extends Thread {
 			
 			for(int i=0;i<friendsList.size();i++) {
 				User user = friendsList.get(i);
-				if(i==friendsList.size()-1) {//마지막 배열  //느낌표는 뭐지..?
+				if(i==friendsList.size()-1) {//마지막 배열 
 					msg+=user.getName()+"!!"+user.getStateImg()+"!!"+user.getStateMsg();
 				}
 				else {

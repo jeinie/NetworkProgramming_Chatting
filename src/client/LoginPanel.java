@@ -42,7 +42,7 @@ public class LoginPanel extends JPanel {
 	private LoginFrame lf;
 	private String id;
 	private StartPanel startPanel;
-	final String logoImg = "skyLogo.png";
+	final String logo = "src/img/sangsang.png";
 	private JButton btnNewButton;
 
 	private JLabel Logo;
@@ -54,14 +54,10 @@ public class LoginPanel extends JPanel {
 		setLayout(null);
 		setSize(400, 600);
 
-		Logo = new JLabel(new ImageIcon(logoImg));
-		Logo.setBounds(0, 10, 600, 400);
+		Logo = new JLabel(new ImageIcon(logo));
+		Logo.setBounds(0,0, 380, 380);
 		Logo.setOpaque(false);
 		lf.add(Logo);
-
-		/*
-		 * JPanel login = new JPanel(); login.setBounds(150, 450, 300, 300);
-		 */
 
 		JLabel idLabel = new JLabel("사용자 이름 ");
 		idLabel.setBounds(130, 300, 120, 30);
@@ -83,7 +79,6 @@ public class LoginPanel extends JPanel {
 	public void start() { // 액션이벤트 지정 메소드
 		Myaction action = new Myaction();
 		btnNewButton.addActionListener(action); // 내부클래스로 액션 리스너를 상속받은 클래스로
-		// tf_PW.addActionListener(action);
 		userName.addActionListener(action);
 	}
 
@@ -126,12 +121,11 @@ public class LoginPanel extends JPanel {
 		} catch (UnknownHostException e) {
 
 		} catch (IOException e) {
-			// textArea.append("소켓 접속 에러!!\n");
 			System.out.println("Client 소켓 접속 에러!!\n");
 		}
 	}
 
-	public void Connection() { // 실직 적인 메소드 연결부분
+	public void Connection() { // 실직적인 메소드 연결부분
 		try { // 스트림 설정
 			is = socket.getInputStream();
 			dis = new DataInputStream(is);

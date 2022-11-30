@@ -18,20 +18,21 @@ public class ButtonPanel extends JPanel{
 	ImageIcon menu2 = new ImageIcon("src/img/menu2.png");
 	JButton chatBtn;
 
-	private MainFrame f;
+	//메뉴 3 - 프로필 변경 창
+	ImageIcon menu3 = new ImageIcon("src/img/setting.png");
+	JButton setBtn;
 
-	//private JButton setBtn = new JButton("Set");
+	private MainFrame f;
 	
 	public ButtonPanel(MainFrame f) {
 		this.f = f;
 		
 		setLayout(null);
-		setBounds(0, 0, 80, 200);
-		// setBackground(Color.blue);
-		
+		setBounds(0, 0, 80, 200);		
 		
 		friendsBtn = new JButton(menu1);
 		chatBtn = new JButton(menu2);
+		setBtn = new JButton(menu3);
 		
 		friendsBtn.setBounds(12, 35, 60, 50);
 		friendsBtn.setToolTipText("친구");
@@ -40,10 +41,14 @@ public class ButtonPanel extends JPanel{
 		chatBtn.setBounds(12, 100, 60, 50);
 		chatBtn.setToolTipText("채팅");
 		chatBtn.setBorderPainted(false);
+		
+		setBtn.setBounds(15, 490, 49, 50); //y:165
+		setBtn.setToolTipText("프로필 변경");
+		setBtn.setBorderPainted(false);
 
 		f.add(friendsBtn);
 		f.add(chatBtn);
-		// f.add(setBtn);
+		f.add(setBtn);
 	}
 	
 	public JButton getFriendBtn() {
@@ -54,7 +59,7 @@ public class ButtonPanel extends JPanel{
 		return chatBtn;
 	}
 	
-	// public JButton getSetBtn() {
-	// 	return setBtn;
-	// }
+	 public JButton getSetBtn() {
+	 	return setBtn;
+	 }
 }

@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
 
 import server.User;
 
@@ -27,24 +28,28 @@ public class FriendPanel extends JPanel {
 
 	public ArrayList<UserInfo> userList;
 	public ArrayList<UserInfo> friendList;
-	//private Vector<String> friendVector = new Vector<String>();
-	public List<JLabel> friendLabel = new ArrayList<JLabel>();
+	private Vector<String> friendVector = new Vector<String>();
+	public List<JLabel> friendName = new ArrayList<JLabel>();
 	public JLabel Myprofile;
 	public List<JLabel> friendImg = new ArrayList<JLabel>();
 	public JLabel MyImg;
 	public TextField searchFriend;
 	public JScrollPane friendScroll;
 	public JButton createRoomBtn;
-	
+	ImageIcon addRoom = new ImageIcon("src/img/addRoom.png");
 	public JButton testBtn;
+	private JLabel line;
+	private LineBorder lb = new LineBorder(Color.LIGHT_GRAY, 1, true); //테두리
 	
 	public String myStateMessage;
 	
 	public List<JLabel> stateLabel = new ArrayList<JLabel>();
 	public JLabel myStateLabel;
 
-	final String defaultImg = "src/friendListImg/happy.png";
-	private String myStateImage = "happy.png";
+	final String defaultImg = "src/img/basic.png";
+	ImageIcon myStateImg = new ImageIcon("src/img/basic.png");
+	JButton MyImgBtn;
+	private String myStateImage = "src/img/basic.png";
 	public CommandController controller = CommandController.getController();
 	
 	String user_id;
@@ -56,21 +61,27 @@ public class FriendPanel extends JPanel {
 		this.f = f;
 
 		setLayout(null);
-		// setSize(600, 850);
 		setBackground(new Color(168, 218, 255));
 		
 		//유저 정보 받아와서 라벨생성,붙이기
 		dataSetting();
 		
 		// '친구' 텍스트 붙이기
-		JLabel friendLabel = new JLabel("친구");
-		friendLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-		friendLabel.setBounds(23, 23, 76, 34);
-		add(friendLabel);
+		JLabel friendName = new JLabel("친구");
+		friendName.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+		friendName.setBounds(23, 23, 76, 34);
+		add(friendName);
+		
+		line = new JLabel();
+		line.setBounds(10, 135, 280, 1);
+		line.setOpaque(true);
+		line.setBackground(new Color(211, 211, 211));
+		add(line);
 
-		createRoomBtn = new JButton("채팅방");
-		createRoomBtn.setBounds(260, 10, 48, 48);
+		createRoomBtn = new JButton(addRoom);
+		createRoomBtn.setBounds(240, 17, 40, 40);
 		createRoomBtn.setBackground(new Color(255,225,231));
+		createRoomBtn.setBorderPainted(false);
 		add(createRoomBtn);
 		
 		createRoomBtn.addActionListener(new ActionListener() {
@@ -81,7 +92,6 @@ public class FriendPanel extends JPanel {
 				
 			}
 		});
-
 	}
 	
 	//새 유저가 접속해서 화면갱신
@@ -90,45 +100,32 @@ public class FriendPanel extends JPanel {
 		friendList.add(newUser);
 		setFriendList(friendList);
 		repaint();
-		System.out.println("friendPanel-> update 새 유저"+newUser.getNickname());
+		System.out.println("새로운 사용자 접속: "+newUser.getName());
 		System.out.println("friendPanel-> update 친구 수"+friendList.size());
 		
 	}
 	
 	//유저가 상태를 변경해서 화면갱신
-	public void updateState(String userName,String stateImag,String stateMsg) {
+	public void updateState(String userName,String stateImg,String stateMsg) {
 		for(int i=0;i<userList.size();i++) {
 			UserInfo user = userList.get(i);
-			if(user.getNickname().equals(userName)) {
+			if(user.getName().equals(userName)) {
 				userList.remove(user);
 				UserInfo reUser = new UserInfo(userName);
-				reUser.setStateImg(stateImag);
+				reUser.setStateImg(stateImg);
 				reUser.setStateMsg(stateMsg);
 				userList.add(reUser);
-				System.out.println("friendPanel->updateState userName="+reUser.getNickname());
+				System.out.println("friendPanel->updateState userName="+reUser.getName());
 				System.out.println("updateState result="+reUser.getStateImg()+","+reUser.getStateMsg());
 			}
 		}
 		
-		removeAll();//혹시..?이거 안하면 라벨이쌓여서 안보이는듯!
-		//모두 지웠으니 단체방 만들기 버튼 다시 붙이기
-		createRoomBtn = new JButton("채팅방 만들기");
-		createRoomBtn.setBounds(0, 1, 600, 40);
-		createRoomBtn.setBackground(new Color(255,225,231));
-		add(createRoomBtn);
-		
-		createRoomBtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AddRoomFrame rf = new AddRoomFrame(user_id);
-				
-			}
-		});
+		removeAll();
 		seperate();
 		setMyField();
 		setFriendList(friendList);
 		repaint();
+		
 	}
 	
 	public void dataSetting() {
@@ -152,8 +149,8 @@ public class FriendPanel extends JPanel {
 		userList = controller.getOnlineUserList();
 		for (int i = 0; i < userList.size(); i++) {
 			UserInfo user = userList.get(i);
-			if (user.getNickname().equals(user_id)) { // 본인
-				myStateImage = "src/friendListImg/" + user.getStateImg();
+			if (user.getName().equals(user_id)) { // 본인
+				myStateImage = user.getStateImg();
 				myStateMessage = user.getStateMsg();
 			} else { //본인이 아님=>친구
 				friendList.add(user);
@@ -161,59 +158,71 @@ public class FriendPanel extends JPanel {
 		}
 	}
 	public void setMyField() {
-		Myprofile = new JLabel(user_id);
-		Myprofile.setBounds(90, 55, 295, 80);
-		Myprofile.setFont(new Font("Tmon몬소리 Black", Font.PLAIN, 20));
-		Myprofile.setOpaque(true);
-		Myprofile.setBackground(Color.WHITE);
-		add(Myprofile);
 		
+		//사용자 프로필 사진
+		//MyImg = new JLabel(myStateImg);
 		MyImg = new JLabel(new ImageIcon(myStateImage));
-		MyImg.setBounds(10, 55, 80, 80);
+		MyImg.setBounds(10, 75, 50, 50);
 		MyImg.setOpaque(true);
-		MyImg.setBackground(Color.WHITE);
+		MyImg.setBorder(lb);
+		MyImg.setBackground(Color.white);
 		add(MyImg);
 		
+		//사용자 이름
+		Myprofile = new JLabel(user_id);
+		Myprofile.setBounds(70, 75, 130, 50);
+		Myprofile.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+		Myprofile.setOpaque(true);
+		Myprofile.setBackground(Color.white);
+		add(Myprofile);
+			
+		//사용자 상태 메세지
 		myStateLabel = new JLabel(myStateMessage);
-		myStateLabel.setBounds(385, 55, 200, 80);
-		myStateLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		myStateLabel.setBounds(200, 75, 90, 50);
+		myStateLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 11));
 		myStateLabel.setBackground(Color.white);
 		myStateLabel.setOpaque(true);
 		add(myStateLabel);
 	}
 	
 	public void setFriendList(ArrayList<UserInfo> friendList) {
-		friendLabel.clear();
+		friendName.clear();
 		friendImg.clear();
 		stateLabel.clear();
 	
 		for (i = 0; i < friendList.size(); i++) {
 			UserInfo user = friendList.get(i);
-			System.out.println("friendList="+user.getNickname()+"/"+user.getStateImg()+"/"+user.getStateMsg());
+			System.out.println("friendList="+user.getName()+"/"+user.getStateImg()+"/"+user.getStateMsg());
 			
-			friendLabel.add(new JLabel(user.getNickname()));
-			friendImg.add(new JLabel(new ImageIcon("src/friendListImg/"+user.getStateImg())));
+	
+			friendImg.add(new JLabel(new ImageIcon(user.getStateImg())));
+			friendName.add(new JLabel(user.getName()));
 			stateLabel.add(new JLabel(user.getStateMsg()));
 			
-			friendImg.get(i).setBounds(10, 145 + (i * 81), 80, 80);
+
+			//친구 프로필 사진
+			friendImg.get(i).setBounds(10, 145 + (i * 55), 50, 50);
 			friendImg.get(i).setBackground(Color.white);
-			friendImg.get(i).setOpaque(true);
+			friendImg.get(i).setOpaque(true); 
+			friendImg.get(i).setBorder(lb);
 			
-			stateLabel.get(i).setBounds(385, 145 + (i * 81), 200, 80);
-			stateLabel.get(i).setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+			//친구 이름
+			friendName.get(i).setBounds(70, 145 + (i * 55), 130, 50);
+			friendName.get(i).setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+			friendName.get(i).setOpaque(true);
+			friendName.get(i).setBackground(Color.white);
+			
+			//친구 상메
+			stateLabel.get(i).setBounds(200, 145 + (i * 55), 90, 50);
+			stateLabel.get(i).setFont(new Font("맑은 고딕", Font.PLAIN, 11));
 			stateLabel.get(i).setBackground(Color.white);
 			stateLabel.get(i).setOpaque(true);
 
-			friendLabel.get(i).setBounds(90, 145 + (i * 81), 295, 80);
-			friendLabel.get(i).setFont(new Font("Tmon몬소리 Black", Font.PLAIN, 20));
-			friendLabel.get(i).setOpaque(true);
-			friendLabel.get(i).setBackground(Color.WHITE);
-			
-			add(friendLabel.get(i));
+			add(friendName.get(i));
 			add(friendImg.get(i));
 			add(stateLabel.get(i));
 
-			friendLabel.get(i).addMouseListener(new MouseListener() {
+			friendName.get(i).addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub

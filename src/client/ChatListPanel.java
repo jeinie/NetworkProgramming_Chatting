@@ -24,7 +24,7 @@ public class ChatListPanel extends JPanel {
 
 	private List<JLabel> chattingRoomList = new ArrayList<JLabel>();
 	private List<JLabel> chatImg = new ArrayList<JLabel>();
-	String chat = "chat.png";
+	String chat = "src/img/basic.png";
 
 	private CommandController controller = CommandController.getController();
 
@@ -33,9 +33,15 @@ public class ChatListPanel extends JPanel {
 	public ChatListPanel(MainFrame f) {
 		this.f = f;
 		setLayout(null);
-		setSize(600, 850);
-		setBackground(new Color(168, 218, 255));
+		setSize(400, 600);
+		setBackground(Color.white);
 		
+		// '채팅' 텍스트 붙이기
+		JLabel chatLabel = new JLabel("채팅");
+		chatLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+		chatLabel.setBounds(23, 23, 76, 34);
+		add(chatLabel);
+				
 		setchatList();
 	}
 
@@ -48,15 +54,15 @@ public class ChatListPanel extends JPanel {
 
 		for (JLabel room : chattingRoomList) {
 			chatImg.add(new JLabel(new ImageIcon(chat)));
-			chatImg.get(i).setBounds(10, 15 + (i * 81), 80, 80);
+			chatImg.get(i).setBounds(10, 75 + (i * 55), 50, 50);
 			chatImg.get(i).setOpaque(true);
 			chatImg.get(i).setBackground(Color.white);
 			add(chatImg.get(i));
 			
-			room.setFont(new Font("Tmon몬소리 Black", Font.PLAIN, 20));
+			room.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 			room.setOpaque(true);
 			room.setBackground(Color.WHITE);
-			room.setBounds(90, 15 + (i * 81), 495, 80);
+			room.setBounds(70, 75 + (i * 55), 200, 50);
 			add(room);
 			i++;
 
@@ -68,16 +74,16 @@ public class ChatListPanel extends JPanel {
 				}
 
 				@Override
-				public void mouseReleased(MouseEvent e) { // 친구목록을 누르면 해당 친구와의
-					if(e.getClickCount()==2) {
-						String roomName = room.getText();
-						System.out.println("ChatListPanel-> roomName = "+roomName);
+				public void mouseReleased(MouseEvent e) { // 친구목록을 누르면 해당 친구와의 
+					if(e.getClickCount()==1) { //1 ? 2? 고민
+						String roomTitle = room.getText();
+						System.out.println("ChatListPanel-> roomTitle = "+roomTitle);
 						
-						ChatFrame chattingroom = new ChatFrame(roomName);
-						JTextPane temp = controller.getChattingRoomList().get(roomName);
+						ChatFrame chattingroom = new ChatFrame(roomTitle);
+						JTextPane temp = controller.getChattingRoomList().get(roomTitle);
 						chattingroom.getChatPanel().getTextPaneChat().setText(temp.getText());
 						controller.getChattingRoomList().remove(temp);
-						controller.getChattingRoomList().put(roomName, chattingroom.getChatPanel().getTextPaneChat());
+						controller.getChattingRoomList().put(roomTitle, chattingroom.getChatPanel().getTextPaneChat());
 						
 						chattingroom.repaint();
 					}

@@ -10,11 +10,16 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import client.ChatFrame;
 import client.LoginPanel;
@@ -40,11 +45,11 @@ public class CommandController {
 	private List<JLabel> ChatRoom = new ArrayList<JLabel>();
 	private List<JLabel> userLabel = new ArrayList<JLabel>();
 	private ArrayList<UserInfo> onlineUserList = new ArrayList<UserInfo>();
-	
+	private String userId;
+
 	public static CommandController controller;
 	private CommandController(){
 		//클라이언트가 서버로부터 메시지를 수신하는 스레드 생성후 실행
-		//Singleton패턴이라 이부분이 한번만 실행됨=>한 유저당 스레드 하나
 		RecieveMassage();
 	}
 	public static CommandController getController() {
@@ -52,15 +57,15 @@ public class CommandController {
 			controller = new CommandController();
 		return controller;
 	}
-	public void append_Message(String roomName, String str) {//chatPanel의 TextArea에 글자 붙임
-		
-		setTextPane(chattingRoomList.get(roomName)); //룸이름을 key로 텍스트를 붙일 텍스트팬을 해쉬맵에서 찾아서 지정
+
+	//chatPanel의 TextArea에 글자 붙임
+	public void append_My_Message(String roomName, String str) { // 오른쪽에 나와야 함
+		// 채팅방 찾고
+		setTextPane(chattingRoomList.get(roomName));
 		
 		if(textPane==null) {
 			//초대된 사람이라 채팅방에 입장은 했지만 화면이 안떴을때
 			System.out.println("Commandcontroller -> textPane==null");
-			//ChatFrame a = new ChatFrame(friendName);
-			
 		}
 		else {
 			/*
@@ -72,12 +77,52 @@ public class CommandController {
 			//System.out.println("len = "+len+"\nstr = "+str);
 			*/
 			
-			String temp = textPane.getText()+"\n"+str;
-			textPane.setText(temp);
+			// String temp = textPane.getText()+"\n"+str;
+			// textPane.setText(temp);
+
+			StyledDocument doc = textPane.getStyledDocument();
+			SimpleAttributeSet right = new SimpleAttributeSet();
+			StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
+			StyleConstants.setForeground(right, Color.BLACK);
+			doc.setParagraphAttributes(doc.getLength(), 1, right, false);
+			try {
+				doc.insertString(doc.getLength(), str+"\n\n", right );
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+			
+			int len = textPane.getDocument().getLength(); // same value as
+			textPane.setCaretPosition(len); // place caret at the end (with no selection)			
+		}
+			
+	}
+
+	public void append_Message(String roomName, String str) {
+		
+		setTextPane(chattingRoomList.get(roomName)); 
+
+		// [user2] hello
+		str = str.split(" ")[0] + "\n" + str.split(" ")[1];
+		
+		if(textPane==null) {
+			//초대된 사람이라 채팅방에 입장은 했지만 화면이 안떴을때
+			System.out.println("Commandcontroller -> textPane==null");			
+		}
+		else {
+			StyledDocument doc = textPane.getStyledDocument();
+			SimpleAttributeSet left = new SimpleAttributeSet();
+			StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
+			StyleConstants.setForeground(left, Color.BLACK);
+			doc.setParagraphAttributes(doc.getLength(), 1, left, false);
+			try {
+				doc.insertString(doc.getLength(), str+"\n\n", left );
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			int len = textPane.getDocument().getLength(); // same value as
 			textPane.setCaretPosition(len); // place caret at the end (with no selection)
-			
 		}
 			
 	}
@@ -89,13 +134,12 @@ public class CommandController {
 	}
 	
 	public void RecieveMassage() { // 스레드를 돌려서 서버로부터 메세지를 수신
-		try { // 스트림 설정
+		try {
 			is = socket.getInputStream();
 			dis = new DataInputStream(is);
 			os = socket.getOutputStream();
 			dos = new DataOutputStream(os);
 		} catch (IOException e) {
-			//textArea.append("스트림 설정 에러!!\n");
 			System.out.println("스트림 설정 에러!!\n");
 		}
 		Thread th = new Thread(new Runnable() { //서버에서 메시지 받는 스레드
@@ -114,8 +158,6 @@ public class CommandController {
 						
 						//채팅방 생성 완료시->채팅방 이름을 전달받아 채팅방의 모든 인원 채팅방 띄우기(강제)
 						if(array[0].equals(User.SIGNAL_CREATE_ROOM_COMPLETE)) {
-							/*String chattingRoomName = array[1];//채팅방이름
-							setRoomName(chattingRoomName);*/
 							roomName = array[1];
 							if(chattingRoomList.get(roomName)==null) { //처음 생성되는 방
 								System.out.println("CommandControll -> roomName "+roomName);
@@ -139,11 +181,25 @@ public class CommandController {
 						else if(array[0].equals(User.SIGNAL_NOMAL_MSG)) {
 							//String message = User.SIGNAL_NOMAL_MSG+"//"+roomName+"//"+str;
 							roomName= array[1];
-							String str = array[2];
-							append_Message(roomName,str + "\n");
+							// array[2] = [user1]
+							// [] 제거
+							String charsToRemove = "[]";
+							String who = array[2].split(" ")[0]; // 누가 보냈는지 / 나? 아님 상대방?
+							for (char c : charsToRemove.toCharArray()) {
+								who = who.replace(String.valueOf(c), "");
+							}
+							String str = array[2].split(" ")[1]; // 보낸 메시지
+
+							System.out.println("보낸 사람: " + who);
+							System.out.println("현재 접속자: " + userId);
+							if (who.equals(userId)) { // 내가 보낸 메시지이면
+								append_My_Message(roomName, str);
+							} else { // 상대방이 보낸 메시지이면
+								str = array[2];
+								append_Message(roomName,str);
+							}
 						}
 						else if(array[0].equals(User.SIGNAL_ONLINE_USER_LIST)) {
-							//msg =  Signal//유저이름!!상태이미지!!상태메시지//유저이름!!상태이미지!!상태메시지....
 							userLabel.clear();
 							onlineUserList.clear(); //접속중인 유저 리스트 초기화
 							for(int i=1; i<array.length;i++) {
@@ -160,8 +216,6 @@ public class CommandController {
 							}
 						}
 						else if(array[0].equals(User.SIGNAL_NEW_USER_CONNECT)) {
-							//새로운 유저가 추가 array[1]:갱신 대상 유저 이름 array[2]:새 유저이름 
-							//기존 유저들의 frendList에 새로운 유저를 추가(갱신X)
 							System.out.println("CommandController->SIGNAL_NEW_USER_CONNECT userName="+array[2]);
 							//friendPanel의 dataSetting을 호출해야함
 							mainFrameList.get(array[1]).getStartPanel().friendPanel.update(array[2]);
@@ -197,7 +251,6 @@ public class CommandController {
 		
 						
 					} catch (IOException e) {
-						//textArea.append("메세지 수신 에러!!\n");
 						append_Message(roomName,"메세지 수신 에러!!\n");
 						// 서버와 소켓 통신에 문제가 생겼을 경우 소켓을 닫는다
 						try {
@@ -228,6 +281,7 @@ public class CommandController {
 	}
 
 	public void saveMainFrame(String userId,MainFrame mainFrame) {
+		this.userId = userId;
 		mainFrameList.put(userId, mainFrame);
 	}
 	

@@ -33,15 +33,15 @@ public class Server extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	static JTextArea textArea; //¼­¹ö ¸Ş¼¼Áö, Å¬¶óÀÌ¾ğÆ® ¸Ş¼¼Áö Ãâ·Â protected??
+	static JTextArea textArea; //ì„œë²„ ë©”ì„¸ì§€, í´ë¼ì´ì–¸íŠ¸ ë©”ì„¸ì§€ ì¶œë ¥ protected??
 	private JTextField txtPortNumber;
-	private final int portNum=30000; //Æ÷Æ®¹øÈ£
+	private final int portNum=30000; //í¬íŠ¸ë²ˆí˜¸
 	private JButton btnServerStart;
 	private Server server;
-	private ServerSocket socket; // ¼­¹ö¼ÒÄÏ
-	private Socket client_socket; // accept() ¿¡¼­ »ı¼ºµÈ client ¼ÒÄÏ //¿¬°á¼ÒÄÏ
-	//private Vector UserVec = new Vector(); // ¿¬°áµÈ »ç¿ëÀÚ¸¦ ÀúÀåÇÒ º¤ÅÍ
-	private static final int BUF_LEN = 128; // Windows Ã³·³ BUF_LEN À» Á¤ÀÇ
+	private ServerSocket socket; // ì„œë²„ì†Œì¼“
+	private Socket client_socket; // accept() ì—ì„œ ìƒì„±ëœ client ì†Œì¼“ //ì—°ê²°ì†Œì¼“
+	//private Vector UserVec = new Vector(); // ì—°ê²°ëœ ì‚¬ìš©ìë¥¼ ì €ì¥í•  ë²¡í„°
+	private static final int BUF_LEN = 128; // Windows ì²˜ëŸ¼ BUF_LEN ì„ ì •ì˜
 	
 	private ClientManager clientManager;
 	private RoomManager roomManager;
@@ -62,7 +62,7 @@ public class Server extends JFrame{
 
 	public Server() {
 		server = this;
-		init(); //È­¸é±¸¼º
+		init(); //í™”ë©´êµ¬ì„±
 		clientManager = new ClientManager(server);
 		roomManager = new RoomManager(server);
 	}
@@ -94,7 +94,7 @@ public class Server extends JFrame{
 		txtPortNumber.setBounds(100, 310, 190, 25);
 		contentPane.add(txtPortNumber);
 		txtPortNumber.setColumns(10);
-		txtPortNumber.setEnabled(false);  // ´õÀÌ»ó Æ÷Æ®¹øÈ£ ¼öÁ¤ ¸øÇÏ°Ô ¸·´Â´Ù
+		txtPortNumber.setEnabled(false);  // ë”ì´ìƒ í¬íŠ¸ë²ˆí˜¸ ìˆ˜ì • ëª»í•˜ê²Œ ë§‰ëŠ”ë‹¤
 		
 		btnServerStart = new JButton("Server Start");
 		Action action = new Action();
@@ -112,35 +112,35 @@ public class Server extends JFrame{
 		try {
 			socket = new ServerSocket(portNum);
 			btnServerStart.setText("Chat Server Running..");
-			btnServerStart.setEnabled(false); // ¼­¹ö¸¦ ´õÀÌ»ó ½ÇÇà½ÃÅ°Áö ¸ø ÇÏ°Ô ¸·´Â´Ù
+			btnServerStart.setEnabled(false); // ì„œë²„ë¥¼ ë”ì´ìƒ ì‹¤í–‰ì‹œí‚¤ì§€ ëª» í•˜ê²Œ ë§‰ëŠ”ë‹¤
 			
-			//socketÀÌ ¿­¸®¸é
+			//socketì´ ì—´ë¦¬ë©´
 			if(socket != null) Connect(); 
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			textArea.append("¼ÒÄÏÀÌ ÀÌ¹Ì »ç¿ëÁßÀÔ´Ï´Ù...\n");
+			textArea.append("ì†Œì¼“ì´ ì´ë¯¸ ì‚¬ìš©ì¤‘ì…ë‹ˆë‹¤...\n");
 		}
 	}
 	
 	private void Connect() {
-		Thread th = new Thread(new Runnable() { // »ç¿ëÀÚ Á¢¼ÓÀ» ¹ŞÀ» ½º·¹µå
+		Thread th = new Thread(new Runnable() { // ì‚¬ìš©ì ì ‘ì†ì„ ë°›ì„ ìŠ¤ë ˆë“œ
 			@Override
 			public void run() {
-				while (true) { // »ç¿ëÀÚ Á¢¼ÓÀ» °è¼ÓÇØ¼­ ¹Ş±â À§ÇØ while¹®
+				while (true) { // ì‚¬ìš©ì ì ‘ì†ì„ ê³„ì†í•´ì„œ ë°›ê¸° ìœ„í•´ whileë¬¸
 					try {
 						textArea.append("Waiting new clients ...");
-						client_socket = socket.accept(); // accept°¡ ÀÏ¾î³ª±â Àü±îÁö´Â ¹«ÇÑ ´ë±âÁß
-						textArea.append("»ç¿ëÀÚ Á¢¼Ó!!\n");
+						client_socket = socket.accept(); // acceptê°€ ì¼ì–´ë‚˜ê¸° ì „ê¹Œì§€ëŠ” ë¬´í•œ ëŒ€ê¸°ì¤‘
+						textArea.append("ì‚¬ìš©ì ì ‘ì†!!\n");
 						
-						//»ç¿ëÀÚ Á¢¼ÓÀ» ¸Å´ÏÀú¿¡°Ô ¾Ë¸²
-						//»ç¿ëÀÚ ¸ñ·Ï¿¡ Ãß°¡, ½º·¹µå ½ÇÇàÀ» À§ÀÓ 
+						//ì‚¬ìš©ì ì ‘ì†ì„ ë§¤ë‹ˆì €ì—ê²Œ ì•Œë¦¼
+						//ì‚¬ìš©ì ëª©ë¡ì— ì¶”ê°€, ìŠ¤ë ˆë“œ ì‹¤í–‰ì„ ìœ„ì„ 
 						clientManager.insertUser(client_socket);
 						//usersUpdateFriendList(); 
 						 
 						/*ClientManager client = new ClientManager(socket, server);
-						serverClientList.add(client);// ÇØ´ç º¤ÅÍ¿¡ »ç¿ëÀÚ °´Ã¼¸¦ Ãß°¡
-						client.start(); // ¸¸µç °´Ã¼ÀÇ ½º·¹µå ½ÇÇà*/		
+						serverClientList.add(client);// í•´ë‹¹ ë²¡í„°ì— ì‚¬ìš©ì ê°ì²´ë¥¼ ì¶”ê°€
+						client.start(); // ë§Œë“  ê°ì²´ì˜ ìŠ¤ë ˆë“œ ì‹¤í–‰*/		
 						} catch (IOException e) {
 						textArea.append("accept error\n");
 					} 
@@ -157,19 +157,19 @@ public class Server extends JFrame{
 		
 	}
 	
-	/*¸Ş½ÃÁö Ã³¸®*/
+	/*ë©”ì‹œì§€ ì²˜ë¦¬*/
 	public void broadcast(User user, String str, String roomTitle) {
-		//RoomManager¿¡°Ô ºê·ÎµåÄ³½ºÆÃ ¸í·É -> RoomÀÌ ÀÚ½Å¿¡°Ô ¼ÓÇÑ »ç¿ëÀÚµé¿¡°Ô ºê·ÎµåÄ³½ºÆÃ
+		//RoomManagerì—ê²Œ ë¸Œë¡œë“œìºìŠ¤íŒ… ëª…ë ¹ -> Roomì´ ìì‹ ì—ê²Œ ì†í•œ ì‚¬ìš©ìë“¤ì—ê²Œ ë¸Œë¡œë“œìºìŠ¤íŒ…
 		roomManager.broadcast(user, str, roomTitle);
 	}
 	
-	//»õ À¯Àú°¡ Ãß°¡µÉ °æ¿ì ±âÁ¸ÀÇ À¯ÀúµéÀÇ ¸®½ºÆ®¸¦ ¾÷µ¥ÀÌÆ®
+	//ìƒˆ ìœ ì €ê°€ ì¶”ê°€ë  ê²½ìš° ê¸°ì¡´ì˜ ìœ ì €ë“¤ì˜ ë¦¬ìŠ¤íŠ¸ë¥¼ ì—…ë°ì´íŠ¸
 	public void usersUpdateFriendList(String newUser) {
 		clientManager.usersUpdateFriendList(newUser);
 	}
 	
 		
-	//À¯ÀúÀÇ »óÅÂÀÌ¹ÌÁö³ª »óÅÂ¸Ş½ÃÁö º¯°æÀÌ ÀÖ´Ù¸é ¸ğµç À¯ÀúµéÀÇ È­¸éÀ» °»½Å
+	//ìœ ì €ì˜ ìƒíƒœì´ë¯¸ì§€ë‚˜ ìƒíƒœë©”ì‹œì§€ ë³€ê²½ì´ ìˆë‹¤ë©´ ëª¨ë“  ìœ ì €ë“¤ì˜ í™”ë©´ì„ ê°±ì‹ 
 	public void userInfoUpdate(String userName,String stateImg,String stateMsg) {
 		clientManager.userInfoUpdate(userName,stateImg,stateMsg);
 	}
@@ -180,11 +180,11 @@ public class Server extends JFrame{
 		User friend = clientManager.searchByUserNameInOnline(friendName);
 	
 		//roomTitle
-		String roomTitle = me.getName()+ ","+friend.getName(); //·ëÅ¸ÀÌÆ²¿¡ ½Ã°£ Ãß°¡?
+		String roomTitle = me.getName()+ ","+friend.getName(); //ë£¸íƒ€ì´í‹€ì— ì‹œê°„ ì¶”ê°€?
 		if(friend==null) {
-			//ÀÌ°Ç ÇØ´ç Ä£±¸ÀÇ Á¢¼ÓÀÌ ²÷±ä »óÅÂ¶ó°í ÇÏ¸é µÉµí
+			//ì´ê±´ í•´ë‹¹ ì¹œêµ¬ì˜ ì ‘ì†ì´ ëŠê¸´ ìƒíƒœë¼ê³  í•˜ë©´ ë ë“¯
 		}
-		else { //¿©±ä Á¢¼ÓÁß!
+		else { //ì—¬ê¸´ ì ‘ì†ì¤‘!
 			users.add(me);
 			users.add(friend);
 			ChattingRoom newRoom = roomManager.createRoom(users);
@@ -203,15 +203,15 @@ public class Server extends JFrame{
 			User user = clientManager.searchByUserNameInOnline(mutiChatUserList.get(i));
 			users.add(user);
 			
-			//roomTitle¿¡ ½Ã°£Ãß°¡?
-			if(i == mutiChatUserList.size()-1)//¸¶Áö¸· À¯ÀúÀÌ¸§
+			//roomTitleì— ì‹œê°„ì¶”ê°€?
+			if(i == mutiChatUserList.size()-1)//ë§ˆì§€ë§‰ ìœ ì €ì´ë¦„
 				roomTitle += user.getName();
 			else
 				roomTitle += user.getName()+",";
 		}
 		ChattingRoom newRoom = roomManager.createRoom(users);
 		newRoom.setRoomTitle(roomTitle);
-		for(int i=0;i<users.size();i++) { //Âü¿©ÇÏ´Â ¸ğµç À¯Àúµé¿¡°Ô Ã¤ÆÃ¹æÀ» ¶ç¿öÁÜ
+		for(int i=0;i<users.size();i++) { //ì°¸ì—¬í•˜ëŠ” ëª¨ë“  ìœ ì €ë“¤ì—ê²Œ ì±„íŒ…ë°©ì„ ë„ì›Œì¤Œ
 			users.get(i).sendMsg(User.SIGNAL_CREATE_ROOM_COMPLETE+"//"+roomTitle);
 		}
 		
@@ -226,7 +226,7 @@ public class Server extends JFrame{
 		return existingUser;
 	}
 
-	public ArrayList<ChattingRoom> getJoinRooms(String userName) {//ÀÌ°Ç ÃÊ´ëÀÎ°Ç°¡ ?
+	public ArrayList<ChattingRoom> getJoinRooms(String userName) {//ì´ê±´ ì´ˆëŒ€ì¸ê±´ê°€ ?
 		
 		return roomManager.getJoinRooms(userName);
 	}

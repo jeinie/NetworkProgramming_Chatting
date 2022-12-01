@@ -5,24 +5,24 @@ import java.util.ArrayList;
 public class ChattingRoom {
 
 	private ArrayList<User> userList;
-	private User roomOwner; //¹æÀå
-	String roomTitle; //¹æ Å¸ÀÌÆ²
-	String chat="\n";//Ã¤ÆÃ³»¿ë
+	private User roomOwner; //ë°©ì¥
+	String roomTitle; //ë°© íƒ€ì´í‹€
+	String chat="\n";//ì±„íŒ…ë‚´ìš©
 	
 	public ChattingRoom() {
 		userList = new ArrayList<User>();
 	}
 	
-	public ChattingRoom(User user) { //À¯Àú°¡ ¹æÀ» ¸¸µé ¶§
+	public ChattingRoom(User user) { //ìœ ì €ê°€ ë°©ì„ ë§Œë“¤ ë•Œ
 		userList = new ArrayList<User>();
 		userList.add(user);
 		this.roomOwner = user;
 		roomTitle = "NewChatting";
 	}
 	
-	public ChattingRoom(ArrayList<User> users) { //¿©·¯¸íÀÇ À¯Àú°¡ ¹æÀ» ¸¸µé ¶§
+	public ChattingRoom(ArrayList<User> users) { //ì—¬ëŸ¬ëª…ì˜ ìœ ì €ê°€ ë°©ì„ ë§Œë“¤ ë•Œ
 		this.userList = users;
-		this.roomOwner = users.get(0); //Ã¹¹øÂ° À¯Àú¸¦ ¹æÀåÀ¸·Î
+		this.roomOwner = users.get(0); //ì²«ë²ˆì§¸ ìœ ì €ë¥¼ ë°©ì¥ìœ¼ë¡œ
 		roomTitle = "NewChatting";
 	}
 	
@@ -30,7 +30,7 @@ public class ChattingRoom {
 		userList.add(newUser);
 	}
 	
-	public boolean isUserJoin(User user) { //Ã£À¸·Á´Â À¯Àú°¡ ÀÌ ¹æ¿¡ Âü¿©ÁßÀÌ¶ó¸é true,¾Æ´Ï¸é false
+	public boolean isUserJoin(User user) { //ì°¾ìœ¼ë ¤ëŠ” ìœ ì €ê°€ ì´ ë°©ì— ì°¸ì—¬ì¤‘ì´ë¼ë©´ true,ì•„ë‹ˆë©´ false
 		for(int i=0;i<userList.size();i++)
 			if(userList.get(i).equals(user))
 				return true;
@@ -39,24 +39,25 @@ public class ChattingRoom {
 	}
 	public void ExitRoom(User user) {
 		userList.remove(user);
-		if(user==roomOwner) {//¹æÀåÀÌ ³ª°¥°æ¿ì ´Ù½Ã Ã¹¹øÂ° »ç¶÷À¸·Î ¹æÀåÁöÁ¤
+		if(user==roomOwner) {//ë°©ì¥ì´ ë‚˜ê°ˆê²½ìš° ë‹¤ì‹œ ì²«ë²ˆì§¸ ì‚¬ëŒìœ¼ë¡œ ë°©ì¥ì§€ì •
 			roomOwner = userList.get(0);
 			System.out.println("ChattingRoom-> Owner User Exit, Owner Change");
 		}
 		
-		if(userList.size()<1) {//¸ğµç ÀÎ¿øÀÌ ´Ù ¹æÀ» ³ª°¬´Ù¸é ¹æÀ» Á¦°Å
+		if(userList.size()<1) {//ëª¨ë“  ì¸ì›ì´ ë‹¤ ë°©ì„ ë‚˜ê°”ë‹¤ë©´ ë°©ì„ ì œê±°
 			RoomManager.removeRoom(this);
 			System.out.println("ChattingRoom-> All User Exit, Room Delete");
 			return;
 		}
 	}
 	
-	//¹æ¾ÈÀÇ ¸ğµç À¯Àúµé¿¡°Ô ºê·ÎµåÄ³½ºÆÃ
+	//ë°©ì•ˆì˜ ëª¨ë“  ìœ ì €ë“¤ì—ê²Œ ë¸Œë¡œë“œìºìŠ¤íŒ…
 	public void broadcast(String str) {
 		String message = User.SIGNAL_NOMAL_MSG+"//"+roomTitle+"//"+str;
 		chat += str+"\n"+"\n";
 		for (int i = 0; i < userList.size(); i++) {
 			User user = userList.get(i);
+			System.out.println("userList: " + userList);
 			user.sendMsg(message);
 		}
 	}

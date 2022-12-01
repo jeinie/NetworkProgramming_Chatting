@@ -30,7 +30,7 @@ import server.User;
 
 public class ChatPanel extends JPanel {
 	
-	private String name = LoginPanel.userID;
+	private String name = LoginPanel.userID; // í˜„ì¬ ë¡œê·¸ì¸í•œ ìœ ì €
 	
 	private ChatFrame cf;
 	private JLabel profile;
@@ -53,112 +53,68 @@ public class ChatPanel extends JPanel {
 		
 		profile = new JLabel(roomTitle);
 		profile.setBounds(0, 0, 565, 40);
-		profile.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		profile.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		profile.setOpaque(true);
 		profile.setForeground(Color.white);
 		profile.setBackground(new Color(0,0,0,122));
 		cf.add(profile);
 		
-		//Ã¤ÆÃ º¸ÀÌ´Â ºÎºĞ
+		//ì±„íŒ… ë³´ì´ëŠ” ë¶€ë¶„
 		textPaneChat = new JTextPane();
 		textPaneChat.setEditable(false);
 		textPaneChat.setBounds(0, 40, 395, 400);
 		textPaneChat.setBackground(new Color(155, 187, 212));
-		textPaneChat.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
-		//textPaneChat.setHorizontalAlignment(textPaneChat.RIGHT_ALIGNMENT);
-		//cf.add(textPaneChat);
+		textPaneChat.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		
-		//Ã¤ÆÃ ½ºÅ©·Ñ 
+		//ì±„íŒ… ìŠ¤í¬ë¡¤ 
 		chatScroll = new JScrollPane(textPaneChat);
 		chatScroll.setBounds(0, 40, 395, 400);
 		cf.add(chatScroll);
 	
-		//¸Ş¼¼Áö ÀÔ·Â ºÎºĞ
+		//ë©”ì„¸ì§€ ì…ë ¥ ë¶€ë¶„
 		txtWrite = new TextField();
 		txtWrite.setBounds(0, 440, 320, 70);
-		txtWrite.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		txtWrite.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 	    cf.add(txtWrite);
 
-		sendBtn = new JButton("Àü¼Û");
-		sendBtn.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		sendBtn = new JButton("ì „ì†¡");
+		sendBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 15));
 		sendBtn.setBackground(new Color(247, 230, 0));
 		sendBtn.setBounds(321, 440, 75, 69);
 		cf.add(sendBtn);
 		
 	
-		start(); //¾×¼ÇÀÌº¥Æ® ÁöÁ¤ ¸Ş¼Òµå
-		
-		//RecieveMassage(); //¼­¹ö·ÎºÎÅÍ ¸Ş½ÃÁö¸¦ ¼ö½ÅÇÏ´Â ½º·¹µå
+		start(); //ì•¡ì…˜ì´ë²¤íŠ¸ ì§€ì • ë©”ì†Œë“œ
 	}
 	
-	public void start() { // ¾×¼ÇÀÌº¥Æ® ÁöÁ¤ ¸Ş¼Òµå
+	public void start() { // ì•¡ì…˜ì´ë²¤íŠ¸ ì§€ì • ë©”ì†Œë“œ
 		Myaction action = new Myaction(this.textPaneChat);
-		sendBtn.addActionListener(action); // ³»ºÎÅ¬·¡½º·Î ¾×¼Ç ¸®½º³Ê¸¦ »ó¼Ó¹ŞÀº Å¬·¡½º·Î
+		sendBtn.addActionListener(action); // ë‚´ë¶€í´ë˜ìŠ¤ë¡œ ì•¡ì…˜ ë¦¬ìŠ¤ë„ˆë¥¼ ìƒì†ë°›ì€ í´ë˜ìŠ¤ë¡œ
 		txtWrite.addActionListener(action);
 	}
 
-	class Myaction implements ActionListener // ³»ºÎÅ¬·¡½º·Î ¾×¼Ç ÀÌº¥Æ® Ã³¸® Å¬·¡½º
+	class Myaction implements ActionListener // ë‚´ë¶€í´ë˜ìŠ¤ë¡œ ì•¡ì…˜ ì´ë²¤íŠ¸ ì²˜ë¦¬ í´ë˜ìŠ¤
 	{
 		public Myaction(JTextPane textPaneChat) {
 
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// ¾×¼Ç ÀÌº¥Æ®°¡ sendBtnÀÏ¶§ ¶Ç´Â textField ¿¡¼­ Enter key Ä¡¸é
+			// ì•¡ì…˜ ì´ë²¤íŠ¸ê°€ sendBtnì¼ë•Œ ë˜ëŠ” textField ì—ì„œ Enter key ì¹˜ë©´
 			if (e.getSource() == sendBtn || e.getSource() == txtWrite) 
 			{
-				String msg = null;
-				//msg = String.format("%s//%s//[%s] %s\n", User.SIGNAL_NOMAL_MSG, roomTitle, name, txtWrite.getText());
-				msg = String.format("%s//%s//[%s] %s//%s\n", User.SIGNAL_NOMAL_MSG, roomTitle, name, txtWrite.getText(), name);
+				String msg = String.format("%s//%s//[%s] %s//\n", User.SIGNAL_NOMAL_MSG, roomTitle, name, txtWrite.getText());
 
 				String[] array = msg.split("//");
-				/*
-				 * if(name.equals(LoginPanel.userID)) {//º»ÀÎÀÌ º¸³»´Â ¸Ş¼¼Áö¸é ¿À¸¥ÂÊ¿¡ Ãâ·Â
-				 * controller.AppendMyText(roomTitle, msg); } else controller.send_Message(msg);
-				 */
-					
-				//Ã¤ÆÃÀ» Ä£ Ã¤ÆÃ¹æ ÀÌ¸§, À¯Àú³×ÀÓ, ¸Ş½ÃÁö¸¦ ¼­¹ö·Î Àü´Ş
-				controller.send_Message(msg);
-				
-				if(array[2].substring(1,5).equals(LoginPanel.userID)) {
-					 msg.trim(); 
-					 System.out.println("³»°¡º¸³½¸Ş¼¼Áö");
-					 int len = textPaneChat.getDocument().getLength();
-					 textPaneChat.setCaretPosition(len);
+				System.out.println("í˜„ì¬ ì ‘ì†ì: " + name);
 
-					 Document doc = textPaneChat.getDocument(); SimpleAttributeSet
-					 attributeSet = new SimpleAttributeSet();
-					 StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_RIGHT);
-					 StyleConstants.setForeground(attributeSet, Color.black);
-					 StyleConstants.setBackground(attributeSet, Color.yellow);
-					 ((StyledDocument) doc).setParagraphAttributes(len, 1, attributeSet, false);
-					 
-					 textPaneChat.replaceSelection((msg) + "\n");
-				}
-				
-				//send_Message(msg);
-				txtWrite.setText(""); // ¸Ş¼¼Áö¸¦ º¸³»°í ³ª¸é ¸Ş¼¼Áö ¾²´ÂÃ¢À» ºñ¿î´Ù.
-				txtWrite.requestFocus(); // ¸Ş¼¼Áö¸¦ º¸³»°í Ä¿¼­¸¦ ´Ù½Ã ÅØ½ºÆ® ÇÊµå·Î À§Ä¡½ÃÅ²´Ù	
+				//ì±„íŒ…ì„ ì¹œ ì±„íŒ…ë°© ì´ë¦„, ìœ ì €ë„¤ì„, ë©”ì‹œì§€ë¥¼ ì„œë²„ë¡œ ì „ë‹¬
+				controller.send_Message(msg);				
+				txtWrite.setText("");
+				txtWrite.requestFocus();
 			}
 
 		}
-		/*
-		 * public void AppendMyText(String msg) { //º»ÀÎÀÌ º¸³»´Â ¸Ş¼¼Áö¸é ¿À¸¥ÂÊ¿¡ Ãâ·Â msg =
-		 * msg.trim(); int len = textPaneChat.getStyledDocument().getLength();
-		 * textPaneChat.setCaretPosition(len);
-		 * 
-		 * StyledDocument doc = textPaneChat.getStyledDocument(); SimpleAttributeSet
-		 * attributeSet = new SimpleAttributeSet();
-		 * StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_RIGHT);
-		 * StyleConstants.setForeground(attributeSet, Color.black);
-		 * StyleConstants.setBackground(attributeSet, Color.yellow);
-		 * doc.setParagraphAttributes(len, 1, attributeSet, false);
-		 * 
-		 * textPaneChat.replaceSelection(msg + "\n");
-		 * 
-		 * }
-		 */
-
 	}
 	
 	public JTextPane getTextPaneChat() {
@@ -169,5 +125,4 @@ public class ChatPanel extends JPanel {
 		this.textPaneChat = textPaneChat;
 		
 	}
-
 }

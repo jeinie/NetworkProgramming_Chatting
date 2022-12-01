@@ -30,31 +30,31 @@ public class User extends Thread {
 	private Socket client_socket; //user_socket	
 	Server server;
 	Socket socket;
-	String name, stateImg, stateMsg; //ÀÌ¸§, ÇÁ»ç, »ó¸Ş
+	String name, stateImg, stateMsg; //ì´ë¦„, í”„ì‚¬, ìƒë©”
 	JTextArea textArea = Server.textArea;
 	
-	//»ç¿ëÀÚ°¡ Âü¿©ÇÏ´Â ¹æµé
+	//ì‚¬ìš©ìê°€ ì°¸ì—¬í•˜ëŠ” ë°©ë“¤
 	ArrayList<String> userName = new ArrayList<String>(); //userName
-	ArrayList<ChattingRoom> joinRoomList = new ArrayList<ChattingRoom>(); //Âü¿©ÇÏ°í ÀÖ´Â ¹æ?
-	ArrayList<User> friendsList = new ArrayList<User>(); //Ä£±¸¸®½ºÆ®
-	ArrayList<String> multiChatUserList; //´ÜÅå¹æ À¯Àú ¸®½ºÆ®
+	ArrayList<ChattingRoom> joinRoomList = new ArrayList<ChattingRoom>(); //ì°¸ì—¬í•˜ê³  ìˆëŠ” ë°©?
+	ArrayList<User> friendsList = new ArrayList<User>(); //ì¹œêµ¬ë¦¬ìŠ¤íŠ¸
+	ArrayList<String> multiChatUserList; //ë‹¨í†¡ë°© ìœ ì € ë¦¬ìŠ¤íŠ¸
 	
 	public User(Socket socket, Server server) {
 		name = "newUser";
 		stateImg = "src/img/basic.png";
-		stateMsg = "»óÅÂ ¸Ş¼¼Áö";
+		stateMsg = "ìƒíƒœ ë©”ì„¸ì§€";
 		client_socket = socket;
 		this.server = server;
 		network();
 	}
 	
-	public void addFreind(User user) { //Ä£±¸Ãß°¡
+	public void addFreind(User user) { //ì¹œêµ¬ì¶”ê°€
 		friendsList.add(user);
 	}
 	
 	public void EnterRoom(ChattingRoom room) {
-		room.EnterRoom(this);//Ã¤ÆÃ¹æ ÀÔÀå
-		this.joinRoomList.add(room);//À¯Àú°¡ ¼ÓÇÑ ¹æÀ» Ãß°¡
+		room.EnterRoom(this);//ì±„íŒ…ë°© ì…ì¥
+		this.joinRoomList.add(room);//ìœ ì €ê°€ ì†í•œ ë°©ì„ ì¶”ê°€
 	}
 	
 	public void network() {
@@ -64,17 +64,17 @@ public class User extends Thread {
 			os = client_socket.getOutputStream();
 			dos = new DataOutputStream(os);
 		
-			textArea.append(name + "´ÔÀÌ ÀÔÀåÇß½À´Ï´Ù.\n");
+			textArea.append(name + "ë‹˜ì´ ì…ì¥í–ˆìŠµë‹ˆë‹¤.\n");
 			textArea.setCaretPosition(textArea.getText().length());	
 	
 		} catch (Exception e) {
 			e.printStackTrace();
-			//textArea.append("½ºÆ®¸² ¼ÂÆÃ ¿¡·¯\n");
+			//textArea.append("ìŠ¤íŠ¸ë¦¼ ì…‹íŒ… ì—ëŸ¬\n");
 			textArea.setCaretPosition(textArea.getText().length());
 		}
 	}
 	
-	//ÀÌ¸§ ¼öÁ¤..?
+	//ì´ë¦„ ìˆ˜ì •..?
 	public static final String SIGNAL_CREATE_SINGLECHAT = "SIGNAL_CREATE_SINGLECHAT";
 	public static final String SIGNAL_CREATE_MULTICHAT = "SIGNAL_CREATE_MULTICHAT";
 	public static final String SIGNAL_CREATE_ROOM_COMPLETE = "SIGNAL_CREATE_ROOM_COMPLETE";
@@ -86,21 +86,21 @@ public class User extends Thread {
 	public static final String SIGNAL_EXIST_USER_CONNECT = "SIGNAL_EXIST_USER_CONNECT";
 	public static final String SIGNAL_CHANGE_STATE = "SIGNAL_CHANGE_STATE_MSG";
 	 
-	/*¸Ş½ÃÁö Ã³¸® ºÎºĞ*/
-	public void InMessage(String str) {// »ç¿ëÀÚ ¸Ş¼¼Áö Ã³¸®
+	/*ë©”ì‹œì§€ ì²˜ë¦¬ ë¶€ë¶„*/
+	public void InMessage(String str) {// ì‚¬ìš©ì ë©”ì„¸ì§€ ì²˜ë¦¬
 		String[] array = str.split("//");
-		if(array[0].equals(SIGNAL_CREATE_SINGLECHAT)) { //1:1 Ã¤ÆÃ¹æ ¸¸µé¸é (Ä£±¸ ÇÑ¸í ¼±ÅÃ)
+		if(array[0].equals(SIGNAL_CREATE_SINGLECHAT)) { //1:1 ì±„íŒ…ë°© ë§Œë“¤ë©´ (ì¹œêµ¬ í•œëª… ì„ íƒ)
 
 			String myName = array[1];
 			String friendName = array[2];
-			String roomTitle = friendName; //±âº» ¹æ Å¸ÀÌÆ²= Ä£±¸ÀÌ¸§
+			String roomTitle = friendName; //ê¸°ë³¸ ë°© íƒ€ì´í‹€= ì¹œêµ¬ì´ë¦„
 
-			textArea.append(myName+","+friendName+"ÀÇ Ã¤ÆÃ¹æ »ı¼ºµÊ\n");
+			textArea.append(myName+","+friendName+"ì˜ ì±„íŒ…ë°© ìƒì„±ë¨\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			
 			server.createSingleChat(this,myName, friendName);
 		}
-		else if(array[0].equals(SIGNAL_CREATE_MULTICHAT)) {//´ÜÅå¹æ
+		else if(array[0].equals(SIGNAL_CREATE_MULTICHAT)) {//ë‹¨í†¡ë°©
 			multiChatUserList = new ArrayList<String>();
 			String msg="";
 			for(int i=1;i<array.length;i++) {
@@ -110,16 +110,16 @@ public class User extends Thread {
 				else
 					msg+=array[i]+",";
 			}
-			textArea.append(msg+" Ã¤ÆÃ¹æ »ı¼ºµÊ.\n");
+			textArea.append(msg+" ì±„íŒ…ë°© ìƒì„±ë¨.\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			server.createMultiChat(multiChatUserList);
 		}
 		else if(array[0].equals(SIGNAL_USER_ID)) {
-			//¼ÒÄÏ¿¬°á Á÷ÈÄ À¯Àú¾ÆÀÌµğ ¹Ş´ÂºÎºĞ
-			textArea.append("À¯Àú¾ÆÀÌµğ ¼ö½Å : "+array[1]+"\n");
+			//ì†Œì¼“ì—°ê²° ì§í›„ ìœ ì €ì•„ì´ë”” ë°›ëŠ” ë¶€ë¶„
+			textArea.append("ìœ ì €ì•„ì´ë”” ìˆ˜ì‹  : "+array[1]+"\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			
-			//±âÁ¸ÀÇ À¯ÀúÀÎÁö ÆÇº° ÈÄ ´Ù¸£°Ô ÀÛµ¿
+			//ê¸°ì¡´ì˜ ìœ ì €ì¸ì§€ íŒë³„ í›„ ë‹¤ë¥´ê²Œ ì‘ë™
 			if(server.isExistingUser(array[1])!=null) {
 				User existingUser=server.isExistingUser(array[1]);
 				ArrayList<ChattingRoom> existingRooms = server.getJoinRooms(array[1]);
@@ -129,48 +129,36 @@ public class User extends Thread {
 				setStateMsg(existingUser.getStateMsg());
 				for(int i=0;i<existingRooms.size();i++) {
 					sendMsg(SIGNAL_EXIST_USER_CONNECT+"//"+existingRooms.get(i).roomTitle+"//"+existingRooms.get(i).chat);
-					System.out.println("User->±âÁ¸ Ã¤ÆÃ¹æ ¸ñ·Ï,³»¿ëÀü¼Û "+i);
+					System.out.println("User->ê¸°ì¡´ ì±„íŒ…ë°© ëª©ë¡,ë‚´ìš©ì „ì†¡ "+i);
 				}
 				
-				textArea.append("±âÁ¸ À¯ÀúÀÔ´Ï´Ù.\n");
+				textArea.append("ì´ë¯¸ ìˆëŠ” ì‚¬ìš©ìì…ë‹ˆë‹¤.\n");
 				textArea.setCaretPosition(textArea.getText().length());
 			}
 			else {
 				setName(array[1]);
-				//»õ À¯Àú°¡ Ãß°¡µÉ °æ¿ì ±âÁ¸ÀÇ À¯ÀúµéÀÇ ¸®½ºÆ®¸¦ ¾÷µ¥ÀÌÆ®
 				server.usersUpdateFriendList(array[1]);
-				textArea.append("»õ·Î¿î »ç¿ëÀÚÀÔ´Ï´Ù.\n"); 
+				textArea.append("ìƒˆë¡œìš´ ì‚¬ìš©ìì…ë‹ˆë‹¤.\n"); 
 				textArea.setCaretPosition(textArea.getText().length());
 			}
 			
 		}
-		else if(array[0].equals(SIGNAL_NOMAL_MSG)){//ÀÏ¹İ Ã¤ÆÃ ¸Ş½ÃÁö
-			//textArea.append("»ç¿ëÀÚ·ÎºÎÅÍ µé¾î¿Â ¸Ş¼¼Áö : " + str+"\n");
-			/* str => SIGNAL_NOMAL_MSG//Ã¤ÆÃ¹æÀÌ¸§//[À¯ÀúÀÌ¸§] ¸Ş½ÃÁö~~~ */
+		else if(array[0].equals(SIGNAL_NOMAL_MSG)){ // ë‚´ê°€ ë³´ë‚¸ ë©”ì‹œì§€
 			String roomTitle = array[1];
 			str = array[2];
 			textArea.append(roomTitle+" : "+str + "\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			
-			//¼­¹ö¿¡¼­ ºê·ÎµåÄ³½ºÆÃ(À¯Àú °´Ã¼µµ ÇÔ²² ³Ñ°ÜÁÜ)
+			//ì„œë²„ì—ì„œ ë¸Œë¡œë“œìºìŠ¤íŒ…(ìœ ì € ê°ì²´ë„ í•¨ê»˜ ë„˜ê²¨ì¤Œ)
 			server.broadcast(this,str,roomTitle); 
 		}
 		else if(array[0].equals(SIGNAL_ONLINE_USER_LIST)) {
-			/*friendsList = server.getFriendList();
-			String msg = array[0];
-			
-			for(User user : friendsList) {
-				msg += "//" + user.getNickname();
-			}
-			textArea.append("userList : "+msg+ "\n");
-			textArea.setCaretPosition(textArea.getText().length());
-			send_Message(msg);*/
 			friendsList = server.getFriendList();
 			String msg = array[0]+"//";
 			
 			for(int i=0;i<friendsList.size();i++) {
 				User user = friendsList.get(i);
-				if(i==friendsList.size()-1) {//¸¶Áö¸· ¹è¿­ 
+				if(i==friendsList.size()-1) {//ë§ˆì§€ë§‰ ë°°ì—´ 
 					msg+=user.getName()+"!!"+user.getStateImg()+"!!"+user.getStateMsg();
 				}
 				else {
@@ -182,27 +170,25 @@ public class User extends Thread {
 			textArea.setCaretPosition(textArea.getText().length());
 		}
 		else if(array[0].equals(SIGNAL_CHANGE_STATE)) {
-			//User.SIGNAL_CHANGE_STATE_MSG+"//"+user_id+"//"+stateImage+"//"+myStateMessage
-			textArea.append(array[1]+"´Ô »óÅÂ º¯°æ "+array[2]+" / "+array[3]+"\n");
+			textArea.append(array[1]+"ë‹˜ ìƒíƒœ ë³€ê²½ "+array[2]+" / "+array[3]+"\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			this.stateImg = array[2];
 			this.stateMsg = array[3];
 			server.userInfoUpdate(array[1],array[2],array[3]);
 		}
 		else {
-			System.out.println("Áö¿øÇÏÁö ¾Ê´Â ¸Ş½ÃÁö À¯Çü");
+			System.out.println("ì§€ì›í•˜ì§€ ì•ŠëŠ” ë©”ì‹œì§€ ìœ í˜•");
 		}
 	}
 	
 	public void sendMsg(String str) {
 		try {
-			//dos.writeUTF(str);
 			byte[] bb;		
 			bb = str.getBytes();
 			dos.write(bb); //.writeUTF(str);
 		} 
 		catch (IOException e) {
-			textArea.append("¸Ş½ÃÁö ¼Û½Å ¿¡·¯ ¹ß»ı\n");	
+			textArea.append("ë©”ì‹œì§€ ì†¡ì‹  ì—ëŸ¬ ë°œìƒ\n");	
 			textArea.setCaretPosition(textArea.getText().length());
 		}
 	}
@@ -211,8 +197,7 @@ public class User extends Thread {
 	public void run() {
 		while(true) {
 			try {
-				//»ç¿ëÀÚ¿¡°Ô ¹Ş´Â ¸Ş¼¼Áö(chatPanel¿¡¼­ ¿À´Â ¸Ş½ÃÁö)
-				//byte[] b = new byte[128];
+				// chatPanelì—ì„œ ì˜¤ëŠ” ë©”ì‹œì§€
 				byte[] b = new byte[1024];
 				dis.read(b);
 				String msg = new String(b);
@@ -225,16 +210,16 @@ public class User extends Thread {
 				try {
 					dos.close();
 					dis.close();
-					client_socket.close();//ÀÚ¿ø¹İ³³
-					//À¯Àú°¡ ³ª°£ »ç½ÇÀ» ¸Å´ÏÀú¿¡°Ô ¾Ë¸²
-					//À¯Àú ¸®½ºÆ®¿¡¼­ »èÁ¦,¼­¹ö¿¡ ÇÁ¸°Æ®¸¦ À§ÀÓ
+					client_socket.close();
+					//ìœ ì €ê°€ ë‚˜ê°„ ì‚¬ì‹¤ì„ ë§¤ë‹ˆì €ì—ê²Œ ì•Œë¦¼
+					//ìœ ì € ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œ,ì„œë²„ì— í”„ë¦°íŠ¸ë¥¼ ìœ„ì„
 					server.exitUser(this);
 					break;
 				
 				} catch (Exception e1) {
 				
-				}// catch¹® ³¡
-			}// ¹Ù±ù catch¹®³¡
+				}// catchë¬¸ ë
+			}// ë°”ê¹¥ catchë¬¸ë
 		}
 	}
 	

@@ -19,21 +19,21 @@ public class RoomManager {
 	}
 	
 	public void broadcast(User user,String str, String roomTitle) {
-		//À¯Àú°¡ ¼ÓÇÑ ·ëÀ» Ã£¾Æ¼­ ºê·ÎµåÄ³½ºÆÃ ¸í·É
-		ChattingRoom room = serchByRoomTitle(roomTitle);//·ëÀÌ¸§À¸·Î ºê·ÎµåÄ³½ºÆÃÇÒ ·ëÀ» Ã£À½
+		//ìœ ì €ê°€ ì†í•œ ë£¸ì„ ì°¾ì•„ì„œ ë¸Œë¡œë“œìºìŠ¤íŒ… ëª…ë ¹
+		ChattingRoom room = serchByRoomTitle(roomTitle);//ë£¸ì´ë¦„ìœ¼ë¡œ ë¸Œë¡œë“œìºìŠ¤íŒ…í•  ë£¸ì„ ì°¾ìŒ
 		room.broadcast(str);
 	}
 	
 	public ChattingRoom serchByRoomTitle(String roomTitle) {
-		//Ã¤ÆÃ¹æ ÀÌ¸§À¸·Î ¹æÃ£±â
+		//ì±„íŒ…ë°© ì´ë¦„ìœ¼ë¡œ ë°©ì°¾ê¸°
 		for(int i=0;i<roomList.size();i++) {
 			if(roomList.get(i).getRoomTitle().equals(roomTitle))
 				return roomList.get(i);
 		}
-		return null;//¾øÀ¸¸é null
+		return null;//ì—†ìœ¼ë©´ null
 	}
 	
-	public ChattingRoom createRoom(ArrayList<User> users) {//À¯Àú°¡ ¹æÀ» »ı¼º
+	public ChattingRoom createRoom(ArrayList<User> users) {//ìœ ì €ê°€ ë°©ì„ ìƒì„±
 		ChattingRoom room = new ChattingRoom(users);
 		roomList.add(room);
 		textArea.append("Room Create! Recent Number of Room : " + roomList.size() + "\n");

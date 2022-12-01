@@ -93,7 +93,7 @@ public class CommandController {
 			StyleConstants.setForeground(right, Color.BLACK);
 			doc.setParagraphAttributes(doc.getLength(), 1, right, false);
 			try {
-				doc.insertString(doc.getLength(), message+"\n\n", right );
+				doc.insertString(doc.getLength(), message+" \n\n", right );
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}

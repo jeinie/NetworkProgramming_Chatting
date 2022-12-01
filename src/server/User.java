@@ -75,21 +75,20 @@ public class User extends Thread {
 	}
 	
 	//이름 수정..?
-	public static final String SIGNAL_CREATE_SINGLECHAT = "SIGNAL_CREATE_SINGLECHAT";
-	public static final String SIGNAL_CREATE_MULTICHAT = "SIGNAL_CREATE_MULTICHAT";
-	public static final String SIGNAL_CREATE_ROOM_COMPLETE = "SIGNAL_CREATE_ROOM_COMPLETE";
-	public static final String SIGNAL_NOMAL_MSG = "SIGNAL_NOMAL_MSG";
-	public static final String SIGNAL_USER_ID = "SIGNAL_USER_ID";
-	public static final String SIGNAL_ONLINE_USER_LIST = "SIGNAL_ONLINE_USER_LIST";
-	//public static final String SIGNAL_UPDATE_FRIENDS_LIST = "SIGNAL_UPDATE_FRIENDS_LIST";
-	public static final String SIGNAL_NEW_USER_CONNECT = "SIGNAL_NEW_USER_CONNECT";
-	public static final String SIGNAL_EXIST_USER_CONNECT = "SIGNAL_EXIST_USER_CONNECT";
-	public static final String SIGNAL_CHANGE_STATE = "SIGNAL_CHANGE_STATE_MSG";
+	public static final String CODE_100 = "CODE_100"; // 1:1 채팅방 만들기
+	public static final String CODE_200 = "CODE_200"; // 그룹 채팅방 만들기
+	public static final String CODE_300 = "CODE_300"; // 채팅방
+	public static final String CODE_400 = "CODE_400"; // 채팅 메시지
+	public static final String CODE_500 = "CODE_500"; // 유저 아이디
+	public static final String CODE_600 = "CODE_600"; // 접속 중인 유저 리스트
+	public static final String CODE_700 = "CODE_700"; // 새로 접속한 유저
+	public static final String CODE_800 = "CODE_800"; // 이미 존재하는 유저
+	public static final String CODE_900 = "CODE_900"; // 사용자 정보 변경
 	 
 	/*메시지 처리 부분*/
 	public void InMessage(String str) {// 사용자 메세지 처리
 		String[] array = str.split("//");
-		if(array[0].equals(SIGNAL_CREATE_SINGLECHAT)) { //1:1 채팅방 만들면 (친구 한명 선택)
+		if(array[0].equals(CODE_100)) { //1:1 채팅방 만들면 (친구 한명 선택)
 
 			String myName = array[1];
 			String friendName = array[2];
@@ -100,7 +99,7 @@ public class User extends Thread {
 			
 			server.createSingleChat(this,myName, friendName);
 		}
-		else if(array[0].equals(SIGNAL_CREATE_MULTICHAT)) {//단톡방
+		else if(array[0].equals(CODE_200)) {//단톡방
 			multiChatUserList = new ArrayList<String>();
 			String msg="";
 			for(int i=1;i<array.length;i++) {
@@ -114,7 +113,7 @@ public class User extends Thread {
 			textArea.setCaretPosition(textArea.getText().length());
 			server.createMultiChat(multiChatUserList);
 		}
-		else if(array[0].equals(SIGNAL_USER_ID)) {
+		else if(array[0].equals(CODE_500)) {
 			//소켓연결 직후 유저아이디 받는 부분
 			textArea.append("유저아이디 수신 : "+array[1]+"\n");
 			textArea.setCaretPosition(textArea.getText().length());
@@ -128,7 +127,7 @@ public class User extends Thread {
 				setStateImg(existingUser.getStateImg());
 				setStateMsg(existingUser.getStateMsg());
 				for(int i=0;i<existingRooms.size();i++) {
-					sendMsg(SIGNAL_EXIST_USER_CONNECT+"//"+existingRooms.get(i).roomTitle+"//"+existingRooms.get(i).chat);
+					sendMsg(CODE_800+"//"+existingRooms.get(i).roomTitle+"//"+existingRooms.get(i).chat);
 					System.out.println("User->기존 채팅방 목록,내용전송 "+i);
 				}
 				
@@ -143,7 +142,7 @@ public class User extends Thread {
 			}
 			
 		}
-		else if(array[0].equals(SIGNAL_NOMAL_MSG)){ // 내가 보낸 메시지
+		else if(array[0].equals(CODE_400)){ // 내가 보낸 메시지
 			String roomTitle = array[1];
 			str = array[2];
 			textArea.append(roomTitle+" : "+str + "\n");
@@ -152,7 +151,7 @@ public class User extends Thread {
 			//서버에서 브로드캐스팅(유저 객체도 함께 넘겨줌)
 			server.broadcast(this,str,roomTitle); 
 		}
-		else if(array[0].equals(SIGNAL_ONLINE_USER_LIST)) {
+		else if(array[0].equals(CODE_600)) {
 			friendsList = server.getFriendList();
 			String msg = array[0]+"//";
 			
@@ -169,7 +168,7 @@ public class User extends Thread {
 			textArea.append(msg+"\n");
 			textArea.setCaretPosition(textArea.getText().length());
 		}
-		else if(array[0].equals(SIGNAL_CHANGE_STATE)) {
+		else if(array[0].equals(CODE_900)) {
 			textArea.append(array[1]+"님 상태 변경 "+array[2]+" / "+array[3]+"\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			this.stateImg = array[2];

@@ -138,7 +138,7 @@ public class LoginPanel extends JPanel {
 		if (controller == null) {
 			System.out.println("controller == null");
 		} else {
-			controller.send_Message(User.SIGNAL_USER_ID + "//" + userID); // 정상적으로 연결되면 나의 아이디를 전송
+			controller.send_Message(User.CODE_500 + "//" + userID); // 정상적으로 연결되면 나의 아이디를 전송
 			//이후에 바로 SIGNAL_ONLINE_USER_LIST를 보내기때문에 서버가 처리할 시간을 주어야 함.
 			try {
 				Thread.sleep(200);

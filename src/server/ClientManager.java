@@ -57,7 +57,7 @@ public class ClientManager {
 		for (int i = 0; i < userList.size(); i++) {
 			User user = userList.get(i);
 			if (!user.getName().equals(newUser)) { // 새유저는 제외
-				user.sendMsg(User.SIGNAL_NEW_USER_CONNECT +"//"+user.getName()+ "//" + newUser);
+				user.sendMsg(User.CODE_700 +"//"+user.getName()+ "//" + newUser);
 				textArea.append(user.getName() + "님의 친구목록 업데이트\n");
 				textArea.setCaretPosition(textArea.getText().length());
 			}
@@ -76,7 +76,7 @@ public class ClientManager {
 		//모든 유저들 화면 갱신 명령
 		for (int i = 0; i < userList.size(); i++) {
 			User user = userList.get(i);
-			user.sendMsg(User.SIGNAL_CHANGE_STATE+"//"+user.getName()+"//"+userName+"//"+stateImg+"//"+stateMsg);
+			user.sendMsg(User.CODE_900+"//"+user.getName()+"//"+userName+"//"+stateImg+"//"+stateMsg);
 		}
 	}
 	

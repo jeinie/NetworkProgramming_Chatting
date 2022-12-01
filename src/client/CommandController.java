@@ -62,6 +62,13 @@ public class CommandController {
 	public void append_My_Message(String roomName, String str) { // 오른쪽에 나와야 함
 		// 채팅방 찾고
 		setTextPane(chattingRoomList.get(roomName));
+
+		String arr[] = str.split(" ");
+		String message = "";
+
+		for (int i=1; i<arr.length; i++) {
+			message += arr[i] + " ";
+		}
 		
 		if(textPane==null) {
 			//초대된 사람이라 채팅방에 입장은 했지만 화면이 안떴을때
@@ -86,7 +93,7 @@ public class CommandController {
 			StyleConstants.setForeground(right, Color.BLACK);
 			doc.setParagraphAttributes(doc.getLength(), 1, right, false);
 			try {
-				doc.insertString(doc.getLength(), str+"\n\n", right );
+				doc.insertString(doc.getLength(), message+"\n\n", right );
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
@@ -102,7 +109,14 @@ public class CommandController {
 		setTextPane(chattingRoomList.get(roomName)); 
 
 		// [user2] hello
-		str = str.split(" ")[0] + "\n" + str.split(" ")[1];
+		// [user2] hello, nice to meet you.
+		String arr[] = str.split(" ");
+		String message = "";
+
+		for (int i=1; i<arr.length; i++) {
+			message += arr[i] + " ";
+		}
+		str = str.split(" ")[0] + "\n" + message;
 		
 		if(textPane==null) {
 			//초대된 사람이라 채팅방에 입장은 했지만 화면이 안떴을때
@@ -157,7 +171,7 @@ public class CommandController {
 						String[] array = msg.split("//");
 						
 						//채팅방 생성 완료시->채팅방 이름을 전달받아 채팅방의 모든 인원 채팅방 띄우기(강제)
-						if(array[0].equals(User.SIGNAL_CREATE_ROOM_COMPLETE)) {
+						if(array[0].equals(User.CODE_300)) {
 							roomName = array[1];
 							if(chattingRoomList.get(roomName)==null) { //처음 생성되는 방
 								System.out.println("CommandControll -> roomName "+roomName);
@@ -178,8 +192,8 @@ public class CommandController {
 							}
 							
 						}
-						else if(array[0].equals(User.SIGNAL_NOMAL_MSG)) {
-							//String message = User.SIGNAL_NOMAL_MSG+"//"+roomName+"//"+str;
+						else if(array[0].equals(User.CODE_400)) {
+							//String message = User.CODE_400+"//"+roomName+"//"+str;
 							roomName= array[1];
 							// array[2] = [user1]
 							// [] 제거
@@ -188,18 +202,17 @@ public class CommandController {
 							for (char c : charsToRemove.toCharArray()) {
 								who = who.replace(String.valueOf(c), "");
 							}
-							String str = array[2].split(" ")[1]; // 보낸 메시지
+							String str = array[2]; // 보낸 메시지 (append 할 때 나누자)
 
 							System.out.println("보낸 사람: " + who);
 							System.out.println("현재 접속자: " + userId);
 							if (who.equals(userId)) { // 내가 보낸 메시지이면
 								append_My_Message(roomName, str);
 							} else { // 상대방이 보낸 메시지이면
-								str = array[2];
 								append_Message(roomName,str);
 							}
 						}
-						else if(array[0].equals(User.SIGNAL_ONLINE_USER_LIST)) {
+						else if(array[0].equals(User.CODE_600)) {
 							userLabel.clear();
 							onlineUserList.clear(); //접속중인 유저 리스트 초기화
 							for(int i=1; i<array.length;i++) {
@@ -215,13 +228,13 @@ public class CommandController {
 								onlineUserList.add(user);
 							}
 						}
-						else if(array[0].equals(User.SIGNAL_NEW_USER_CONNECT)) {
-							System.out.println("CommandController->SIGNAL_NEW_USER_CONNECT userName="+array[2]);
+						else if(array[0].equals(User.CODE_700)) {
+							System.out.println("CommandController->CODE_700 userName="+array[2]);
 							//friendPanel의 dataSetting을 호출해야함
 							mainFrameList.get(array[1]).getStartPanel().friendPanel.update(array[2]);
 						}
-						else if(array[0].equals(User.SIGNAL_EXIST_USER_CONNECT)) {
-							/*SIGNAL_EXIST_USER_CONNECT+"//"+existingRooms.get(i).roomName+"//"+existingRooms.get(i).chat*/
+						else if(array[0].equals(User.CODE_800)) {
+							/*CODE_800+"//"+existingRooms.get(i).roomName+"//"+existingRooms.get(i).chat*/
 							JLabel room = new JLabel(array[1]);
 							ChatRoom.add(room);
 							
@@ -232,16 +245,16 @@ public class CommandController {
 							
 							//=========================================================================
 						}
-						else if(array[0].equals(User.SIGNAL_CHANGE_STATE)) {
+						else if(array[0].equals(User.CODE_900)) {
 							//유저의 상태이미지나 상태메시지 변경이 있다면 모든 유저들의 화면을 갱신
-							/*User.SIGNAL_CHANGE_STATE+"//"+user.getName()+"//"+userName+"//"+stateImg+"//"+stateMsg*/
+							/*User.CODE_900+"//"+user.getName()+"//"+userName+"//"+stateImg+"//"+stateMsg*/
 							UserInfo user = searchByUserName(array[2]);
 							onlineUserList.remove(user);
 							UserInfo reUser = new UserInfo(array[2]);
 							reUser.setStateImg(array[3]);
 							reUser.setStateMsg(array[4]);
 							onlineUserList.add(reUser);
-							System.out.println("CommandController->SIGNAL_CHANGE_STATE "+searchByUserName(array[2]).getName()+searchByUserName(array[2]).getStateImg()+searchByUserName(array[2]).getStateMsg());
+							System.out.println("CommandController->CODE_900 "+searchByUserName(array[2]).getName()+searchByUserName(array[2]).getStateImg()+searchByUserName(array[2]).getStateMsg());
 							mainFrameList.get(array[1]).getStartPanel().friendPanel.updateState(array[2],array[3],array[4]);
 							
 						}

@@ -103,7 +103,7 @@ public class ChatPanel extends JPanel {
 			// 액션 이벤트가 sendBtn일때 또는 textField 에서 Enter key 치면
 			if (e.getSource() == sendBtn || e.getSource() == txtWrite) 
 			{
-				String msg = String.format("%s//%s//[%s] %s//\n", User.SIGNAL_NOMAL_MSG, roomTitle, name, txtWrite.getText());
+				String msg = String.format("%s//%s//[%s] %s//\n", User.CODE_400, roomTitle, name, txtWrite.getText());
 
 				String[] array = msg.split("//");
 				System.out.println("현재 접속자: " + name);

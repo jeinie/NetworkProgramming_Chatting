@@ -129,7 +129,7 @@ public class FriendPanel extends JPanel {
 	}
 	
 	public void dataSetting() {
-		controller.send_Message(User.SIGNAL_ONLINE_USER_LIST);
+		controller.send_Message(User.CODE_600);
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
@@ -236,7 +236,7 @@ public class FriendPanel extends JPanel {
 						String friendName = ((JLabel) e.getSource()).getText();
 
 						// 서버에게 채팅방 생성 요청
-						controller.send_Message(User.SIGNAL_CREATE_SINGLECHAT + "//" + user_id + "//" + friendName);
+						controller.send_Message(User.CODE_100 + "//" + user_id + "//" + friendName);
 
 					}
 				}

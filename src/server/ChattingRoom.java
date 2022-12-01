@@ -53,7 +53,7 @@ public class ChattingRoom {
 	
 	//방안의 모든 유저들에게 브로드캐스팅
 	public void broadcast(String str) {
-		String message = User.SIGNAL_NOMAL_MSG+"//"+roomTitle+"//"+str;
+		String message = User.CODE_400+"//"+roomTitle+"//"+str;
 		chat += str+"\n"+"\n";
 		for (int i = 0; i < userList.size(); i++) {
 			User user = userList.get(i);

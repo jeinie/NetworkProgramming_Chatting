@@ -189,8 +189,8 @@ public class Server extends JFrame{
 			users.add(friend);
 			ChattingRoom newRoom = roomManager.createRoom(users);
 			newRoom.setRoomTitle(roomTitle);
-			user.sendMsg(User.SIGNAL_CREATE_ROOM_COMPLETE+"//"+roomTitle);
-			friend.sendMsg(User.SIGNAL_CREATE_ROOM_COMPLETE+"//"+roomTitle);
+			user.sendMsg(User.CODE_300+"//"+roomTitle);
+			friend.sendMsg(User.CODE_300+"//"+roomTitle);
 			
 		}
 		
@@ -212,7 +212,7 @@ public class Server extends JFrame{
 		ChattingRoom newRoom = roomManager.createRoom(users);
 		newRoom.setRoomTitle(roomTitle);
 		for(int i=0;i<users.size();i++) { //참여하는 모든 유저들에게 채팅방을 띄워줌
-			users.get(i).sendMsg(User.SIGNAL_CREATE_ROOM_COMPLETE+"//"+roomTitle);
+			users.get(i).sendMsg(User.CODE_300+"//"+roomTitle);
 		}
 		
 	}

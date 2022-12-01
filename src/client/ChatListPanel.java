@@ -74,8 +74,8 @@ public class ChatListPanel extends JPanel {
 				}
 
 				@Override
-				public void mouseReleased(MouseEvent e) { // 친구목록을 누르면 해당 친구와의 
-					if(e.getClickCount()==1) { //1 ? 2? 고민
+				public void mouseReleased(MouseEvent e) { // 채팅목록을 누르면 해당 친구와의 
+					if(e.getClickCount()==1) {
 						String roomTitle = room.getText();
 						System.out.println("ChatListPanel-> roomTitle = "+roomTitle);
 						
@@ -85,7 +85,7 @@ public class ChatListPanel extends JPanel {
 						controller.getChattingRoomList().remove(temp);
 						controller.getChattingRoomList().put(roomTitle, chattingroom.getChatPanel().getTextPaneChat());
 						
-						chattingroom.repaint();
+						// chattingroom.repaint();
 					}
 				}
 

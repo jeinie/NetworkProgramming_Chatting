@@ -116,7 +116,7 @@ public class CommandController {
 		for (int i=1; i<arr.length; i++) {
 			message += arr[i] + " ";
 		}
-		str = str.split(" ")[0] + "\n" + message;
+		String user = str.split(" ")[0];
 		
 		if(textPane==null) {
 			//초대된 사람이라 채팅방에 입장은 했지만 화면이 안떴을때
@@ -129,7 +129,8 @@ public class CommandController {
 			StyleConstants.setForeground(left, Color.BLACK);
 			doc.setParagraphAttributes(doc.getLength(), 1, left, false);
 			try {
-				doc.insertString(doc.getLength(), str+"\n\n", left );
+				doc.insertString(doc.getLength(), user+"\n", left);
+				doc.insertString(doc.getLength(), message+"\n\n", left );
 			} catch (BadLocationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -195,7 +196,7 @@ public class CommandController {
 						else if(array[0].equals(User.CODE_400)) {
 							//String message = User.CODE_400+"//"+roomName+"//"+str;
 							roomName= array[1];
-							// array[2] = [user1]
+							// array[2] = [user1] hello
 							// [] 제거
 							String charsToRemove = "[]";
 							String who = array[2].split(" ")[0]; // 누가 보냈는지 / 나? 아님 상대방?

@@ -130,11 +130,7 @@ public class ChatPanel extends JPanel {
 			if (e.getSource() == sendBtn || e.getSource() == txtWrite) 
 			{
 				String msg = String.format("%s//%s//[%s] %s//\n", User.CODE_400, roomTitle, name, txtWrite.getText());
-<<<<<<< HEAD
 				
-=======
-
->>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 				String[] array = msg.split("//");
 				System.out.println("현재 접속자: " + name);
 				
@@ -157,9 +153,9 @@ public class ChatPanel extends JPanel {
 		            // System.out.println(fd.getDirectory() + fd.getFile());
 		            if (fd.getDirectory().length() > 0 && fd.getFile().length() > 0 ) {
 		            	String msg = null;
-		            	String img = fd.getDirectory() + fd.getFile();
-		            	ImageIcon img2 = new ImageIcon(fd.getDirectory() + fd.getFile());
-						msg = String.format("%s//%s//%s\n", User.CODE_420, roomTitle, img2); //일단 name 뺴버림 
+		            	//String img = fd.getDirectory() + fd.getFile();
+		            	ImageIcon img = new ImageIcon(fd.getDirectory() + fd.getFile());
+						msg = String.format("%s//%s//%s\n", User.CODE_420, roomTitle, img); //일단 name 뺴버림 
 						System.out.println("이미지 선택했어: " + msg);
 		               //controller.send_Message(msg); 
 		               controller.send_Image(msg);

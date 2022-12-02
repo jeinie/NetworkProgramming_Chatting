@@ -64,7 +64,7 @@ public class ProfilePanel extends JPanel {
 							MyImg.setIcon(new ImageIcon(stateImage));
 							repaint();
 							
-							controller.send_Message(User.CODE_900+"//"+user_id+"//"+stateImage+"//"+myStateMessage);
+							controller.send_Message(User.SIGNAL_CHANGE_STATE+"//"+user_id+"//"+stateImage+"//"+myStateMessage);
 							//프사 변경하고 친구목록창으로 돌아가면 friendpanel이 사라짐..
 							
 		               }

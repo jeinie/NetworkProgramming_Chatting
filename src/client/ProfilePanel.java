@@ -33,7 +33,7 @@ public class ProfilePanel extends JPanel {
 	private String myStateMessage;
 	private String stateImage = "src/img/basic.png";
 
-	final String stateList[] = { "happy.png", "crying.png", "angry.png", "in-love.png", "laughing.png", "secret.png" };
+	//final String stateList[] = { "happy.png", "crying.png", "angry.png", "in-love.png", "laughing.png", "secret.png" };
 	private List<ImageIcon> stateImg = new ArrayList<ImageIcon>();
 	private List<JLabel> stateLabel = new ArrayList<JLabel>();
 	private CommandController controller = CommandController.getController();
@@ -47,7 +47,7 @@ public class ProfilePanel extends JPanel {
 		MyImg.setBounds(90, 30, 100, 100);
 		add(MyImg);
 		
-		MyImg.addMouseListener(new MouseListener() {
+		/*MyImg.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -94,7 +94,7 @@ public class ProfilePanel extends JPanel {
 				// TODO Auto-generated method stub
 
 			}
-		});
+		});*/
 
 		MyName = new JLabel(user_id);
 		MyName.setBounds(90, 130, 100, 50);
@@ -119,7 +119,7 @@ public class ProfilePanel extends JPanel {
 					profileMessage.setText(myStateMessage);
 					repaint();
 					
-					controller.send_Message(User.SIGNAL_CHANGE_STATE+"//"+user_id+"//"+stateImage+"//"+myStateMessage);
+					controller.send_Message(User.CODE_900+"//"+user_id+"//"+stateImage+"//"+myStateMessage);
 					////////////////////////////////////////
 					//       상태메세지 바꾸고 서버로 전송                       //
 					////////////////////////////////////////
@@ -150,36 +150,63 @@ public class ProfilePanel extends JPanel {
 			}
 		});
 		
-		//setStateImg();
+		setStateImg(user_id);
 
 	}
 	
-	public void setStateImg() {
-		for(int j=0; j<6;j++)
-			stateImg.add(new ImageIcon(stateList[j]));
+	public void setStateImg(String user_id) {	
 		
-		
-		for(ImageIcon state : stateImg) {
-			stateLabel.add(new JLabel(state));
-			
-		}
-		System.out.println(stateLabel.size());
-		
-		int i=0;
-		for(JLabel state : stateLabel) {
-			state.setToolTipText(stateList[i]);
-			if(i<3) {
-				state.setBounds(75+(160*i),430,130,130);
+		MyImg.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				System.out.println("프사 바꾸기 버튼 선택");
+		           if (e.getSource() == MyImg) {
+		               frame = new Frame("이미지첨부");
+		               fd = new FileDialog(frame, "이미지 선택", FileDialog.LOAD);
+		               // frame.setVisible(true);
+		               fd.setDirectory(".\\");
+		               fd.setVisible(true);
+		               System.out.println(fd.getDirectory() + fd.getFile());
+		               if (fd.getDirectory().length() > 0 && fd.getFile().length() > 0) {
+		            		stateImage = fd.getDirectory()+fd.getFile();
+							MyImg.setIcon(new ImageIcon(stateImage));
+							repaint();
+							
+							controller.send_Message(User.CODE_900+"//"+user_id+"//"+stateImage+"//"+myStateMessage);
+							//프사 변경하고 친구목록창으로 돌아가면 friendpanel이 사라짐
+							
+							
+		               }
+		            }
 			}
-			
-			else {
-				state.setBounds(75+(160*(i-3)),630,130,130);
-				
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+
 			}
-			state.setOpaque(false);
-			add(state);
-			i++;
-		}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
+	
 
 	}
 }

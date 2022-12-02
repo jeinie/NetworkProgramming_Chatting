@@ -116,7 +116,7 @@ public class FriendPanel extends JPanel {
 				reUser.setStateMsg(stateMsg);
 				userList.add(reUser);
 				System.out.println("friendPanel->updateState userName="+reUser.getName());
-				System.out.println("updateState result="+reUser.getStateImg()+","+reUser.getStateMsg());
+				System.out.println("updateState result="+reUser.getStateImg(userName)+","+reUser.getStateMsg());
 			}
 		}
 		
@@ -126,10 +126,36 @@ public class FriendPanel extends JPanel {
 		setFriendList(friendList);
 		repaint();
 		
+		JLabel friendName = new JLabel("친구");
+		friendName.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+		friendName.setBounds(23, 23, 76, 34);
+		add(friendName);
+		
+		line = new JLabel();
+		line.setBounds(10, 135, 280, 1);
+		line.setOpaque(true);
+		line.setBackground(new Color(211, 211, 211));
+		add(line);
+		
+		createRoomBtn = new JButton(addRoom);
+		createRoomBtn.setBounds(240, 17, 40, 40);
+		createRoomBtn.setBackground(new Color(255,225,231));
+		createRoomBtn.setBorderPainted(false);
+		add(createRoomBtn);
+		
+		createRoomBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AddRoomFrame rf = new AddRoomFrame(user_id);
+				
+			}
+		});
+		
 	}
 	
 	public void dataSetting() {
-		controller.send_Message(User.SIGNAL_ONLINE_USER_LIST);
+		controller.send_Message(User.CODE_600);
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
@@ -150,7 +176,7 @@ public class FriendPanel extends JPanel {
 		for (int i = 0; i < userList.size(); i++) {
 			UserInfo user = userList.get(i);
 			if (user.getName().equals(user_id)) { // 본인
-				myStateImage = user.getStateImg();
+				myStateImage = user.getStateImg(user_id);
 				myStateMessage = user.getStateMsg();
 			} else { //본인이 아님=>친구
 				friendList.add(user);
@@ -192,14 +218,13 @@ public class FriendPanel extends JPanel {
 	
 		for (i = 0; i < friendList.size(); i++) {
 			UserInfo user = friendList.get(i);
-			System.out.println("friendList="+user.getName()+"/"+user.getStateImg()+"/"+user.getStateMsg());
+			System.out.println("friendList="+user.getName()+"/"+user.getStateImg(user_id)+"/"+user.getStateMsg());
 			
-	
-			friendImg.add(new JLabel(new ImageIcon(user.getStateImg())));
+
+			friendImg.add(new JLabel(new ImageIcon(user.getStateImg(user_id))));
 			friendName.add(new JLabel(user.getName()));
 			stateLabel.add(new JLabel(user.getStateMsg()));
 			
-
 			//친구 프로필 사진
 			friendImg.get(i).setBounds(10, 145 + (i * 55), 50, 50);
 			friendImg.get(i).setBackground(Color.white);
@@ -230,13 +255,13 @@ public class FriendPanel extends JPanel {
 				}
 
 				@Override
-				public void mouseReleased(MouseEvent e) { // 친구목록을 누르면 해당 친구와의 갠톡방을 개설
+				public void mouseReleased(MouseEvent e) { //친구 이름 누르면 그 친구와 1:1 채팅방 열림
 					// TODO Auto-generated method stub
 					if(e.getClickCount()==2) {
 						String friendName = ((JLabel) e.getSource()).getText();
 
 						// 서버에게 채팅방 생성 요청
-						controller.send_Message(User.SIGNAL_CREATE_SINGLECHAT + "//" + user_id + "//" + friendName);
+						controller.send_Message(User.CODE_100 + "//" + user_id + "//" + friendName);
 
 					}
 				}

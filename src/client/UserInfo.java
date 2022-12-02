@@ -11,7 +11,7 @@ public class UserInfo {
 	
 	
 	public UserInfo() {
-		name="sample";
+		name="user";
 		isConnect = true;
 		stateImg = "src/img/basic.png";
 		stateMsg ="상태 메세지";
@@ -48,7 +48,7 @@ public class UserInfo {
 		this.stateMsg = stateMsg;
 	}
 
-	public String getStateImg() {
+	public String getStateImg(String name) {
 		return stateImg;
 	}
 

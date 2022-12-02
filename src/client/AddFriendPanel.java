@@ -61,7 +61,7 @@ public class AddFriendPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//急琶等 模备 府胶飘
-				String signal = User.SIGNAL_CREATE_MULTICHAT+"//"+myId;
+				String signal = User.CODE_200+"//"+myId;
 				
 				System.out.println("模备");
 				for(String name:AddFriendName) {
@@ -80,7 +80,7 @@ public class AddFriendPanel extends JPanel {
 	public void addList() {
 		friendList.clear();
 		
-		controller.send_Message(User.SIGNAL_ONLINE_USER_LIST);
+		controller.send_Message(User.CODE_600);
 		try {
 			Thread.sleep(300);
 		} catch (InterruptedException e1) {

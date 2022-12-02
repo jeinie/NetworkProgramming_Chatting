@@ -3,6 +3,7 @@ package server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 
 public class RoomManager {
@@ -19,21 +20,27 @@ public class RoomManager {
 	}
 	
 	public void broadcast(User user,String str, String roomTitle) {
-		//ìœ ì €ê°€ ì†í•œ ë£¸ì„ ì°¾ì•„ì„œ ë¸Œë¡œë“œìºìŠ¤íŒ… ëª…ë ¹
-		ChattingRoom room = serchByRoomTitle(roomTitle);//ë£¸ì´ë¦„ìœ¼ë¡œ ë¸Œë¡œë“œìºìŠ¤íŒ…í•  ë£¸ì„ ì°¾ìŒ
+		//À¯Àú°¡ ¼ÓÇÑ ·ëÀ» Ã£¾Æ¼­ ºê·ÎµåÄ³½ºÆÃ ¸í·É
+		ChattingRoom room = serchByRoomTitle(roomTitle);//·ëÀÌ¸§À¸·Î ºê·ÎµåÄ³½ºÆÃÇÒ ·ëÀ» Ã£À½
 		room.broadcast(str);
 	}
 	
+	//broadcast Image 
+	public void broadcastImg(User user,ImageIcon img, String roomTitle) {
+		//À¯Àú°¡ ¼ÓÇÑ ·ëÀ» Ã£¾Æ¼­ ºê·ÎµåÄ³½ºÆÃ ¸í·É
+		ChattingRoom room = serchByRoomTitle(roomTitle);//·ëÀÌ¸§À¸·Î ºê·ÎµåÄ³½ºÆÃÇÒ ·ëÀ» Ã£À½
+		room.broadcastImg(img);
+	}
 	public ChattingRoom serchByRoomTitle(String roomTitle) {
-		//ì±„íŒ…ë°© ì´ë¦„ìœ¼ë¡œ ë°©ì°¾ê¸°
+		//Ã¤ÆÃ¹æ ÀÌ¸§À¸·Î ¹æÃ£±â
 		for(int i=0;i<roomList.size();i++) {
 			if(roomList.get(i).getRoomTitle().equals(roomTitle))
 				return roomList.get(i);
 		}
-		return null;//ì—†ìœ¼ë©´ null
+		return null;//¾øÀ¸¸é null
 	}
 	
-	public ChattingRoom createRoom(ArrayList<User> users) {//ìœ ì €ê°€ ë°©ì„ ìƒì„±
+	public ChattingRoom createRoom(ArrayList<User> users) {//À¯Àú°¡ ¹æÀ» »ı¼º
 		ChattingRoom room = new ChattingRoom(users);
 		roomList.add(room);
 		textArea.append("Room Create! Recent Number of Room : " + roomList.size() + "\n");

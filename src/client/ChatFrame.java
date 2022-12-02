@@ -16,8 +16,8 @@ public class ChatFrame extends JFrame{
 	private JTextPane textArea;
 	private ChatPanel chatPanel;
 	
-	public ChatFrame(String roomName) {
-		setTitle("ªÛªÛ≈Â");
+	public ChatFrame(String roomTitle) {
+		setTitle(roomTitle);
 		setSize(400,600);
 		setResizable(false);
 		
@@ -33,7 +33,7 @@ public class ChatFrame extends JFrame{
 
 		Container c = getContentPane();
 		
-		this.chatPanel = new ChatPanel(this,roomName);
+		this.chatPanel = new ChatPanel(this,roomTitle);
 		c.add(chatPanel);
 		
 		setVisible(true);

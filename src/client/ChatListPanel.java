@@ -50,9 +50,10 @@ public class ChatListPanel extends JPanel {
 
 		chattingRoomList = controller.getChatLabel();
 		for (JLabel room : chattingRoomList)
-			System.out.println("*********" + room.getText().toString());
+			System.out.println("채팅방 리스트: " + room.getText().toString());
 
 		for (JLabel room : chattingRoomList) {
+			
 			chatImg.add(new JLabel(new ImageIcon(chat)));
 			chatImg.get(i).setBounds(10, 75 + (i * 55), 50, 50);
 			chatImg.get(i).setOpaque(true);
@@ -74,10 +75,10 @@ public class ChatListPanel extends JPanel {
 				}
 
 				@Override
-				public void mouseReleased(MouseEvent e) { // 친구목록을 누르면 해당 친구와의 
-					if(e.getClickCount()==1) { //1 ? 2? 고민
+				public void mouseReleased(MouseEvent e) { // 채팅목록을 누르면 기존 채팅창 띄우기
+					if(e.getClickCount()==1) { 
 						String roomTitle = room.getText();
-						System.out.println("ChatListPanel-> roomTitle = "+roomTitle);
+						System.out.println("채팅방: " + roomTitle);
 						
 						ChatFrame chattingroom = new ChatFrame(roomTitle);
 						JTextPane temp = controller.getChattingRoomList().get(roomTitle);

@@ -1,7 +1,9 @@
 package client;
 
 import java.awt.Color;
+import java.awt.FileDialog;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,15 +32,20 @@ import server.User;
 
 public class ChatPanel extends JPanel {
 	
-	private String name = LoginPanel.userID; // í˜„ìž¬ ë¡œê·¸ì¸í•œ ìœ ì €
+	private String name = LoginPanel.userID; //ÇöÀç ·Î±×ÀÎÇÑ À¯Àú
 	
 	private ChatFrame cf;
 	private JLabel profile;
 	private JTextPane textPaneChat;
 	private TextField txtWrite;
-	private JButton sendBtn;
+	private JButton sendBtn, sendEmojiBtn, sendImageBtn, blank;
 	private JScrollPane chatScroll;
 	public JButton createRoomBtn;
+	ImageIcon emoticon = new ImageIcon("src/img/emoticon.png");
+	ImageIcon file = new ImageIcon("src/img/file.png");
+	
+	private Frame frame;
+	private FileDialog fd;
 
 	private String roomTitle;
 	private CommandController controller = CommandController.getController();
@@ -51,70 +58,114 @@ public class ChatPanel extends JPanel {
 		setSize(400,600);
 		setBackground(new Color(155, 187, 212));
 		
-		profile = new JLabel(roomTitle);
-		profile.setBounds(0, 0, 565, 40);
-		profile.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
+		profile = new JLabel(" "+roomTitle);
+		profile.setBounds(0, 0, 400, 40);
+		profile.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 		profile.setOpaque(true);
 		profile.setForeground(Color.white);
 		profile.setBackground(new Color(0,0,0,122));
 		cf.add(profile);
 		
-		//ì±„íŒ… ë³´ì´ëŠ” ë¶€ë¶„
+		//Ã¤ÆÃ º¸ÀÌ´Â ºÎºÐ
 		textPaneChat = new JTextPane();
 		textPaneChat.setEditable(false);
-		textPaneChat.setBounds(0, 40, 395, 400);
+		textPaneChat.setBounds(0, 40, 355, 400);
 		textPaneChat.setBackground(new Color(155, 187, 212));
-		textPaneChat.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
+		textPaneChat.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 		
-		//ì±„íŒ… ìŠ¤í¬ë¡¤ 
+		//Ã¤ÆÃ ½ºÅ©·Ñ 
 		chatScroll = new JScrollPane(textPaneChat);
 		chatScroll.setBounds(0, 40, 395, 400);
 		cf.add(chatScroll);
 	
-		//ë©”ì„¸ì§€ ìž…ë ¥ ë¶€ë¶„
+		//¸Þ¼¼Áö ÀÔ·Â ºÎºÐ
 		txtWrite = new TextField();
-		txtWrite.setBounds(0, 440, 320, 70);
-		txtWrite.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
+		txtWrite.setBounds(0, 440, 400, 70);
+		txtWrite.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 	    cf.add(txtWrite);
 
-		sendBtn = new JButton("ì „ì†¡");
-		sendBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 15));
+		sendBtn = new JButton("Àü¼Û");
+		sendBtn.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 16));
 		sendBtn.setBackground(new Color(247, 230, 0));
-		sendBtn.setBounds(321, 440, 75, 69);
+		sendBtn.setBounds(296, 510, 88, 50);
 		cf.add(sendBtn);
 		
-	
-		start(); //ì•¡ì…˜ì´ë²¤íŠ¸ ì§€ì • ë©”ì†Œë“œ
+		sendEmojiBtn = new JButton(emoticon);
+		sendEmojiBtn.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		sendEmojiBtn.setBackground(new Color(255,255,255));
+		sendEmojiBtn.setBounds(0, 510, 50, 50);
+		cf.add(sendEmojiBtn);
+		
+		sendImageBtn = new JButton(file);
+		sendImageBtn.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		sendImageBtn.setBackground(new Color(255,255,255));
+		sendImageBtn.setBounds(50, 510, 50, 50);
+		cf.add(sendImageBtn);
+		
+		blank = new JButton();
+		blank.setBounds(100,510,196,50);
+		blank.setBackground(Color.WHITE);
+		cf.add(blank);
+		
+		
+		start(); //¾×¼ÇÀÌº¥Æ® ÁöÁ¤ ¸Þ¼Òµå
 	}
 	
-	public void start() { // ì•¡ì…˜ì´ë²¤íŠ¸ ì§€ì • ë©”ì†Œë“œ
+	public void start() { // ¾×¼ÇÀÌº¥Æ® ÁöÁ¤ ¸Þ¼Òµå
 		Myaction action = new Myaction(this.textPaneChat);
-		sendBtn.addActionListener(action); // ë‚´ë¶€í´ëž˜ìŠ¤ë¡œ ì•¡ì…˜ ë¦¬ìŠ¤ë„ˆë¥¼ ìƒì†ë°›ì€ í´ëž˜ìŠ¤ë¡œ
+		sendBtn.addActionListener(action); // ³»ºÎÅ¬·¡½º·Î ¾×¼Ç ¸®½º³Ê¸¦ »ó¼Ó¹ÞÀº Å¬·¡½º·Î
 		txtWrite.addActionListener(action);
+		sendImageBtn.addActionListener(action);
+		sendEmojiBtn.addActionListener(action);
 	}
 
-	class Myaction implements ActionListener // ë‚´ë¶€í´ëž˜ìŠ¤ë¡œ ì•¡ì…˜ ì´ë²¤íŠ¸ ì²˜ë¦¬ í´ëž˜ìŠ¤
+	class Myaction implements ActionListener // ³»ºÎÅ¬·¡½º·Î ¾×¼Ç ÀÌº¥Æ® Ã³¸® Å¬·¡½º
 	{
 		public Myaction(JTextPane textPaneChat) {
 
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// ì•¡ì…˜ ì´ë²¤íŠ¸ê°€ sendBtnì¼ë•Œ ë˜ëŠ” textField ì—ì„œ Enter key ì¹˜ë©´
+			// ¾×¼Ç ÀÌº¥Æ®°¡ sendBtnÀÏ¶§ ¶Ç´Â textField ¿¡¼­ Enter key Ä¡¸é
 			if (e.getSource() == sendBtn || e.getSource() == txtWrite) 
 			{
-				String msg = String.format("%s//%s//[%s] %s//\n", User.SIGNAL_NOMAL_MSG, roomTitle, name, txtWrite.getText());
-
+				String msg = String.format("%s//%s//[%s] %s//\n", User.CODE_400, roomTitle, name, txtWrite.getText());
+				
 				String[] array = msg.split("//");
-				System.out.println("í˜„ìž¬ ì ‘ì†ìž: " + name);
-
-				//ì±„íŒ…ì„ ì¹œ ì±„íŒ…ë°© ì´ë¦„, ìœ ì €ë„¤ìž„, ë©”ì‹œì§€ë¥¼ ì„œë²„ë¡œ ì „ë‹¬
+				System.out.println("ÇöÀç Á¢¼ÓÀÚ: " + name);
+				
+				//Ã¤ÆÃÀ» Ä£ Ã¤ÆÃ¹æ ÀÌ¸§, À¯Àú³×ÀÓ, ¸Þ½ÃÁö¸¦ ¼­¹ö·Î Àü´Þ
 				controller.send_Message(msg);				
-				txtWrite.setText("");
-				txtWrite.requestFocus();
+				txtWrite.setText("");  // ¸Þ¼¼Áö¸¦ º¸³»°í ³ª¸é ¸Þ¼¼Áö ¾²´ÂÃ¢À» ºñ¿î´Ù.
+				txtWrite.requestFocus(); // ¸Þ¼¼Áö¸¦ º¸³»°í Ä¿¼­¸¦ ´Ù½Ã ÅØ½ºÆ® ÇÊµå·Î À§Ä¡½ÃÅ²´Ù	
+		
 			}
+			else if(e.getSource() == sendEmojiBtn) { //ÀÌ¸ðÆ¼ÄÜ ¹öÆ° ´©¸£¸é
+				System.out.println("ÀÌ¸ðÆ¼ÄÜ ¹öÆ° ´­¸²");
+			}
+			else if(e.getSource() == sendImageBtn) { //»çÁø ¹öÆ° ´©¸£¸é
+				System.out.println("ÀÌ¹ÌÁö Ã·ºÎ ¹öÆ° ´­¸²");
+				  frame = new Frame("ÀÌ¹ÌÁöÃ·ºÎ");
+		            fd = new FileDialog(frame, "ÀÌ¹ÌÁö ¼±ÅÃ", FileDialog.LOAD);
+		            //frame.setVisible(true);
+		            fd.setDirectory(".\\");
+		            fd.setVisible(true);
+		            // System.out.println(fd.getDirectory() + fd.getFile());
+		            if (fd.getDirectory().length() > 0 && fd.getFile().length() > 0 ) {
+		            	String msg = null;
+		            	String img = fd.getDirectory() + fd.getFile();
+		            	ImageIcon img2 = new ImageIcon(fd.getDirectory() + fd.getFile());
+						msg = String.format("%s//%s//%s\n", User.CODE_420, roomTitle, img2); //ÀÏ´Ü name •û¹ö¸² 
+						System.out.println("ÀÌ¹ÌÁö ¼±ÅÃÇß¾î: " + msg);
+		               //controller.send_Message(msg); 
+		               controller.send_Image(msg);
+		              // controller.append_Image(roomTitle, img2);
+		            }
+			}
+			
 
 		}
+
 	}
 	
 	public JTextPane getTextPaneChat() {
@@ -125,4 +176,5 @@ public class ChatPanel extends JPanel {
 		this.textPaneChat = textPaneChat;
 		
 	}
+
 }

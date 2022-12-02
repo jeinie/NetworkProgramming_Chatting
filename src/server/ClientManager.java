@@ -37,46 +37,46 @@ public class ClientManager {
 	public void insertUser(Socket socket) {
 		User user = new User(socket, server);
 		userList.add(user);
-		textArea.append(userList.size() +" : í˜„ì¬ ë²¡í„°ì— ë‹´ê²¨ì§„ ì‚¬ìš©ì ìˆ˜\n");
-		textArea.append("ì‚¬ìš©ì ì ‘ì†ì™„ë£Œ\n");
-		user.start();//ìƒˆë¡œ ë“¤ì–´ì˜¨ ìœ ì €ì˜ ìŠ¤ë ˆë“œ ì‹¤í–‰
+		textArea.append(userList.size() +" : ÇöÀç º¤ÅÍ¿¡ ´ã°ÜÁø »ç¿ëÀÚ ¼ö\n");
+		textArea.append("»ç¿ëÀÚ Á¢¼Ó¿Ï·á\n");
+		user.start();//»õ·Î µé¾î¿Â À¯ÀúÀÇ ½º·¹µå ½ÇÇà
 	}
 	
 	public void exitUser(User user) {
-		userList.remove(user); // ì—ëŸ¬ê°€ë‚œ(exití•œ) í˜„ì¬ ê°ì²´ë¥¼ ë²¡í„°ì—ì„œ ì§€ìš´ë‹¤
+		userList.remove(user); // ¿¡·¯°¡³­(exitÇÑ) ÇöÀç °´Ã¼¸¦ º¤ÅÍ¿¡¼­ Áö¿î´Ù
 		backupUserList.put(user.getName(),user);
-		textArea.append(userList.size() +" : í˜„ì¬ ë²¡í„°ì— ë‹´ê²¨ì§„ ì‚¬ìš©ì ìˆ˜\n");
-		textArea.append("ì‚¬ìš©ì ì ‘ì† ëŠì–´ì§ ìì› ë°˜ë‚©\n");
+		textArea.append(userList.size() +" : ÇöÀç º¤ÅÍ¿¡ ´ã°ÜÁø »ç¿ëÀÚ ¼ö\n");
+		textArea.append("»ç¿ëÀÚ Á¢¼Ó ²÷¾îÁü ÀÚ¿ø ¹İ³³\n");
 		textArea.setCaretPosition(textArea.getText().length());
 		System.out.println("Backup UserInfo : "+user.getName()+"/"+backupUserList.get(user.getName()).getStateImg()+"/"+backupUserList.get(user.getName()).getStateMsg());
 	}
 	
 	public void usersUpdateFriendList(String newUser) {
-		textArea.append("ìƒˆë¡œìš´ ìœ ì €" + newUser + "ë¥¼ ì œì™¸í•˜ê³  ì—…ë°ì´íŠ¸\n");
+		textArea.append("»õ·Î¿î À¯Àú" + newUser + "¸¦ Á¦¿ÜÇÏ°í ¾÷µ¥ÀÌÆ®\n");
 		textArea.setCaretPosition(textArea.getText().length());
 		for (int i = 0; i < userList.size(); i++) {
 			User user = userList.get(i);
-			if (!user.getName().equals(newUser)) { // ìƒˆìœ ì €ëŠ” ì œì™¸
-				user.sendMsg(User.SIGNAL_NEW_USER_CONNECT +"//"+user.getName()+ "//" + newUser);
-				textArea.append(user.getName() + "ë‹˜ì˜ ì¹œêµ¬ëª©ë¡ ì—…ë°ì´íŠ¸\n");
+			if (!user.getName().equals(newUser)) { // »õÀ¯Àú´Â Á¦¿Ü
+				user.sendMsg(User.CODE_700 +"//"+user.getName()+ "//" + newUser);
+				textArea.append(user.getName() + "´ÔÀÇ Ä£±¸¸ñ·Ï ¾÷µ¥ÀÌÆ®\n");
 				textArea.setCaretPosition(textArea.getText().length());
 			}
 		}
 	}
 	
-	//ìœ ì €ì˜ ìƒíƒœì´ë¯¸ì§€ë‚˜ ìƒíƒœë©”ì‹œì§€ ë³€ê²½ì´ ìˆë‹¤ë©´ ëª¨ë“  ìœ ì €ë“¤ì˜ í™”ë©´ì„ ê°±ì‹ 
+	//À¯ÀúÀÇ »óÅÂÀÌ¹ÌÁö³ª »óÅÂ¸Ş½ÃÁö º¯°æÀÌ ÀÖ´Ù¸é ¸ğµç À¯ÀúµéÀÇ È­¸éÀ» °»½Å
 	public void userInfoUpdate(String userName,String stateImg,String stateMsg) {
-		//í•´ë‹¹ ìœ ì €ì˜ ì •ë³´ë¥¼ ë°”ê¾¸ê³ 
+		//ÇØ´ç À¯ÀúÀÇ Á¤º¸¸¦ ¹Ù²Ù°í
 		User chageUser = searchByUserNameInOnline(userName);
 		chageUser.setStateImg(stateImg);
 		chageUser.setStateMsg(stateMsg);
-		textArea.append(searchByUserNameInOnline(userName).getName() + "ë‹˜ì˜ ì •ë³´ ì—…ë°ì´íŠ¸\n");
+		textArea.append(searchByUserNameInOnline(userName).getName() + "´ÔÀÇ Á¤º¸ ¾÷µ¥ÀÌÆ®\n");
 		textArea.append(searchByUserNameInOnline(userName).getStateImg()+"/"+searchByUserNameInOnline(userName).getStateMsg()+ "\n");
 		textArea.setCaretPosition(textArea.getText().length());
-		//ëª¨ë“  ìœ ì €ë“¤ í™”ë©´ ê°±ì‹  ëª…ë ¹
+		//¸ğµç À¯Àúµé È­¸é °»½Å ¸í·É
 		for (int i = 0; i < userList.size(); i++) {
 			User user = userList.get(i);
-			user.sendMsg(User.SIGNAL_CHANGE_STATE+"//"+user.getName()+"//"+userName+"//"+stateImg+"//"+stateMsg);
+			user.sendMsg(User.CODE_900+"//"+user.getName()+"//"+userName+"//"+stateImg+"//"+stateMsg);
 		}
 	}
 	

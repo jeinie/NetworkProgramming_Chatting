@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
@@ -30,31 +31,31 @@ public class User extends Thread {
 	private Socket client_socket; //user_socket	
 	Server server;
 	Socket socket;
-	String name, stateImg, stateMsg; //ì´ë¦„, í”„ì‚¬, ìƒë©”
+	String name, stateImg, stateMsg; //ÀÌ¸§, ÇÁ»ç, »ó¸Ş
 	JTextArea textArea = Server.textArea;
 	
-	//ì‚¬ìš©ìê°€ ì°¸ì—¬í•˜ëŠ” ë°©ë“¤
+	//»ç¿ëÀÚ°¡ Âü¿©ÇÏ´Â ¹æµé
 	ArrayList<String> userName = new ArrayList<String>(); //userName
-	ArrayList<ChattingRoom> joinRoomList = new ArrayList<ChattingRoom>(); //ì°¸ì—¬í•˜ê³  ìˆëŠ” ë°©?
-	ArrayList<User> friendsList = new ArrayList<User>(); //ì¹œêµ¬ë¦¬ìŠ¤íŠ¸
-	ArrayList<String> multiChatUserList; //ë‹¨í†¡ë°© ìœ ì € ë¦¬ìŠ¤íŠ¸
+	ArrayList<ChattingRoom> joinRoomList = new ArrayList<ChattingRoom>(); //Âü¿©ÇÏ°í ÀÖ´Â ¹æ?
+	ArrayList<User> friendsList = new ArrayList<User>(); //Ä£±¸¸®½ºÆ®
+	ArrayList<String> multiChatUserList; //´ÜÅå¹æ À¯Àú ¸®½ºÆ®
 	
 	public User(Socket socket, Server server) {
 		name = "newUser";
 		stateImg = "src/img/basic.png";
-		stateMsg = "ìƒíƒœ ë©”ì„¸ì§€";
+		stateMsg = "»óÅÂ ¸Ş¼¼Áö";
 		client_socket = socket;
 		this.server = server;
 		network();
 	}
 	
-	public void addFreind(User user) { //ì¹œêµ¬ì¶”ê°€
+	public void addFreind(User user) { //Ä£±¸Ãß°¡
 		friendsList.add(user);
 	}
 	
 	public void EnterRoom(ChattingRoom room) {
-		room.EnterRoom(this);//ì±„íŒ…ë°© ì…ì¥
-		this.joinRoomList.add(room);//ìœ ì €ê°€ ì†í•œ ë°©ì„ ì¶”ê°€
+		room.EnterRoom(this);//Ã¤ÆÃ¹æ ÀÔÀå
+		this.joinRoomList.add(room);//À¯Àú°¡ ¼ÓÇÑ ¹æÀ» Ãß°¡
 	}
 	
 	public void network() {
@@ -64,43 +65,46 @@ public class User extends Thread {
 			os = client_socket.getOutputStream();
 			dos = new DataOutputStream(os);
 		
-			textArea.append(name + "ë‹˜ì´ ì…ì¥í–ˆìŠµë‹ˆë‹¤.\n");
+			textArea.append(name + "´ÔÀÌ ÀÔÀåÇß½À´Ï´Ù.\n");
 			textArea.setCaretPosition(textArea.getText().length());	
 	
 		} catch (Exception e) {
 			e.printStackTrace();
-			//textArea.append("ìŠ¤íŠ¸ë¦¼ ì…‹íŒ… ì—ëŸ¬\n");
+			//textArea.append("½ºÆ®¸² ¼ÂÆÃ ¿¡·¯\n");
 			textArea.setCaretPosition(textArea.getText().length());
 		}
 	}
 	
-	//ì´ë¦„ ìˆ˜ì •..?
-	public static final String SIGNAL_CREATE_SINGLECHAT = "SIGNAL_CREATE_SINGLECHAT";
-	public static final String SIGNAL_CREATE_MULTICHAT = "SIGNAL_CREATE_MULTICHAT";
-	public static final String SIGNAL_CREATE_ROOM_COMPLETE = "SIGNAL_CREATE_ROOM_COMPLETE";
-	public static final String SIGNAL_NOMAL_MSG = "SIGNAL_NOMAL_MSG";
-	public static final String SIGNAL_USER_ID = "SIGNAL_USER_ID";
-	public static final String SIGNAL_ONLINE_USER_LIST = "SIGNAL_ONLINE_USER_LIST";
-	//public static final String SIGNAL_UPDATE_FRIENDS_LIST = "SIGNAL_UPDATE_FRIENDS_LIST";
-	public static final String SIGNAL_NEW_USER_CONNECT = "SIGNAL_NEW_USER_CONNECT";
-	public static final String SIGNAL_EXIST_USER_CONNECT = "SIGNAL_EXIST_USER_CONNECT";
-	public static final String SIGNAL_CHANGE_STATE = "SIGNAL_CHANGE_STATE_MSG";
+	public static final String CODE_100 = "CODE_100"; // 1:1 Ã¤ÆÃ¹æ ¸¸µé±â
+	public static final String CODE_200 = "CODE_200"; // ±×·ì Ã¤ÆÃ¹æ ¸¸µé±â
+	public static final String CODE_300 = "CODE_300"; // Ã¤ÆÃ¹æ
+	public static final String CODE_400 = "CODE_400"; // Ã¤ÆÃ ¸Ş½ÃÁö
+	public static final String CODE_500 = "CODE_500"; // À¯Àú ¾ÆÀÌµğ
+	public static final String CODE_600 = "CODE_600"; // Á¢¼Ó ÁßÀÎ À¯Àú ¸®½ºÆ®
+	public static final String CODE_700 = "CODE_700"; // »õ·Î Á¢¼ÓÇÑ À¯Àú
+	public static final String CODE_800 = "CODE_800"; // ÀÌ¹Ì Á¸ÀçÇÏ´Â À¯Àú
+	public static final String CODE_900 = "CODE_900"; // »ç¿ëÀÚ Á¤º¸ º¯°æ
 	 
-	/*ë©”ì‹œì§€ ì²˜ë¦¬ ë¶€ë¶„*/
-	public void InMessage(String str) {// ì‚¬ìš©ì ë©”ì„¸ì§€ ì²˜ë¦¬
+	//Ãß°¡
+	public static final String CODE_410 = "CODE_410"; //ÀÌ¸ğÆ¼ÄÜ Àü¼Û
+	public static final String CODE_420 = "CODE_420"; //ÀÌ¹ÌÁö Àü¼Û
+		
+		
+	/*¸Ş½ÃÁö Ã³¸® ºÎºĞ*/
+	public void InMessage(String str) {// »ç¿ëÀÚ ¸Ş¼¼Áö Ã³¸®
 		String[] array = str.split("//");
-		if(array[0].equals(SIGNAL_CREATE_SINGLECHAT)) { //1:1 ì±„íŒ…ë°© ë§Œë“¤ë©´ (ì¹œêµ¬ í•œëª… ì„ íƒ)
+		if(array[0].equals(CODE_100)) { //1:1 Ã¤ÆÃ¹æ ¸¸µé¸é (Ä£±¸ ÇÑ¸í ¼±ÅÃ)
 
 			String myName = array[1];
 			String friendName = array[2];
-			String roomTitle = friendName; //ê¸°ë³¸ ë°© íƒ€ì´í‹€= ì¹œêµ¬ì´ë¦„
+			String roomTitle = friendName; //±âº» ¹æ Å¸ÀÌÆ²= Ä£±¸ÀÌ¸§
 
-			textArea.append(myName+","+friendName+"ì˜ ì±„íŒ…ë°© ìƒì„±ë¨\n");
+			textArea.append(myName+","+friendName+"ÀÇ Ã¤ÆÃ¹æ »ı¼ºµÊ\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			
 			server.createSingleChat(this,myName, friendName);
 		}
-		else if(array[0].equals(SIGNAL_CREATE_MULTICHAT)) {//ë‹¨í†¡ë°©
+		else if(array[0].equals(CODE_200)) {//´ÜÅå¹æ
 			multiChatUserList = new ArrayList<String>();
 			String msg="";
 			for(int i=1;i<array.length;i++) {
@@ -110,16 +114,16 @@ public class User extends Thread {
 				else
 					msg+=array[i]+",";
 			}
-			textArea.append(msg+" ì±„íŒ…ë°© ìƒì„±ë¨.\n");
+			textArea.append(msg+" Ã¤ÆÃ¹æ »ı¼ºµÊ.\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			server.createMultiChat(multiChatUserList);
 		}
-		else if(array[0].equals(SIGNAL_USER_ID)) {
-			//ì†Œì¼“ì—°ê²° ì§í›„ ìœ ì €ì•„ì´ë”” ë°›ëŠ” ë¶€ë¶„
-			textArea.append("ìœ ì €ì•„ì´ë”” ìˆ˜ì‹  : "+array[1]+"\n");
+		else if(array[0].equals(CODE_500)) {
+			//¼ÒÄÏ¿¬°á Á÷ÈÄ À¯Àú¾ÆÀÌµğ ¹Ş´Â ºÎºĞ
+			textArea.append("À¯Àú¾ÆÀÌµğ ¼ö½Å : "+array[1]+"\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			
-			//ê¸°ì¡´ì˜ ìœ ì €ì¸ì§€ íŒë³„ í›„ ë‹¤ë¥´ê²Œ ì‘ë™
+			//±âÁ¸ÀÇ À¯ÀúÀÎÁö ÆÇº° ÈÄ ´Ù¸£°Ô ÀÛµ¿
 			if(server.isExistingUser(array[1])!=null) {
 				User existingUser=server.isExistingUser(array[1]);
 				ArrayList<ChattingRoom> existingRooms = server.getJoinRooms(array[1]);
@@ -128,37 +132,37 @@ public class User extends Thread {
 				setStateImg(existingUser.getStateImg());
 				setStateMsg(existingUser.getStateMsg());
 				for(int i=0;i<existingRooms.size();i++) {
-					sendMsg(SIGNAL_EXIST_USER_CONNECT+"//"+existingRooms.get(i).roomTitle+"//"+existingRooms.get(i).chat);
-					System.out.println("User->ê¸°ì¡´ ì±„íŒ…ë°© ëª©ë¡,ë‚´ìš©ì „ì†¡ "+i);
+					sendMsg(CODE_800+"//"+existingRooms.get(i).roomTitle+"//"+existingRooms.get(i).chat);
+					System.out.println("User->±âÁ¸ Ã¤ÆÃ¹æ ¸ñ·Ï,³»¿ëÀü¼Û "+i);
 				}
 				
-				textArea.append("ì´ë¯¸ ìˆëŠ” ì‚¬ìš©ìì…ë‹ˆë‹¤.\n");
+				textArea.append("ÀÌ¹Ì ÀÖ´Â »ç¿ëÀÚÀÔ´Ï´Ù.\n");
 				textArea.setCaretPosition(textArea.getText().length());
 			}
 			else {
 				setName(array[1]);
 				server.usersUpdateFriendList(array[1]);
-				textArea.append("ìƒˆë¡œìš´ ì‚¬ìš©ìì…ë‹ˆë‹¤.\n"); 
+				textArea.append("»õ·Î¿î »ç¿ëÀÚÀÔ´Ï´Ù.\n"); 
 				textArea.setCaretPosition(textArea.getText().length());
 			}
 			
 		}
-		else if(array[0].equals(SIGNAL_NOMAL_MSG)){ // ë‚´ê°€ ë³´ë‚¸ ë©”ì‹œì§€
+		else if(array[0].equals(CODE_400)){ // ³»°¡ º¸³½ ¸Ş½ÃÁö
 			String roomTitle = array[1];
 			str = array[2];
 			textArea.append(roomTitle+" : "+str + "\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			
-			//ì„œë²„ì—ì„œ ë¸Œë¡œë“œìºìŠ¤íŒ…(ìœ ì € ê°ì²´ë„ í•¨ê»˜ ë„˜ê²¨ì¤Œ)
+			//¼­¹ö¿¡¼­ ºê·ÎµåÄ³½ºÆÃ(À¯Àú °´Ã¼µµ ÇÔ²² ³Ñ°ÜÁÜ)
 			server.broadcast(this,str,roomTitle); 
 		}
-		else if(array[0].equals(SIGNAL_ONLINE_USER_LIST)) {
+		else if(array[0].equals(CODE_600)) {
 			friendsList = server.getFriendList();
 			String msg = array[0]+"//";
 			
 			for(int i=0;i<friendsList.size();i++) {
 				User user = friendsList.get(i);
-				if(i==friendsList.size()-1) {//ë§ˆì§€ë§‰ ë°°ì—´ 
+				if(i==friendsList.size()-1) {//¸¶Áö¸· ¹è¿­ 
 					msg+=user.getName()+"!!"+user.getStateImg()+"!!"+user.getStateMsg();
 				}
 				else {
@@ -169,15 +173,26 @@ public class User extends Thread {
 			textArea.append(msg+"\n");
 			textArea.setCaretPosition(textArea.getText().length());
 		}
-		else if(array[0].equals(SIGNAL_CHANGE_STATE)) {
-			textArea.append(array[1]+"ë‹˜ ìƒíƒœ ë³€ê²½ "+array[2]+" / "+array[3]+"\n");
+		else if(array[0].equals(CODE_900)) {
+			textArea.append(array[1]+"´Ô »óÅÂ º¯°æ "+array[2]+" / "+array[3]+"\n");
 			textArea.setCaretPosition(textArea.getText().length());
 			this.stateImg = array[2];
 			this.stateMsg = array[3];
 			server.userInfoUpdate(array[1],array[2],array[3]);
 		}
+		else if(array[0].equals(CODE_420)) { //ÀÌ¹ÌÁö Àü¼Û
+			String roomTitle = array[1];
+			//str = array[2];
+			ImageIcon image = new ImageIcon(array[2]);	
+			//textArea.append(roomTitle+" : "+ image + "\n");
+			textArea.append(roomTitle+" : ÀÌ¹ÌÁö º¸³¿ "+ "\n");
+			//textArea.setCaretPosition(textArea.getText().length());
+			
+			//¼­¹ö¿¡¼­ ºê·ÎµåÄ³½ºÆÃ(À¯Àú °´Ã¼µµ ÇÔ²² ³Ñ°ÜÁÜ)
+			server.broadcastImg(this,image,roomTitle); 
+		}
 		else {
-			System.out.println("ì§€ì›í•˜ì§€ ì•ŠëŠ” ë©”ì‹œì§€ ìœ í˜•");
+			System.out.println("Áö¿øÇÏÁö ¾Ê´Â ¸Ş½ÃÁö À¯Çü");
 		}
 	}
 	
@@ -188,7 +203,7 @@ public class User extends Thread {
 			dos.write(bb); //.writeUTF(str);
 		} 
 		catch (IOException e) {
-			textArea.append("ë©”ì‹œì§€ ì†¡ì‹  ì—ëŸ¬ ë°œìƒ\n");	
+			textArea.append("¸Ş½ÃÁö ¼Û½Å ¿¡·¯ ¹ß»ı-user¿¡¼­\n");	
 			textArea.setCaretPosition(textArea.getText().length());
 		}
 	}
@@ -197,7 +212,7 @@ public class User extends Thread {
 	public void run() {
 		while(true) {
 			try {
-				// chatPanelì—ì„œ ì˜¤ëŠ” ë©”ì‹œì§€
+				// chatPanel¿¡¼­ ¿À´Â ¸Ş½ÃÁö
 				byte[] b = new byte[1024];
 				dis.read(b);
 				String msg = new String(b);
@@ -211,15 +226,15 @@ public class User extends Thread {
 					dos.close();
 					dis.close();
 					client_socket.close();
-					//ìœ ì €ê°€ ë‚˜ê°„ ì‚¬ì‹¤ì„ ë§¤ë‹ˆì €ì—ê²Œ ì•Œë¦¼
-					//ìœ ì € ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œ,ì„œë²„ì— í”„ë¦°íŠ¸ë¥¼ ìœ„ì„
+					//À¯Àú°¡ ³ª°£ »ç½ÇÀ» ¸Å´ÏÀú¿¡°Ô ¾Ë¸²
+					//À¯Àú ¸®½ºÆ®¿¡¼­ »èÁ¦,¼­¹ö¿¡ ÇÁ¸°Æ®¸¦ À§ÀÓ
 					server.exitUser(this);
 					break;
 				
 				} catch (Exception e1) {
 				
-				}// catchë¬¸ ë
-			}// ë°”ê¹¥ catchë¬¸ë
+				}// catch¹® ³¡
+			}// ¹Ù±ù catch¹®³¡
 		}
 	}
 	

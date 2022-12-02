@@ -56,9 +56,15 @@ public class ClientManager {
 		textArea.setCaretPosition(textArea.getText().length());
 		for (int i = 0; i < userList.size(); i++) {
 			User user = userList.get(i);
+<<<<<<< HEAD
 			if (!user.getName().equals(newUser)) { // »õÀ¯Àú´Â Á¦¿Ü
 				user.sendMsg(User.CODE_700 +"//"+user.getName()+ "//" + newUser);
 				textArea.append(user.getName() + "´ÔÀÇ Ä£±¸¸ñ·Ï ¾÷µ¥ÀÌÆ®\n");
+=======
+			if (!user.getName().equals(newUser)) { // ìƒˆìœ ì €ëŠ” ì œì™¸
+				user.sendMsg(User.CODE_700 +"//"+user.getName()+ "//" + newUser);
+				textArea.append(user.getName() + "ë‹˜ì˜ ì¹œêµ¬ëª©ë¡ ì—…ë°ì´íŠ¸\n");
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 				textArea.setCaretPosition(textArea.getText().length());
 			}
 		}

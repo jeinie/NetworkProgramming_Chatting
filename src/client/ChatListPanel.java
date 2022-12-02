@@ -75,8 +75,13 @@ public class ChatListPanel extends JPanel {
 				}
 
 				@Override
+<<<<<<< HEAD
 				public void mouseReleased(MouseEvent e) { // 채팅목록을 누르면 기존 채팅창 띄우기
 					if(e.getClickCount()==1) { 
+=======
+				public void mouseReleased(MouseEvent e) { // 채팅목록을 누르면 해당 친구와의 
+					if(e.getClickCount()==1) {
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 						String roomTitle = room.getText();
 						System.out.println("채팅방: " + roomTitle);
 						
@@ -86,7 +91,7 @@ public class ChatListPanel extends JPanel {
 						controller.getChattingRoomList().remove(temp);
 						controller.getChattingRoomList().put(roomTitle, chattingroom.getChatPanel().getTextPaneChat());
 						
-						chattingroom.repaint();
+						// chattingroom.repaint();
 					}
 				}
 

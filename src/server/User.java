@@ -75,6 +75,7 @@ public class User extends Thread {
 		}
 	}
 	
+<<<<<<< HEAD
 	public static final String CODE_100 = "CODE_100"; // 1:1 Ã¤ÆÃ¹æ ¸¸µé±â
 	public static final String CODE_200 = "CODE_200"; // ±×·ì Ã¤ÆÃ¹æ ¸¸µé±â
 	public static final String CODE_300 = "CODE_300"; // Ã¤ÆÃ¹æ
@@ -84,6 +85,18 @@ public class User extends Thread {
 	public static final String CODE_700 = "CODE_700"; // »õ·Î Á¢¼ÓÇÑ À¯Àú
 	public static final String CODE_800 = "CODE_800"; // ÀÌ¹Ì Á¸ÀçÇÏ´Â À¯Àú
 	public static final String CODE_900 = "CODE_900"; // »ç¿ëÀÚ Á¤º¸ º¯°æ
+=======
+	//ì´ë¦„ ìˆ˜ì •..?
+	public static final String CODE_100 = "CODE_100"; // 1:1 ì±„íŒ…ë°© ë§Œë“¤ê¸°
+	public static final String CODE_200 = "CODE_200"; // ê·¸ë£¹ ì±„íŒ…ë°© ë§Œë“¤ê¸°
+	public static final String CODE_300 = "CODE_300"; // ì±„íŒ…ë°©
+	public static final String CODE_400 = "CODE_400"; // ì±„íŒ… ë©”ì‹œì§€
+	public static final String CODE_500 = "CODE_500"; // ìœ ì € ì•„ì´ë””
+	public static final String CODE_600 = "CODE_600"; // ì ‘ì† ì¤‘ì¸ ìœ ì € ë¦¬ìŠ¤íŠ¸
+	public static final String CODE_700 = "CODE_700"; // ìƒˆë¡œ ì ‘ì†í•œ ìœ ì €
+	public static final String CODE_800 = "CODE_800"; // ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ìœ ì €
+	public static final String CODE_900 = "CODE_900"; // ì‚¬ìš©ì ì •ë³´ ë³€ê²½
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 	 
 	//Ãß°¡
 	public static final String CODE_410 = "CODE_410"; //ÀÌ¸ğÆ¼ÄÜ Àü¼Û
@@ -93,7 +106,11 @@ public class User extends Thread {
 	/*¸Ş½ÃÁö Ã³¸® ºÎºĞ*/
 	public void InMessage(String str) {// »ç¿ëÀÚ ¸Ş¼¼Áö Ã³¸®
 		String[] array = str.split("//");
+<<<<<<< HEAD
 		if(array[0].equals(CODE_100)) { //1:1 Ã¤ÆÃ¹æ ¸¸µé¸é (Ä£±¸ ÇÑ¸í ¼±ÅÃ)
+=======
+		if(array[0].equals(CODE_100)) { //1:1 ì±„íŒ…ë°© ë§Œë“¤ë©´ (ì¹œêµ¬ í•œëª… ì„ íƒ)
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 
 			String myName = array[1];
 			String friendName = array[2];
@@ -104,7 +121,11 @@ public class User extends Thread {
 			
 			server.createSingleChat(this,myName, friendName);
 		}
+<<<<<<< HEAD
 		else if(array[0].equals(CODE_200)) {//´ÜÅå¹æ
+=======
+		else if(array[0].equals(CODE_200)) {//ë‹¨í†¡ë°©
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 			multiChatUserList = new ArrayList<String>();
 			String msg="";
 			for(int i=1;i<array.length;i++) {
@@ -119,8 +140,13 @@ public class User extends Thread {
 			server.createMultiChat(multiChatUserList);
 		}
 		else if(array[0].equals(CODE_500)) {
+<<<<<<< HEAD
 			//¼ÒÄÏ¿¬°á Á÷ÈÄ À¯Àú¾ÆÀÌµğ ¹Ş´Â ºÎºĞ
 			textArea.append("À¯Àú¾ÆÀÌµğ ¼ö½Å : "+array[1]+"\n");
+=======
+			//ì†Œì¼“ì—°ê²° ì§í›„ ìœ ì €ì•„ì´ë”” ë°›ëŠ” ë¶€ë¶„
+			textArea.append("ìœ ì €ì•„ì´ë”” ìˆ˜ì‹  : "+array[1]+"\n");
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 			textArea.setCaretPosition(textArea.getText().length());
 			
 			//±âÁ¸ÀÇ À¯ÀúÀÎÁö ÆÇº° ÈÄ ´Ù¸£°Ô ÀÛµ¿
@@ -133,7 +159,11 @@ public class User extends Thread {
 				setStateMsg(existingUser.getStateMsg());
 				for(int i=0;i<existingRooms.size();i++) {
 					sendMsg(CODE_800+"//"+existingRooms.get(i).roomTitle+"//"+existingRooms.get(i).chat);
+<<<<<<< HEAD
 					System.out.println("User->±âÁ¸ Ã¤ÆÃ¹æ ¸ñ·Ï,³»¿ëÀü¼Û "+i);
+=======
+					System.out.println("User->ê¸°ì¡´ ì±„íŒ…ë°© ëª©ë¡,ë‚´ìš©ì „ì†¡ "+i);
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 				}
 				
 				textArea.append("ÀÌ¹Ì ÀÖ´Â »ç¿ëÀÚÀÔ´Ï´Ù.\n");
@@ -147,7 +177,11 @@ public class User extends Thread {
 			}
 			
 		}
+<<<<<<< HEAD
 		else if(array[0].equals(CODE_400)){ // ³»°¡ º¸³½ ¸Ş½ÃÁö
+=======
+		else if(array[0].equals(CODE_400)){ // ë‚´ê°€ ë³´ë‚¸ ë©”ì‹œì§€
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 			String roomTitle = array[1];
 			str = array[2];
 			textArea.append(roomTitle+" : "+str + "\n");
@@ -174,7 +208,11 @@ public class User extends Thread {
 			textArea.setCaretPosition(textArea.getText().length());
 		}
 		else if(array[0].equals(CODE_900)) {
+<<<<<<< HEAD
 			textArea.append(array[1]+"´Ô »óÅÂ º¯°æ "+array[2]+" / "+array[3]+"\n");
+=======
+			textArea.append(array[1]+"ë‹˜ ìƒíƒœ ë³€ê²½ "+array[2]+" / "+array[3]+"\n");
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 			textArea.setCaretPosition(textArea.getText().length());
 			this.stateImg = array[2];
 			this.stateMsg = array[3];

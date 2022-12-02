@@ -130,7 +130,11 @@ public class ChatPanel extends JPanel {
 			if (e.getSource() == sendBtn || e.getSource() == txtWrite) 
 			{
 				String msg = String.format("%s//%s//[%s] %s//\n", User.CODE_400, roomTitle, name, txtWrite.getText());
+<<<<<<< HEAD
 				
+=======
+
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 				String[] array = msg.split("//");
 				System.out.println("현재 접속자: " + name);
 				

@@ -78,6 +78,7 @@ public class CommandController {
 	}
 	
 	//chatPanel의 TextArea에 글자 붙임
+<<<<<<< HEAD
 		public void append_My_Message(String roomTitle, String str) { // 오른쪽에 나와야 함
 			// 채팅방 찾고
 			setTextPane(chattingRoomList.get(roomTitle));
@@ -110,6 +111,17 @@ public class CommandController {
 				textPane.setCaretPosition(len); // place caret at the end (with no selection)			
 			}
 				
+=======
+	public void append_My_Message(String roomName, String str) { // 오른쪽에 나와야 함
+		// 채팅방 찾고
+		setTextPane(chattingRoomList.get(roomName));
+
+		String arr[] = str.split(" ");
+		String message = "";
+
+		for (int i=1; i<arr.length; i++) {
+			message += arr[i] + " ";
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 		}
 		
 	public void append_Message(String roomTitle, String str) {//chatPanel의 TextArea에 글자 붙임
@@ -129,6 +141,51 @@ public class CommandController {
 			//초대된 사람이라 채팅방에 입장은 했지만 화면이 안떴을때
 			System.out.println("Commandcontroller -> textPane==null");
 			
+<<<<<<< HEAD
+=======
+			textPane.setCaretPosition(len); // place caret at the end (with no selection)
+			textPane.replaceSelection(str); // there is no selection, so inserts at caret
+			//System.out.println("len = "+len+"\nstr = "+str);
+			*/
+			
+			// String temp = textPane.getText()+"\n"+str;
+			// textPane.setText(temp);
+
+			StyledDocument doc = textPane.getStyledDocument();
+			SimpleAttributeSet right = new SimpleAttributeSet();
+			StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
+			StyleConstants.setForeground(right, Color.BLACK);
+			doc.setParagraphAttributes(doc.getLength(), 1, right, false);
+			try {
+				doc.insertString(doc.getLength(), message+" \n\n", right );
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+			
+			int len = textPane.getDocument().getLength(); // same value as
+			textPane.setCaretPosition(len); // place caret at the end (with no selection)			
+		}
+			
+	}
+
+	public void append_Message(String roomName, String str) {
+		
+		setTextPane(chattingRoomList.get(roomName)); 
+
+		// [user2] hello
+		// [user2] hello, nice to meet you.
+		String arr[] = str.split(" ");
+		String message = "";
+
+		for (int i=1; i<arr.length; i++) {
+			message += arr[i] + " ";
+		}
+		String user = str.split(" ")[0];
+		
+		if(textPane==null) {
+			//초대된 사람이라 채팅방에 입장은 했지만 화면이 안떴을때
+			System.out.println("Commandcontroller -> textPane==null");			
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 		}
 		else {
 			StyledDocument doc = textPane.getStyledDocument();
@@ -140,7 +197,10 @@ public class CommandController {
 			try {
 				doc.insertString(doc.getLength(), user+"\n", left);
 				doc.insertString(doc.getLength(), message+"\n\n", left );
+<<<<<<< HEAD
 				
+=======
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 			} catch (BadLocationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -233,11 +293,19 @@ public class CommandController {
 						
 						//채팅방 생성 완료시->채팅방 이름을 전달받아 채팅방의 모든 인원 채팅방 띄우기(강제)
 						if(array[0].equals(User.CODE_300)) {
+<<<<<<< HEAD
 							roomTitle = array[1];
 							if(chattingRoomList.get(roomTitle)==null) { //처음 생성되는 방
 								System.out.println("CommandControll -> roomTitle "+roomTitle);
 								ChatFrame a = new ChatFrame(roomTitle); //처음 방이 생성된 경우 채팅방창을 띄움
 								chattingRoomList.put(roomTitle, a.getChatPanel().getTextPaneChat());	//채팅방들의 TextPane을 해쉬맵으로 저장
+=======
+							roomName = array[1];
+							if(chattingRoomList.get(roomName)==null) { //처음 생성되는 방
+								System.out.println("CommandControll -> roomName "+roomName);
+								ChatFrame a = new ChatFrame(roomName); //처음 방이 생성된 경우 채팅방창을 띄움
+								chattingRoomList.put(roomName, a.getChatPanel().getTextPaneChat());	//채팅방들의 TextPane을 해쉬맵으로 저장
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 								
 								///////////////////////////////////////////////////////////////////////////////////
 								JLabel room = new JLabel(roomTitle);
@@ -254,8 +322,13 @@ public class CommandController {
 							
 						}
 						else if(array[0].equals(User.CODE_400)) {
+<<<<<<< HEAD
 							//String message = User.SIGNAL_NOMAL_MSG+"//"+roomTitle+"//"+str;
 							roomTitle= array[1];
+=======
+							//String message = User.CODE_400+"//"+roomName+"//"+str;
+							roomName= array[1];
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 							// array[2] = [user1] hello
 							// [] 제거
 							String charsToRemove = "[]";
@@ -270,7 +343,11 @@ public class CommandController {
 							if (who.equals(userId)) { // 내가 보낸 메시지이면
 								append_My_Message(roomTitle, str);
 							} else { // 상대방이 보낸 메시지이면
+<<<<<<< HEAD
 								append_Message(roomTitle,str);
+=======
+								append_Message(roomName,str);
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 							}
 						}
 						else if(array[0].equals(User.CODE_600)) {
@@ -295,7 +372,11 @@ public class CommandController {
 							mainFrameList.get(array[1]).getStartPanel().friendPanel.update(array[2]);
 						}
 						else if(array[0].equals(User.CODE_800)) {
+<<<<<<< HEAD
 							/*CODE_800+"//"+existingRooms.get(i).roomTitle+"//"+existingRooms.get(i).chat*/
+=======
+							/*CODE_800+"//"+existingRooms.get(i).roomName+"//"+existingRooms.get(i).chat*/
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 							JLabel room = new JLabel(array[1]);
 							ChatRoom.add(room);
 							
@@ -313,7 +394,11 @@ public class CommandController {
 							reUser.setStateImg(array[3]);
 							reUser.setStateMsg(array[4]);
 							onlineUserList.add(reUser);
+<<<<<<< HEAD
 							System.out.println("CommandController->CODE_900 "+searchByUserName(array[2]).getName()+searchByUserName(array[2]).getStateImg(array[2])+searchByUserName(array[2]).getStateMsg());
+=======
+							System.out.println("CommandController->CODE_900 "+searchByUserName(array[2]).getName()+searchByUserName(array[2]).getStateImg()+searchByUserName(array[2]).getStateMsg());
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 							mainFrameList.get(array[1]).getStartPanel().friendPanel.updateState(array[2],array[3],array[4]);
 							
 						}

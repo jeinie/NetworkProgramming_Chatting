@@ -218,7 +218,11 @@ public class Server extends JFrame{
 		}
 		ChattingRoom newRoom = roomManager.createRoom(users);
 		newRoom.setRoomTitle(roomTitle);
+<<<<<<< HEAD
 		for(int i=0;i<users.size();i++) { //Âü¿©ÇÏ´Â ¸ðµç À¯Àúµé¿¡°Ô Ã¤ÆÃ¹æÀ» ¶ç¿öÁÜ
+=======
+		for(int i=0;i<users.size();i++) { //ì°¸ì—¬í•˜ëŠ” ëª¨ë“  ìœ ì €ë“¤ì—ê²Œ ì±„íŒ…ë°©ì„ ë„ì›Œì¤Œ
+>>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 			users.get(i).sendMsg(User.CODE_300+"//"+roomTitle);
 		}
 		

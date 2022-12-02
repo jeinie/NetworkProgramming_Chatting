@@ -11,19 +11,12 @@ public class AddRoomFrame extends JFrame{
 	private ChatListPanel chatPanel;
 	
 	public AddRoomFrame(String userId) {
-		
-		//this.friendPanel = friendPanel;
 	
 		setTitle("상상톡");
 		setSize(400, 600);
 		setResizable(false);
-		
-		/*setUndecorated(true);
-		setBackground(new Color(0,0,0,122));*/
 
 		setLayout(null);
-		
-		//friendPanel = new AddFriendPanel(this);
 		
 		Dimension frameSize = this.getSize(); // 프레임 사이즈
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈

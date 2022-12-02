@@ -65,9 +65,20 @@ public class ChattingRoom {
 	}
 	
 	//이미지 브로드캐스팅
+	public void broadcastEmoticon(ImageIcon emoji) {
+		String message = User.CODE_410+"//"+roomTitle+"//"+emoji;
+		System.out.println("여기오려나");
+		chat += emoji+"\n"+"\n";
+		for (int i = 0; i < userList.size(); i++) {
+			User user = userList.get(i);
+			System.out.println("userList: " + userList);
+			user.sendMsg(message);
+		}
+	}
+	
+	//이미지 브로드캐스팅
 	public void broadcastImg(ImageIcon img) {
 		String message = User.CODE_420+"//"+roomTitle+"//"+img;
-		System.out.println("여기?");
 		chat += img+"\n"+"\n";
 		for (int i = 0; i < userList.size(); i++) {
 			User user = userList.get(i);

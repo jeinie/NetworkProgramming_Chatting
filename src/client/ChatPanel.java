@@ -142,6 +142,18 @@ public class ChatPanel extends JPanel {
 			}
 			else if(e.getSource() == sendEmojiBtn) { //이모티콘 버튼 누르면
 				System.out.println("이모티콘 버튼 눌림");
+				
+				sendEmojiBtn.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						Emoticon emo = new Emoticon(name, roomTitle);
+						emo.setVisible(true);
+						setVisible(true);
+						
+						
+					}
+				});
 			}
 			else if(e.getSource() == sendImageBtn) { //사진 버튼 누르면
 				System.out.println("이미지 첨부 버튼 눌림");
@@ -159,7 +171,7 @@ public class ChatPanel extends JPanel {
 						System.out.println("이미지 선택했어: " + msg);
 		               //controller.send_Message(msg); 
 		               controller.send_Image(msg);
-		              // controller.append_Image(roomTitle, img2);
+		            
 		            }
 			}
 			

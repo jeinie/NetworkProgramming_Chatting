@@ -164,6 +164,12 @@ public class Server extends JFrame{
 		roomManager.broadcast(user, str, roomTitle);
 	}
 	
+	//ÀÌ¸ğÆ¼ÄÜ ¸Ş¼¼Áö Ã³¸®
+	public void broadcastEmoticon(User user, ImageIcon img, String roomTitle) {
+		//RoomManager¿¡°Ô ºê·ÎµåÄ³½ºÆÃ ¸í·É -> RoomÀÌ ÀÚ½Å¿¡°Ô ¼ÓÇÑ »ç¿ëÀÚµé¿¡°Ô ºê·ÎµåÄ³½ºÆÃ
+		roomManager.broadcastImg(user, img, roomTitle);
+	}
+	
 	//ÀÌ¹ÌÁö ¸Ş¼¼Áö Ã³¸®
 	public void broadcastImg(User user, ImageIcon img, String roomTitle) {
 		//RoomManager¿¡°Ô ºê·ÎµåÄ³½ºÆÃ ¸í·É -> RoomÀÌ ÀÚ½Å¿¡°Ô ¼ÓÇÑ »ç¿ëÀÚµé¿¡°Ô ºê·ÎµåÄ³½ºÆÃ
@@ -218,11 +224,7 @@ public class Server extends JFrame{
 		}
 		ChattingRoom newRoom = roomManager.createRoom(users);
 		newRoom.setRoomTitle(roomTitle);
-<<<<<<< HEAD
 		for(int i=0;i<users.size();i++) { //Âü¿©ÇÏ´Â ¸ğµç À¯Àúµé¿¡°Ô Ã¤ÆÃ¹æÀ» ¶ç¿öÁÜ
-=======
-		for(int i=0;i<users.size();i++) { //ì°¸ì—¬í•˜ëŠ” ëª¨ë“  ìœ ì €ë“¤ì—ê²Œ ì±„íŒ…ë°©ì„ ë„ì›Œì¤Œ
->>>>>>> 1297dacf4156845e3aceae8699e616031fd3ab61
 			users.get(i).sendMsg(User.CODE_300+"//"+roomTitle);
 		}
 		

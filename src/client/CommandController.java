@@ -60,14 +60,12 @@ public class CommandController {
 	private Image panelImage = null; 
 	private Graphics gc2 = null;
 	
-
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	 
 	public static CommandController controller;
 	private CommandController(){
 		//클라이언트가 서버로부터 메시지를 수신하는 스레드 생성후 실행
-		//Singleton패턴이라 이부분이 한번만 실행됨=>한 유저당 스레드 하나
 		RecieveMassage();
 	}
 	public static CommandController getController() {
@@ -161,13 +159,6 @@ public class CommandController {
 	public void append_Image(String roomTitle, ImageIcon image) {
 		setTextPane(chattingRoomList.get(roomTitle)); 
 		
-		//String temp = textPane.getText()+"\n";
-		//textPane.setText(temp);
-		
-		//int len = textPane.getDocument().getLength();
-		//textPane.setCaretPosition(len); // place caret at the end (with no selection)
-		//textPane.insertIcon(image);
-		
 		Image ori_img = image.getImage();
 	    Image new_img;
 	    ImageIcon new_icon;
@@ -196,6 +187,7 @@ public class CommandController {
 	    int len = textPane.getDocument().getLength();
 	     textPane.setCaretPosition(len);
 	     textPane.replaceSelection("\n");
+
 	     //textPane.insertIcon(image);
 	    // ImageViewAction viewaction = new ImageViewAction();
 	     //new_icon.addActionListener(viewaction); // 내부클래스로 액션 리스너를 상속받은 클래스로
@@ -238,9 +230,8 @@ public class CommandController {
 								ChatFrame a = new ChatFrame(roomTitle); //처음 방이 생성된 경우 채팅방창을 띄움
 								chattingRoomList.put(roomTitle, a.getChatPanel().getTextPaneChat());	//채팅방들의 TextPane을 해쉬맵으로 저장
 								
-								///////////////////////////////////////////////////////////////////////////////////
 								JLabel room = new JLabel(roomTitle);
-								ChatRoom.add(room); //처음 방이 생성되면 chatting목록에 추가함
+								ChatRoom.add(room); //처음 방이 생성되면 채팅목록에 추가함
 								for(JLabel j:ChatRoom) {
 									System.out.println("채팅방 리스트 추가 -> " + j.getText().toString());
 								}
@@ -279,7 +270,7 @@ public class CommandController {
 								String[] userInformation = array[i].split("!!");
 								
 								userLabel.add(new JLabel(userInformation[0]));
-								//-------------------------------------------
+
 								UserInfo user = new UserInfo();
 								user.setName(userInformation[0]);
 								user.setStateImg(userInformation[1]);
@@ -314,6 +305,14 @@ public class CommandController {
 							onlineUserList.add(reUser);
 							System.out.println("CommandController->CODE_900 "+searchByUserName(array[2]).getName()+searchByUserName(array[2]).getStateImg(array[2])+searchByUserName(array[2]).getStateMsg());
 							mainFrameList.get(array[1]).getStartPanel().friendPanel.updateState(array[2],array[3],array[4]);
+							
+						}
+						else if(array[0].equals(User.CODE_410)) {
+							//String message = User.CODE_420+"//"+roomTitle+"//"+img;
+							roomTitle= array[1];
+							//String str = array[2];
+							ImageIcon image = new ImageIcon(array[2]);	//선택한 이미지 경로
+							append_Image(roomTitle,image);
 							
 						}
 						else if(array[0].equals(User.CODE_420)) {
@@ -353,7 +352,6 @@ public class CommandController {
 			byte[] bb;
 			bb = str.getBytes();
 			dos.write(bb); //.writeUTF(str);
-			//oos.defaultWriteObject();
 			System.out.println("컨트롤러 보내지니");
 			System.out.println("너 뭐야 : " + bb); //여기까지는 image_msg로 출력
 
@@ -365,22 +363,20 @@ public class CommandController {
 
 	}
 	
-	public void send_Image(String msg) { //이미지 어떻게 보내는거임;;;
+	public void send_Image(String msg) { 
 		try {
 			byte[] bb;
 			bb = msg.getBytes();
 			dos.write(bb); //.writeUTF(str);
 			//oos.writeObject(img);
-			System.out.println("컨트롤러 이미지");
-			System.out.println("너 뭐야 : " + msg); //여기까지는 image_msg로 출력
 
 		} catch (IOException e) {
 			//textArea.append("메세지 송신 에러!!\n");
 			append_Message(roomTitle,"메세지 송신 에러!!\n");//여기의 roomTitle은 의미가 없음(추후에 더 보완!!)]
-			System.out.println("컨트롤러 이미지 못보내네");
 		}
 	}
 
+	
 	public void saveMainFrame(String userId,MainFrame mainFrame) {
 		this.userId = userId;
 		mainFrameList.put(userId, mainFrame);
@@ -393,7 +389,7 @@ public class CommandController {
 		}
 		return null;
 	}
-	/*Getter Setter*/
+	
 	public String getroomTitle() {
 		return roomTitle;
 	}

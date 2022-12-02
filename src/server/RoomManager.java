@@ -25,6 +25,13 @@ public class RoomManager {
 		room.broadcast(str);
 	}
 	
+	//broadcast Emoticon
+		public void broadcastEmoticon(User user,ImageIcon img, String roomTitle) {
+			//유저가 속한 룸을 찾아서 브로드캐스팅 명령
+			ChattingRoom room = serchByRoomTitle(roomTitle);//룸이름으로 브로드캐스팅할 룸을 찾음
+			room.broadcastEmoticon(img);
+		}
+		
 	//broadcast Image 
 	public void broadcastImg(User user,ImageIcon img, String roomTitle) {
 		//유저가 속한 룸을 찾아서 브로드캐스팅 명령

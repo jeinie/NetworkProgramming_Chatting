@@ -13,6 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import server.User;
 
@@ -45,6 +49,7 @@ public class ChatListPanel extends JPanel {
 		setchatList();
 	}
 
+	// 채팅방 리스트
 	public void setchatList() {
 		int i = 0;
 
@@ -78,8 +83,7 @@ public class ChatListPanel extends JPanel {
 				public void mouseReleased(MouseEvent e) { // 채팅목록을 누르면 기존 채팅창 띄우기
 					if(e.getClickCount()==1) { 
 						String roomTitle = room.getText();
-						System.out.println("채팅방: " + roomTitle);
-						
+
 						ChatFrame chattingroom = new ChatFrame(roomTitle);
 						JTextPane temp = controller.getChattingRoomList().get(roomTitle);
 						chattingroom.getChatPanel().getTextPaneChat().setText(temp.getText());
@@ -87,6 +91,24 @@ public class ChatListPanel extends JPanel {
 						controller.getChattingRoomList().put(roomTitle, chattingroom.getChatPanel().getTextPaneChat());
 						
 						chattingroom.repaint();
+						
+						String arr[] = temp.getText().split("\n\n");
+
+						for (int i=0; i<arr.length; i++) {
+						// 	chattingroom.repaint();
+
+						// 	// 상대방이 보낸 메시지이면 왼쪽에 출력
+							if (arr[i].charAt(0) =='[') {
+								controller.append_Message(roomTitle, arr[i]);
+						// 		chattingroom.getChatPanel().getTextPaneChat().setText(arr[i] + "\n\n");
+							} else { // 내가 보낸 메시지이면 오른쪽에
+								controller.append_My_Message(roomTitle, arr[i]);
+						// 		chattingroom.getChatPanel().getTextPaneChat().setText(arr[i] + "\n\n");
+							}
+						}
+						// controller.getChattingRoomList().remove(temp);
+						// controller.getChattingRoomList().put(roomTitle, chattingroom.getChatPanel().getTextPaneChat());
+						// chattingroom.repaint();
 					}
 				}
 
